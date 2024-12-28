@@ -1,4 +1,3 @@
-// 'use client';
 import { cn } from '@/lib/utils';
 import React from 'react';
 
@@ -12,7 +11,7 @@ const Button = ({
    return (
       <button
          className={cn(
-            'w-[10rem] py-2 rounded-sm shadow-md text-sm',
+            'w-[12rem] py-3 rounded-md shadow-md text-sm',
             className
          )}
       >

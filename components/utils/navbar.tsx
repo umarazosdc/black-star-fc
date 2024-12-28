@@ -7,7 +7,7 @@ const Navbar = () => {
    return (
       <div className="flex justify-between items-center py-4 w-full bg-primary sticky top-0">
          <Link href="#">
-            <div className="relative size-10">
+            <div className="relative size-12">
                <Img src="/imgs/logo/logo.jpg" alt="Logo" />
             </div>
          </Link>

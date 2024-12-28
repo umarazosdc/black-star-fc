@@ -14,7 +14,7 @@ export default function Home() {
                Your ultimate platform for scouting and tracking football talent
                worldwide.
             </p>
-            <footer className="flex flex-col items-center gap-4 mt-8">
+            <footer className="flex flex-col items-center gap-6 mt-8">
                <Button className="bg-accent text-primary">
                   Explore players
                </Button>
