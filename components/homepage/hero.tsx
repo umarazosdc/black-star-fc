@@ -8,7 +8,7 @@ const Hero = () => {
    return (
       <div className="relative">
          <h1
-            className={`uppercase font-bold text-[5rem] text-center tracking-wide leading-tight text-secondary ${bebas_neue.className}`}
+            className={`uppercase font-bold text-[5rem] text-center tracking-wide leading-[1.05] text-secondary ${bebas_neue.className}`}
          >
             discover
             <br />
