@@ -6,7 +6,7 @@ const bebas_neue = Bebas_Neue({ weight: '400', subsets: ['latin'] });
 
 const Hero = () => {
    return (
-      <div className="relative">
+      <div className="relative w-full flex justify-center">
          <h1
             className={`uppercase font-bold text-[5rem] text-center tracking-wide leading-[1.05] text-secondary ${bebas_neue.className}`}
          >
@@ -17,7 +17,7 @@ const Hero = () => {
             <br />
             today
          </h1>
-         <HeroImage className="absolute -top-4 left-1/2 -translate-x-1/2" />
+         <HeroImage className="absolute -top-4" />
       </div>
    );
 };

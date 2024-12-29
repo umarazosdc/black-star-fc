@@ -11,7 +11,7 @@ const Button = ({
    return (
       <button
          className={cn(
-            'w-[14rem] py-3 rounded-md shadow-md text-sm font-bold hover:bg-accent',
+            'w-[14rem] py-3 rounded-md shadow-md text-sm font-bold',
             className
          )}
       >
