@@ -14,7 +14,7 @@ import {
 const Navbar = () => {
    return (
       <div className="flex justify-between items-center py-4 w-full bg-primary sticky top-0">
-         <Link href="#">
+         <Link href="/">
             <div className="relative size-[3.2rem]">
                <Img src="/imgs/logo/logo.jpg" alt="Logo" />
             </div>

@@ -8,7 +8,7 @@ export default function Home() {
          <Navbar />
          <main className="flex-grow flex flex-col items-center gap-8 mt-12">
             <Hero />
-            <p className="text-center w-[20rem] text-sm">
+            <p className="text-center w-[20rem] text-sm cursor-none">
                Your ultimate platform for scouting and tracking football talent
                worldwide.
             </p>
