@@ -8,7 +8,7 @@ const RightBar = () => {
          alt="Menu bar"
          height={35}
          width={35}
-         className="size-9"
+         className="size-9 select-none"
       />
    );
 };
