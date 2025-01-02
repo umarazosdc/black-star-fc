@@ -30,7 +30,7 @@ const PlayerCard = ({
    return (
       <Link href='/explore/player'>
          <div
-            className="shadow-md rounded-md bg-card border-t border-r flex flex-col gap-4 p-3 w-[164px] text-secondary select-none cursor-pointer"
+            className="shadow-md rounded-md bg-card border-t border-r flex flex-col gap-4 p-3 text-secondary select-none cursor-pointer w-full"
             {...props}
          >
             <PlayerImage src={src} alt={alt} position={position} />
@@ -43,13 +43,13 @@ const PlayerCard = ({
                   </div>
                   {bookmarked ? (
                      <BookmarkIcon
-                        className="text-accent cursor-pointer"
+                        className="text-accent cursor-pointer size-9"
                         onClick={handleBookmark}
                         fill="#E76D57"
                      />
                   ) : (
                      <BookmarkIcon
-                        className="text-accent cursor-pointer"
+                        className="text-accent cursor-pointer size-9"
                         onClick={handleBookmark}
                      />
                   )}

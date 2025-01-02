@@ -18,7 +18,7 @@ const ExplorePlayers = () => {
          <main className="flex flex-col space-y-6">
             <SearchBar placeholder="Search for players by position, age, or name" />
             <SearchFilter />
-            <div className="flex justify-between flex-wrap gap-8">
+            <div className="grid grid-cols-2 gap-8">
                <PlayerCard
                   src="/imgs/players/player.jpg"
                   alt="Player"
