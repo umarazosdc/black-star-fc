@@ -43,6 +43,7 @@ const LoginForm = () => {
                               {...field}
                               placeholder="malamisa360@gmail.com"
                               type="email"
+                              className='text-sm'
                            />
                         </FormControl>
                         <FormMessage />
@@ -60,6 +61,7 @@ const LoginForm = () => {
                               {...field}
                               placeholder="********"
                               type="password"
+                              className='text-sm'
                            />
                         </FormControl>
                         <FormMessage />

@@ -3,7 +3,7 @@ import Img from '../utils/image';
 import { cn } from '@/lib/utils';
 import { The_Nautigal } from 'next/font/google';
 
-const nautigal = The_Nautigal({ weight: '700', subsets: ['latin'] });
+const nautigal = The_Nautigal({ weight: ['700'], subsets: ['latin'] });
 
 const HeroImage = ({ className }: { className: string | undefined }) => {
    return (

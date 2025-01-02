@@ -45,6 +45,7 @@ const RegisterForm = () => {
                               {...field}
                               placeholder="Isa"
                               type="text"
+                              className="text-sm"
                            />
                         </FormControl>
                         <FormMessage />
@@ -62,6 +63,7 @@ const RegisterForm = () => {
                               {...field}
                               placeholder="Umar"
                               type="text"
+                              className="text-sm"
                            />
                         </FormControl>
                         <FormMessage />
@@ -79,6 +81,7 @@ const RegisterForm = () => {
                               {...field}
                               placeholder="malamisa360@gmail.com"
                               type="email"
+                              className="text-sm"
                            />
                         </FormControl>
                         <FormMessage />
@@ -96,6 +99,7 @@ const RegisterForm = () => {
                               {...field}
                               placeholder="********"
                               type="password"
+                              className="text-sm"
                            />
                         </FormControl>
                         <FormMessage />
@@ -113,6 +117,7 @@ const RegisterForm = () => {
                               {...field}
                               placeholder="********"
                               type="password"
+                              className="text-sm"
                            />
                         </FormControl>
                         <FormMessage />
