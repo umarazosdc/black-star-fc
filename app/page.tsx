@@ -1,6 +1,7 @@
 import Button from '@/components/homepage/button';
 import Hero from '@/components/homepage/hero';
 import Navbar from '@/components/utils/navbar';
+import Link from 'next/link';
 
 export default function Home() {
    return (
@@ -13,12 +14,16 @@ export default function Home() {
                worldwide.
             </p>
             <footer className="flex flex-col items-center gap-6 mt-8">
-               <Button className="bg-accent text-primary">
-                  Explore players
-               </Button>
-               <Button className="border border-accent text-accent">
-                  Sign in for free
-               </Button>
+               <Link href="/explore">
+                  <Button className="bg-accent text-primary">
+                     Explore players
+                  </Button>
+               </Link>
+               <Link href="/auth/login">
+                  <Button className="border border-accent text-accent">
+                     Sign in for free
+                  </Button>
+               </Link>
             </footer>
          </main>
       </div>
