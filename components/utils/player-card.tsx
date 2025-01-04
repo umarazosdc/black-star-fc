@@ -19,7 +19,7 @@ const PlayerCard = ({
    age: number;
 } & React.HTMLAttributes<HTMLDivElement>) => {
    const [bookmarked, setBookmark] = React.useState<boolean>(false);
-   const handleBookmark = (e) => {
+   const handleBookmark = (e: React.MouseEvent<SVGElement>) => {
       /**
        * Let Bookmark icon status ONLY reflect
        * after getting it from the database
