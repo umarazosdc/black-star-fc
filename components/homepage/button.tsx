@@ -6,7 +6,7 @@ const Button = ({
    className,
 }: {
    children: React.ReactNode;
-   className: string | undefined;
+   className?: string | undefined;
 }) => {
    return (
       <button

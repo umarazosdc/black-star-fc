@@ -20,7 +20,7 @@ export default function Home() {
                   </Button>
                </Link>
                <Link href="/auth/login">
-                  <Button className="border border-accent text-accent">
+                  <Button className="border-2 border-accent text-accent">
                      Sign in for free
                   </Button>
                </Link>

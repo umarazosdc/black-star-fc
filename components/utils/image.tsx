@@ -11,7 +11,7 @@ const Img = ({
          src={src}
          alt={alt}
          fill
-         className={cn('w-full h-full', className)}
+         className={cn('w-full h-full object-cover', className)}
       />
    );
 };
