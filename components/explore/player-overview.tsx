@@ -2,7 +2,7 @@ import React from 'react';
 import ImageAndStats from './image-stats';
 import PlayerDetails from './player-details';
 import { DotIcon } from 'lucide-react';
-import DetailsContainer from '../utils/details-container';
+import Wrapper from '../utils/wrapper';
 import PlayerUploads from './player-uploads';
 import PlayerAchievementContainer from './achievement-container';
 import Button from '../homepage/button';
@@ -29,12 +29,12 @@ const PlayerOverview = () => {
             </div>
             <PlayerDetails />
          </div>
-         <DetailsContainer title="Uploads">
+         <Wrapper title="Uploads">
             <PlayerUploads />
-         </DetailsContainer>
-         <DetailsContainer title="Achievements">
+         </Wrapper>
+         <Wrapper title="Achievements">
             <PlayerAchievementContainer />
-         </DetailsContainer>
+         </Wrapper>
 
          {/* Button will render base on user role */}
 
