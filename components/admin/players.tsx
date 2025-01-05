@@ -12,7 +12,7 @@ const Players = () => {
             <SearchFilterBar placeholder="Search players..." />
             <div className="flex flex-col gap-6">
                <Link
-                  href="/dashboard/new"
+                  href="/admin/dashboard/new"
                   className="self-end flex items-center gap-0.5 text-xs text-accent"
                >
                   <PlusIcon className="size-4" strokeWidth={3} />

@@ -16,7 +16,7 @@ const Player = ({
 }) => {
    return (
       <div className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md">
-         <div className="self-start flex justify-between items-start w-full">
+         <div className="self-start flex justify-between items-center w-full">
             <div className="flex items-center gap-4">
                <div className="relative size-[4.5rem]">
                   <Img src={src} alt="Player" className="rounded-full border" />
