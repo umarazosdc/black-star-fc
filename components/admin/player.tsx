@@ -31,7 +31,7 @@ const Player = ({
             <Age age={age} />
          </div>
          <div className="self-end flex items-center gap-4">
-            <Button className="bg-secondary text-primary">Modify</Button>
+            <Button className="bg-secondary text-primary">Edit</Button>
             <Button className="bg-red-600 text-primary">Remove</Button>
          </div>
       </div>

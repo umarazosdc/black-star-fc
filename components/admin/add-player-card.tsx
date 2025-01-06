@@ -17,9 +17,9 @@ const AddPlayerCard = ({
          <PlayerImage src="/imgs/players/player.jpg" position={position} />
          <div className="flex flex-col gap-4">
             <h2 className="font-bold text-sm">{name}</h2>
-            <Age age={age}/>
+            <Age age={age} className='self-end'/>
             <div className='flex flex-col gap-4'>
-               <Button className='bg-secondary w-full'>Modify</Button>
+               <Button className='bg-secondary w-full'>Edit</Button>
                <Button className='bg-red-600 w-full'>Remove</Button>
             </div>
          </div>

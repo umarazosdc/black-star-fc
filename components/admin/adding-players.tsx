@@ -8,7 +8,6 @@ const AddingPlayers = () => {
       <GridWrappers>
          <AddPlayerCard name="Ahmed Abdullahi" age={16} position="winger" />
          <AddPlayerCard name="Ahmed Abdullahi" age={16} position="winger" />
-         <AddPlayerCard name="Ahmed Abdullahi" age={16} position="winger" />
          <PlusButton />
       </GridWrappers>
    );
