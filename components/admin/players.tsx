@@ -3,12 +3,12 @@ import SearchFilterBar from '../utils/search-filter-bar';
 import Wrapper from '../utils/wrapper';
 import Link from 'next/link';
 import { PlusIcon } from 'lucide-react';
-import Player from './player';
+import PlayerCard from './player-card';
 
 const Players = () => {
    return (
       <Wrapper title="Players">
-         <div className='flex flex-col gap-8'>
+         <div className="flex flex-col gap-8">
             <SearchFilterBar placeholder="Search players..." />
             <div className="flex flex-col gap-6">
                <Link
@@ -17,15 +17,40 @@ const Players = () => {
                >
                   <PlusIcon className="size-4" strokeWidth={3} />
                   <p>Add player</p>
-                   </Link> 
-               </div>
-               <div className='flex flex-col gap-6'>
-                   <Player src='/imgs/players/player.jpg' name='Ahmed Abdullahi' position='Winger' age={16}/>
-                   <Player src='/imgs/players/player.jpg' name='Ahmed Abdullahi' position='Winger' age={16}/>
-                   <Player src='/imgs/players/player.jpg' name='Ahmed Abdullahi' position='Winger' age={16}/>
-                   <Player src='/imgs/players/player.jpg' name='Ahmed Abdullahi' position='Winger' age={16}/>
-                   <Player src='/imgs/players/player.jpg' name='Ahmed Abdullahi' position='Winger' age={16}/>
-               </div>
+               </Link>
+            </div>
+            <div className="flex flex-col gap-6">
+               <PlayerCard
+                  src="/imgs/players/player.jpg"
+                  name="Ahmed Abdullahi"
+                  position="Winger"
+                  age={16}
+               />
+               <PlayerCard
+                  src="/imgs/players/player.jpg"
+                  name="Ahmed Abdullahi"
+                  position="Winger"
+                  age={16}
+               />
+               <PlayerCard
+                  src="/imgs/players/player.jpg"
+                  name="Ahmed Abdullahi"
+                  position="Winger"
+                  age={16}
+               />
+               <PlayerCard
+                  src="/imgs/players/player.jpg"
+                  name="Ahmed Abdullahi"
+                  position="Winger"
+                  age={16}
+               />
+               <PlayerCard
+                  src="/imgs/players/player.jpg"
+                  name="Ahmed Abdullahi"
+                  position="Winger"
+                  age={16}
+               />
+            </div>
          </div>
       </Wrapper>
    );
