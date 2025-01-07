@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Age from './age';
 import { cn } from '@/lib/utils';
 import Tag from './tag';
-import { Button } from '../ui/button';
+import Button from './button';
 
 const RequestedPlayerCard = ({
    src,

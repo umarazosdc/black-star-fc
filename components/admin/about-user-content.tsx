@@ -12,11 +12,14 @@ import formatDate from '@/lib/date';
 import SectionWrapper from '../utils/section-wrapper';
 import BookmarkedPlayerCard from '../utils/bookmarked-player-card';
 import RequestedPlayerCard from '../utils/requested-player-card';
+import { cn } from '@/lib/utils';
 
-const UserAboutContent = () => {
+const UserAboutContent = ({ className }: { className?: string }) => {
    const date = formatDate('2017-06-01');
    return (
-      <div className="flex-grow h-auto flex flex-col gap-8">
+      <div
+         className={cn('flex flex-col gap-8 bg-card min-h-full p-4', className)}
+      >
          <div className="space-y-2">
             <h2 className="text-xl font-bold tracking-wide">Michael Jordan</h2>
             <div className="flex items-center gap-3 text-sm">
@@ -52,7 +55,7 @@ const UserAboutContent = () => {
             </div>
          </Wrapper>
          <SectionWrapper title="Bookmarks" link="#" label="View all">
-            <div className="flex items-center gap-6 overflow-auto">
+            <div className="flex items-center gap-6 overflow-auto pb-3">
                <BookmarkedPlayerCard
                   src="/imgs/players/mal.jpg"
                   position="Winger"
@@ -77,7 +80,7 @@ const UserAboutContent = () => {
             </div>
          </SectionWrapper>
          <SectionWrapper title="Requests" link="#" label="View all">
-            <div className="flex items-center gap-6 overflow-auto">
+            <div className="flex items-center gap-6 overflow-auto pb-3">
                <RequestedPlayerCard
                   src="/imgs/players/mal.jpg"
                   position="Winger"
