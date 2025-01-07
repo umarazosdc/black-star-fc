@@ -5,9 +5,9 @@ import Link from 'next/link';
 
 export default function Home() {
    return (
-      <div className="min-h-screen flex flex-col px-4">
+      <div className="min-h-screen flex flex-col">
          <Navbar />
-         <main className="flex-grow flex flex-col items-center gap-8 mt-12">
+         <main className="flex-grow flex flex-col items-center gap-8 mt-12 px-4">
             <Hero />
             <p className="text-center w-[20rem] text-sm select-none">
                Your ultimate platform for scouting and tracking football talent

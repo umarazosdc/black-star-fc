@@ -1,7 +1,7 @@
 import SearchBar from '@/components/utils/search-bar';
 import SearchFilter from '@/components/utils/search-filter';
 import React from 'react';
-import PlayerCard from '../utils/player-card';
+import BookmarkedPlayerCard from '../utils/bookmarked-player-card';
 import GridWrappers from '../utils/grid-wrappers';
 
 const ExplorePlayers = () => {
@@ -20,19 +20,19 @@ const ExplorePlayers = () => {
             <SearchBar placeholder="Search for players by position, age, or name" />
             <SearchFilter />
             <GridWrappers>
-               <PlayerCard
+               <BookmarkedPlayerCard
                   src="/imgs/players/player.jpg"
                   position="striker"
                   name="Ahmed Abdullahi"
                   age={16}
                />
-               <PlayerCard
+               <BookmarkedPlayerCard
                   src="/imgs/players/player.jpg"
                   position="striker"
                   name="Ahmed Abdullahi"
                   age={16}
                />
-               <PlayerCard
+               <BookmarkedPlayerCard
                   src="/imgs/players/player.jpg"
                   position="striker"
                   name="Ahmed Abdullahi"
