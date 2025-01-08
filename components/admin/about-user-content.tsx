@@ -13,6 +13,7 @@ import SectionWrapper from '../utils/section-wrapper';
 import BookmarkedPlayerCard from '../utils/bookmarked-player-card';
 import RequestedPlayerCard from '../utils/requested-player-card';
 import { cn } from '@/lib/utils';
+import Button from '../utils/button';
 
 const UserAboutContent = ({ className }: { className?: string }) => {
    const date = formatDate('2017-06-01');
@@ -62,6 +63,7 @@ const UserAboutContent = ({ className }: { className?: string }) => {
                   name="Lamine Yamal"
                   age={17}
                   className="w-[10.5rem] bg-primary"
+                  isAdmin
                />
                <BookmarkedPlayerCard
                   src="/imgs/players/mal.jpg"
@@ -69,6 +71,7 @@ const UserAboutContent = ({ className }: { className?: string }) => {
                   name="Lamine Yamal"
                   age={17}
                   className="w-[10.5rem] bg-primary"
+                  isAdmin
                />
                <BookmarkedPlayerCard
                   src="/imgs/players/mal.jpg"
@@ -76,6 +79,7 @@ const UserAboutContent = ({ className }: { className?: string }) => {
                   name="Lamine Yamal"
                   age={17}
                   className="w-[10.5rem] bg-primary"
+                  isAdmin
                />
             </div>
          </SectionWrapper>
@@ -104,6 +108,14 @@ const UserAboutContent = ({ className }: { className?: string }) => {
                />
             </div>
          </SectionWrapper>
+         <div className="flex flex-col space-y-4">
+            <Button className="py-2" style={{ background: '#201315' }}>
+               Suspense
+            </Button>
+            <Button className="py-2" style={{ background: 'red' }}>
+               Delete
+            </Button>
+         </div>
       </div>
    );
 };

@@ -12,12 +12,14 @@ const BookmarkedPlayerCard = ({
    name,
    age,
    className,
+   isAdmin,
    ...props
 }: {
    src: string;
    position: string;
    name: string;
    age: number;
+   isAdmin?: boolean;
 } & React.HTMLAttributes<HTMLDivElement>) => {
    const [bookmarked, setBookmark] = React.useState<boolean>(false);
    const handleBookmark = (e: React.MouseEvent<SVGElement>) => {
@@ -40,9 +42,15 @@ const BookmarkedPlayerCard = ({
             <PlayerImage src={src} position={position} />
             <div className="flex flex-col gap-4">
                <h2 className="font-bold text-sm">{name}</h2>
-               <div className="flex justify-between items-center">
+               <div
+                  className={cn(
+                     isAdmin ? 'self-end' : 'flex justify-between items-center'
+                  )}
+               >
                   <Age age={age} />
-                  {bookmarked ? (
+                  {isAdmin ? (
+                     ''
+                  ) : bookmarked ? (
                      <BookmarkIcon
                         className="text-accent cursor-pointer size-9"
                         onClick={(e) => {
