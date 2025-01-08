@@ -1,7 +1,7 @@
 import NavbarMain from '@/components/utils/navbar-main';
 import React from 'react';
 
-const AdminDashboardLayout = ({ children }: { children: React.ReactNode }) => {
+const UserDashboardLayout = ({ children }: { children: React.ReactNode }) => {
    return (
       <div className="min-h-screen flex flex-col">
          <NavbarMain />
@@ -10,4 +10,4 @@ const AdminDashboardLayout = ({ children }: { children: React.ReactNode }) => {
    );
 };
 
-export default AdminDashboardLayout;
+export default UserDashboardLayout;

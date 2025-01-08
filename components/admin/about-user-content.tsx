@@ -56,7 +56,7 @@ const UserAboutContent = ({ className }: { className?: string }) => {
             </div>
          </Wrapper>
          <SectionWrapper title="Bookmarks" link="#" label="View all">
-            <div className="flex items-center gap-6 overflow-auto pb-3">
+            <div className="flex items-center gap-6 overflow-auto pb-1">
                <BookmarkedPlayerCard
                   src="/imgs/players/mal.jpg"
                   position="Winger"
@@ -84,7 +84,7 @@ const UserAboutContent = ({ className }: { className?: string }) => {
             </div>
          </SectionWrapper>
          <SectionWrapper title="Requests" link="#" label="View all">
-            <div className="flex items-center gap-6 overflow-auto pb-3">
+            <div className="flex items-center gap-6 overflow-auto pb-1">
                <RequestedPlayerCard
                   src="/imgs/players/mal.jpg"
                   position="Winger"
