@@ -4,6 +4,7 @@ import RequestedPlayerCard from '@/components/utils/requested-player-card';
 import SearchNotificationBar from '@/components/utils/search-notification-bar';
 import SectionWrapper from '@/components/utils/section-wrapper';
 import StatusCard from '@/components/utils/status-card';
+import Link from 'next/link';
 import React from 'react';
 
 const DashboardPage = () => {
@@ -15,8 +16,12 @@ const DashboardPage = () => {
             </p>
             <SearchNotificationBar placeholder="Search for player..." />
             <GridWrappers>
-               <StatusCard value={6} label="Requests" />
-               <StatusCard value={12} label="Bookmarks" />
+               <Link href="/explore/requests">
+                  <StatusCard value={6} name="Requests" />
+               </Link>
+               <Link href="/explore/bookmarks">
+                  <StatusCard value={12} name="Bookmarks" />
+               </Link>
             </GridWrappers>
          </header>
          <main className="flex flex-col gap-6">
@@ -70,7 +75,11 @@ const DashboardPage = () => {
                   />
                </div>
             </SectionWrapper>
-            <SectionWrapper title="Bookmarked players" link="#" label="View all">
+            <SectionWrapper
+               title="Bookmarked players"
+               link="#"
+               label="View all"
+            >
                <div className="flex items-center gap-6 overflow-auto pb-1">
                   <BookmarkedPlayerCard
                      name="Lamine Yamal"
