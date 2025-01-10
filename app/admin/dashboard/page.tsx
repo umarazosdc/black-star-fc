@@ -1,5 +1,10 @@
+'use client';
 import PlayerCard from '@/components/admin/player-card';
 import UserCard from '@/components/admin/user-card';
+import AdminPlayersSkeleton from '@/components/skeleton/admin-players-skeleton';
+import AdminUsersSkeleton from '@/components/skeleton/admin-users-skeleton';
+import ScoutRequestsSkeleton from '@/components/skeleton/scout-requests-skeleton';
+import EventStatusBar from '@/components/utils/event-status-bar';
 import GridWrappers from '@/components/utils/grid-wrappers';
 import PlayerImage from '@/components/utils/player-image';
 import SearchNotificationBar from '@/components/utils/search-notification-bar';
@@ -9,8 +14,11 @@ import Wrapper from '@/components/utils/wrapper';
 import formatDate from '@/lib/date';
 import Link from 'next/link';
 import React from 'react';
+import { useInView } from 'react-intersection-observer';
 
 const AdminDashboardPage = () => {
+   const { ref } = useInView({ threshold: 1 });
+   // console.log(inView);
    const date = formatDate('2017-01-03');
    return (
       <div className="flex flex-col gap-12">
@@ -18,7 +26,7 @@ const AdminDashboardPage = () => {
             <p className="text-sm">
                Welcome back, <b>Isa</b>
             </p>
-            <SearchNotificationBar placeholder="Search for player..." />
+            <SearchNotificationBar placeholder="Search..." />
             <GridWrappers>
                <Link href="/admin/dashboard/users">
                   <StatusCard value={1400} name="Total Users" />
@@ -29,6 +37,9 @@ const AdminDashboardPage = () => {
             </GridWrappers>
          </header>
          <main className="flex flex-col gap-8">
+            <SectionWrapper title="Upcoming event" label="Add event" link="#">
+               <EventStatusBar isAdmin/>
+            </SectionWrapper>
             <Wrapper title="Scout requests">
                <div className="flex flex-col gap-6 overflow-auto max-h-80 pb-1">
                   {/* Add on click to the take admin to user's page */}
@@ -41,10 +52,10 @@ const AdminDashboardPage = () => {
                      isAdminDashboard
                      playersAge={16}
                   >
-                        <PlayerImage
-                           src="/imgs/players/mal.jpg"
-                           position="Winger"
-                        />
+                     <PlayerImage
+                        src="/imgs/players/mal.jpg"
+                        position="Winger"
+                     />
                   </UserCard>
                   <UserCard
                      src="/imgs/users/scout/dc2.jpg"
@@ -55,10 +66,10 @@ const AdminDashboardPage = () => {
                      isAdminDashboard
                      playersAge={16}
                   >
-                        <PlayerImage
-                           src="/imgs/players/mal.jpg"
-                           position="Winger"
-                        />
+                     <PlayerImage
+                        src="/imgs/players/mal.jpg"
+                        position="Winger"
+                     />
                   </UserCard>
                   <UserCard
                      src="/imgs/users/scout/dc2.jpg"
@@ -69,10 +80,10 @@ const AdminDashboardPage = () => {
                      isAdminDashboard
                      playersAge={16}
                   >
-                        <PlayerImage
-                           src="/imgs/players/mal.jpg"
-                           position="Winger"
-                        />
+                     <PlayerImage
+                        src="/imgs/players/mal.jpg"
+                        position="Winger"
+                     />
                   </UserCard>
                   <UserCard
                      src="/imgs/users/scout/dc2.jpg"
@@ -83,10 +94,10 @@ const AdminDashboardPage = () => {
                      isAdminDashboard
                      playersAge={16}
                   >
-                        <PlayerImage
-                           src="/imgs/players/mal.jpg"
-                           position="Winger"
-                        />
+                     <PlayerImage
+                        src="/imgs/players/mal.jpg"
+                        position="Winger"
+                     />
                   </UserCard>
                   <UserCard
                      src="/imgs/users/scout/dc2.jpg"
@@ -97,10 +108,10 @@ const AdminDashboardPage = () => {
                      isAdminDashboard
                      playersAge={16}
                   >
-                        <PlayerImage
-                           src="/imgs/players/mal.jpg"
-                           position="Winger"
-                        />
+                     <PlayerImage
+                        src="/imgs/players/mal.jpg"
+                        position="Winger"
+                     />
                   </UserCard>
                   <UserCard
                      src="/imgs/users/scout/dc2.jpg"
@@ -111,11 +122,12 @@ const AdminDashboardPage = () => {
                      isAdminDashboard
                      playersAge={16}
                   >
-                        <PlayerImage
-                           src="/imgs/players/mal.jpg"
-                           position="Winger"
-                        />
+                     <PlayerImage
+                        src="/imgs/players/mal.jpg"
+                        position="Winger"
+                     />
                   </UserCard>
+                  <ScoutRequestsSkeleton ref={ref} />
                </div>
             </Wrapper>
             <SectionWrapper
@@ -161,6 +173,7 @@ const AdminDashboardPage = () => {
                      position="Striker"
                      age={16}
                   />
+                  <AdminPlayersSkeleton />
                </div>
             </SectionWrapper>
             <Wrapper title="Users">
@@ -202,6 +215,7 @@ const AdminDashboardPage = () => {
                      email="j3@air.com"
                      date={date}
                   />
+                  <AdminUsersSkeleton />
                </div>
             </Wrapper>
          </main>

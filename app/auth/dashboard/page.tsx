@@ -1,9 +1,11 @@
 import BookmarkedPlayerCard from '@/components/utils/bookmarked-player-card';
+import EventStatusBar from '@/components/utils/event-status-bar';
 import GridWrappers from '@/components/utils/grid-wrappers';
 import RequestedPlayerCard from '@/components/utils/requested-player-card';
 import SearchNotificationBar from '@/components/utils/search-notification-bar';
 import SectionWrapper from '@/components/utils/section-wrapper';
 import StatusCard from '@/components/utils/status-card';
+import Wrapper from '@/components/utils/wrapper';
 import Link from 'next/link';
 import React from 'react';
 
@@ -25,6 +27,9 @@ const DashboardPage = () => {
             </GridWrappers>
          </header>
          <main className="flex flex-col gap-6">
+            <Wrapper title="Upcoming event">
+               <EventStatusBar />
+            </Wrapper>
             <SectionWrapper title="Suggested Players" link="#" label="View all">
                <div className="flex items-center gap-6 overflow-auto pb-1">
                   <BookmarkedPlayerCard
