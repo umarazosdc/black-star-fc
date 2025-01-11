@@ -17,7 +17,10 @@ const ExplorePlayers = () => {
             </p>
          </header>
          <main className="flex flex-col space-y-6">
-            <SearchFilterBar placeholder="Search for a player..." items={['A-Z', 'Newest']} />
+            <SearchFilterBar
+               placeholder="Search for a player..."
+               items={['A-Z', 'Newest', 'Age', 'Oldest']}
+            />
             <SearchFilter />
             <GridWrappers>
                <BookmarkedPlayerCard
