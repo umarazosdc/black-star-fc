@@ -1,8 +1,8 @@
-import SearchBar from '@/components/utils/search-bar';
 import SearchFilter from '@/components/utils/search-filter';
 import React from 'react';
 import BookmarkedPlayerCard from '../utils/bookmarked-player-card';
 import GridWrappers from '../utils/grid-wrappers';
+import SearchFilterBar from '../utils/search-filter-bar';
 
 const ExplorePlayers = () => {
    return (
@@ -17,7 +17,7 @@ const ExplorePlayers = () => {
             </p>
          </header>
          <main className="flex flex-col space-y-6">
-            <SearchBar placeholder="Search for players by position, age, or name" />
+            <SearchFilterBar placeholder="Search for a player..." items={['A-Z', 'Newest']} />
             <SearchFilter />
             <GridWrappers>
                <BookmarkedPlayerCard
