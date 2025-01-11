@@ -9,7 +9,10 @@ const Users = ({ totalUsers }: { totalUsers: number }) => {
    return (
       <Wrapper title="Users">
          <div className="flex flex-col gap-8">
-            <SearchFilterBar placeholder="Search for users..." />
+            <SearchFilterBar
+               placeholder="Search for users..."
+               items={['A-Z', 'Newest', 'Oldest', "Suspended"]}
+            />
             <div className="flex flex-col gap-4">
                <div className="text-sm flex items-center gap-1 self-end">
                   <p>Total users:</p>
