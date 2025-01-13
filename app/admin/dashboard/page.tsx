@@ -1,5 +1,6 @@
 'use client';
 import PlayerCard from '@/components/admin/player-card';
+import SuspendedUser from '@/components/admin/suspended-user';
 import UserCard from '@/components/admin/user-card';
 import AdminPlayersSkeleton from '@/components/skeleton/admin-players-skeleton';
 import AdminUsersSkeleton from '@/components/skeleton/admin-users-skeleton';
@@ -19,7 +20,7 @@ import { useInView } from 'react-intersection-observer';
 const AdminDashboardPage = () => {
    const { ref } = useInView({ threshold: 1 });
    // console.log(inView);
-   const date = formatDate('2017-01-03');
+   const date = formatDate('2024-01-03');
    return (
       <div className="flex flex-col gap-12">
          <header className="flex flex-col gap-6">
@@ -176,10 +177,22 @@ const AdminDashboardPage = () => {
                   <AdminPlayersSkeleton />
                </div>
             </SectionWrapper>
-            <Wrapper title="Users">
+            <Wrapper title="Users on suspension">
                <div className="flex flex-col gap-6 overflow-auto max-h-80 pb-1">
                   {/* Add on click to the take admin to user's page */}
-                  <UserCard
+                  <SuspendedUser
+                     src="/imgs/users/scout/dc2.jpg"
+                     name="Michael Jordan"
+                     email="j3@air.com"
+                     date={date}
+                  />
+                  <SuspendedUser
+                     src="/imgs/users/scout/dc2.jpg"
+                     name="Michael Jordan"
+                     email="j3@air.com"
+                     date={date}
+                  />
+                  <SuspendedUser
                      src="/imgs/users/scout/dc2.jpg"
                      name="Michael Jordan"
                      email="j3@air.com"
@@ -191,25 +204,13 @@ const AdminDashboardPage = () => {
                      email="j3@air.com"
                      date={date}
                   />
-                  <UserCard
+                  <SuspendedUser
                      src="/imgs/users/scout/dc2.jpg"
                      name="Michael Jordan"
                      email="j3@air.com"
                      date={date}
                   />
-                  <UserCard
-                     src="/imgs/users/scout/dc2.jpg"
-                     name="Michael Jordan"
-                     email="j3@air.com"
-                     date={date}
-                  />
-                  <UserCard
-                     src="/imgs/users/scout/dc2.jpg"
-                     name="Michael Jordan"
-                     email="j3@air.com"
-                     date={date}
-                  />
-                  <UserCard
+                  <SuspendedUser
                      src="/imgs/users/scout/dc2.jpg"
                      name="Michael Jordan"
                      email="j3@air.com"

@@ -29,7 +29,11 @@ const NavbarMain = () => {
             black stars fc
          </span>
          <div className="relative size-[2.5rem] select-none">
-            <Img src="/imgs/users/scout/dc.jpg" alt="Profile" className='rounded-full border' />
+            <Img
+               src="/imgs/users/scout/dc.jpg"
+               alt="Profile"
+               className="rounded-full border"
+            />
          </div>
       </div>
    );
