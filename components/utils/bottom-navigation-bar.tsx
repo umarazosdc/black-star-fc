@@ -1,11 +1,15 @@
 'use client';
 import React from 'react';
 import NavIcons from './nav-icons';
-import { BellIcon, LayoutDashboardIcon, SearchIcon } from 'lucide-react';
+import {
+   BellIcon,
+   LayoutDashboardIcon,
+   PlusIcon,
+   SearchIcon,
+} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import Img from './image';
 import {
    Sheet,
    SheetContent,
@@ -14,12 +18,16 @@ import {
    SheetTitle,
    SheetTrigger,
 } from '../ui/sheet';
+import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
+import AdminSheetContent from './admin-sheet-content';
+// import {} from "@/components/ui"
 
 const BottomNavigationBar = () => {
    const pathname = usePathname();
    const navItems = [
       { name: 'Home', path: '/auth/dashboard', icon: LayoutDashboardIcon },
       { name: 'Search', path: '/auth/dashboard/search', icon: SearchIcon },
+      { name: 'new', path: '/admin/dashboard/new', icon: PlusIcon },
       {
          name: 'Notification',
          path: '/auth/dashboard/notification',
@@ -44,18 +52,16 @@ const BottomNavigationBar = () => {
 
          <Sheet>
             <SheetTrigger>
-               <div className="relative size-[2.5rem] select-none">
-                  <Img
-                     src="/imgs/users/scout/dc.jpg"
-                     alt="Profile"
-                     className="rounded-full border"
-                  />
-               </div>
+               <Avatar>
+                  <AvatarImage src="/imgs/users/scout/dc.jpg" />
+                  <AvatarFallback>IU</AvatarFallback>
+               </Avatar>
             </SheetTrigger>
             <SheetContent>
                <SheetHeader>
                   <SheetTitle></SheetTitle>
                   <SheetDescription></SheetDescription>
+                  <AdminSheetContent />
                </SheetHeader>
             </SheetContent>
          </Sheet>

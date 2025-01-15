@@ -3,6 +3,7 @@ import Icontext from '@/components/utils/icontext';
 import { CalendarRangeIcon, ClockIcon, MapPinIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import PromptsDialog from './prompts-dialog';
 
 const EventStatusBar = ({ isAdmin }: { isAdmin?: boolean }) => {
    return (
@@ -29,7 +30,12 @@ const EventStatusBar = ({ isAdmin }: { isAdmin?: boolean }) => {
             {isAdmin && (
                <div className="flex items-center gap-4 font-bold">
                   <Link href="#">Edit</Link>
-                  <button className="text-red-600">Cancel</button>
+                  <PromptsDialog
+                     title="Are you sure you want to cancel this event?"
+                     description="There is no going back after you made this action"
+                  >
+                     <button className="text-red-600">Cancel</button>
+                  </PromptsDialog>
                </div>
             )}
          </div>

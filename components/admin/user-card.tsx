@@ -33,6 +33,10 @@ const UserCard = ({
    playerName?: string;
    playersAge?: number;
 }) => {
+   const [accept, setAccept] = React.useState<boolean>(false);
+   const handleRequest = () => {
+      setAccept(!accept);
+   };
    return (
       <div className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md">
          <div className="self-start flex justify-between items-center w-full">
@@ -80,10 +84,24 @@ const UserCard = ({
             </div>
          </div>
          {isAdminDashboard ? (
-            <div className="self-end flex items-center gap-4">
-               <Button className="bg-emerald-500 text-primary">Accept</Button>
-               <Button className="bg-red-600 text-primary">Reject</Button>
-            </div>
+            accept ? (
+               <Button
+                  className="self-end bg-red-600 text-primary"
+                  onClick={handleRequest}
+               >
+                  Cancel
+               </Button>
+            ) : (
+               <div className="self-end flex items-center gap-4">
+                  <Button
+                     className="bg-emerald-500 text-primary"
+                     onClick={handleRequest}
+                  >
+                     Accept
+                  </Button>
+                  <Button className="bg-red-600 text-primary">Reject</Button>
+               </div>
+            )
          ) : (
             <div className="self-end flex items-center gap-4">
                <Button className="bg-secondary text-primary">Supense</Button>
