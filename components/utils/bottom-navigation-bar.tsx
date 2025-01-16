@@ -17,16 +17,15 @@ import {
    SheetHeader,
    SheetTitle,
    SheetTrigger,
-} from '../ui/sheet';
-import { Avatar, AvatarImage, AvatarFallback } from '../ui/avatar';
-import AdminSheetContent from './admin-sheet-content';
-// import {} from "@/components/ui"
+} from '@/components/ui/sheet';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import AdminSheetContent from '@/components/utils/admin-sheet-content';
 
 const BottomNavigationBar = () => {
    const pathname = usePathname();
    const navItems = [
-      { name: 'Home', path: '/auth/dashboard', icon: LayoutDashboardIcon },
-      { name: 'Search', path: '/auth/dashboard/search', icon: SearchIcon },
+      { name: 'Home', path: '/admin/dashboard', icon: LayoutDashboardIcon },
+      { name: 'Search', path: '/admin/dashboard/search', icon: SearchIcon },
       { name: 'new', path: '/admin/dashboard/new', icon: PlusIcon },
       {
          name: 'Notification',
@@ -36,19 +35,31 @@ const BottomNavigationBar = () => {
    ];
    return (
       <nav className="flex justify-between items-center py-1 px-3 bg-primary sticky bottom-0 z-50 border-t w-full">
-         {navItems.map((item) => (
-            <Link key={item.path} href={item.path}>
-               <NavIcons
-                  icon={item.icon}
-                  name={item.name}
-                  className={cn(
-                     pathname === item.path
-                        ? 'text-accent opacity-100'
-                        : 'text-secondary opacity-70'
-                  )}
-               />
-            </Link>
-         ))}
+         {navItems.map((item) =>
+            item.name === 'new' ? (
+               pathname !== '/admin/dashboard/new' && (
+                  <Link
+                     href={item.path}
+                     key={item.name}
+                     className="bg-accent p-2.5 rounded-full shadow-md text-primary"
+                  >
+                     <PlusIcon strokeWidth={3} />
+                  </Link>
+               )
+            ) : (
+               <Link key={item.path} href={item.path}>
+                  <NavIcons
+                     icon={item.icon}
+                     name={item.name}
+                     className={cn(
+                        pathname === item.path
+                           ? 'text-accent opacity-100'
+                           : 'text-secondary opacity-70'
+                     )}
+                  />
+               </Link>
+            )
+         )}
 
          <Sheet>
             <SheetTrigger>
