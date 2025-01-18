@@ -21,10 +21,15 @@ import {
    SelectTrigger,
    SelectValue,
 } from '../ui/select';
-import { getName } from 'country-list';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { Calendar } from '../ui/calendar';
+import { heights, months, positions, roles, weights } from '@/lib/data';
+import { Button } from '../ui/button';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+import { CalendarIcon } from 'lucide-react';
 
 const NewPlayersForm = () => {
-   console.log(getName('NG'));
    const form = useForm<z.infer<typeof PlayerSchema>>({
       defaultValues: {
          firstname: '',
@@ -42,41 +47,9 @@ const NewPlayersForm = () => {
       resolver: zodResolver(PlayerSchema),
    });
 
-   const roles = [
-      { role: 'Centre-back' },
-      { role: 'Full-back' },
-      { role: 'Wing-back' },
-      { role: 'Centre-midfielder' },
-      { role: 'Defensive-midfielder' },
-      { role: 'Attacking-midfielder' },
-      { role: 'Wide-midfielder' },
-      { role: 'Centre-forward' },
-      { role: 'Second-striker' },
-      { role: 'Winger' },
-   ];
-   const positions = [
-      { position: 'Defender' },
-      { position: 'Midfielder' },
-      { position: 'Forward' },
-   ];
-   const weights = [
-      { weight: 45.9 },
-      { weight: 60.66 },
-      { weight: 62.1 },
-      { weight: 68.44 },
-      { weight: 73.39 },
-      { weight: 80.1 },
-   ];
-   const heights = [
-      { height: 5 },
-      { height: 5.3 },
-      { height: 5.5 },
-      { height: 5.8 },
-      { height: 6 },
-      { height: 6.2 },
-   ];
-
-   const handleAddPlayer = () => {};
+   const handleAddPlayer = () => {
+      console.log('Added...');
+   };
 
    return (
       <Form {...form}>
@@ -278,28 +251,73 @@ const NewPlayersForm = () => {
                      control={form.control}
                      name="dob"
                      render={({ field }) => (
-                        <Select>
-                           <SelectTrigger>
-                              <FormItem>
+                        <FormItem>
+                           <Popover>
+                              <PopoverTrigger asChild className="w-full">
                                  <FormControl>
-                                    <SelectValue
-                                       placeholder="D O B"
-                                       {...field}
-                                    />
+                                    <Button
+                                       variant={'outline'}
+                                       className={cn(
+                                          'w-full pl-3 text-left font-normal',
+                                          !field.value &&
+                                             'text-muted-foreground'
+                                       )}
+                                    >
+                                       {field.value ? (
+                                          format(Number(field.value), 'PPP')
+                                       ) : (
+                                          <span>Date of Birth</span>
+                                       )}
+                                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                    </Button>
                                  </FormControl>
-                              </FormItem>
-                           </SelectTrigger>
-                           <SelectContent>
-                              {weights.map((weight, key) => (
-                                 <SelectItem
-                                    key={key}
-                                    value={weight.weight.toString()}
-                                 >
-                                    {weight.weight}
-                                 </SelectItem>
-                              ))}
-                           </SelectContent>
-                        </Select>
+                              </PopoverTrigger>
+                              <PopoverContent
+                                 className="w-auto p-0 px-2 py-2"
+                                 align="start"
+                              >
+                                 <div className="flex justify-between gap-2 items-center">
+                                    <Select>
+                                       <SelectTrigger>
+                                          <SelectValue
+                                             placeholder="Month"
+                                             {...field}
+                                          />
+                                       </SelectTrigger>
+                                       <SelectContent>
+                                          {months.map((month, key) => (
+                                             <SelectItem
+                                                key={key}
+                                                value={month}
+                                                onChange={field.onChange}
+                                             >
+                                                {month}
+                                             </SelectItem>
+                                          ))}
+                                       </SelectContent>
+                                    </Select>
+                                    <Select>
+                                       <SelectTrigger>
+                                          <SelectValue
+                                             placeholder="Year"
+                                             {...field}
+                                          />
+                                       </SelectTrigger>
+                                       <SelectContent></SelectContent>
+                                    </Select>
+                                 </div>
+                                 <Calendar
+                                    mode="single"
+                                    selected={
+                                       field.value
+                                          ? new Date(field.value)
+                                          : undefined
+                                    }
+                                    onSelect={field.onChange}
+                                 />
+                              </PopoverContent>
+                           </Popover>
+                        </FormItem>
                      )}
                   />
                   <FormField
@@ -308,27 +326,13 @@ const NewPlayersForm = () => {
                      render={({ field }) => (
                         <Select>
                            <SelectTrigger>
-                              <FormItem>
-                                 <FormControl>
-                                    <SelectValue
-                                       placeholder="Nationality"
-                                       {...field}
-                                    />
-                                 </FormControl>
-                              </FormItem>
+                              <SelectValue
+                                 placeholder="Nationality"
+                                 {...field}
+                              />
                            </SelectTrigger>
                            <SelectContent>
-                              <SelectTrigger>
-                                 <SelectValue
-                                    placeholder="Nationality"
-                                    {...field}
-                                 />
-                                 <SelectContent>
-                                    <SelectItem value="nigerian">
-                                       Nigerian
-                                    </SelectItem>
-                                 </SelectContent>
-                              </SelectTrigger>
+                              <SelectItem value="nigerian">Nigerian</SelectItem>
                            </SelectContent>
                         </Select>
                      )}
