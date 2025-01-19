@@ -42,5 +42,18 @@ export const PlayerSchema = z.object({
    dob: z.string(),
    nationality: z.string(),
    achievements: z.array(z.string()).optional(),
-   stats: z.array(z.object({ stat: z.number() })),
+   stats: z.object({
+      spd: z.number().min(1, 'Speed cannot be empty.').max(100, 'Max is 100.'),
+      def: z
+         .number()
+         .min(1, 'Defence cannot be empty.')
+         .max(100, 'Max is 100.'),
+      sho: z.number().min(1, 'Shoot cannot be empty.').max(100, 'Max is 100.'),
+      pas: z.number().min(1, 'Pass cannot be empty.').max(100, 'Max is 100.'),
+      pac: z.number().min(1, 'Pacing cannot be empty.').max(100, 'Max is 100.'),
+      dri: z
+         .number()
+         .min(1, 'Dribble cannot be empty.')
+         .max(100, 'Max is 100.'),
+   }),
 });

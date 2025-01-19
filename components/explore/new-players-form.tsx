@@ -43,6 +43,7 @@ const NewPlayersForm = () => {
          dob: '',
          nationality: '',
          achievements: [''],
+         stats: { spd: 0, sho: 0, def: 0, dri: 0, pac: 0, pas: 0 },
       },
       resolver: zodResolver(PlayerSchema),
    });
