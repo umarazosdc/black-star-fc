@@ -74,9 +74,11 @@ const NewPlayersForm = () => {
                                  className="text-sm"
                                  type="file"
                                  accept="image/*"
-                                 onChange={(e) =>
-                                    field.onChange(e.target.files)
-                                 }
+                                 onChange={(e) => {
+                                    if (typeof window !== 'undefined') {
+                                       field.onChange(e.target.files);
+                                    }
+                                 }}
                               />
                            </FormControl>
                            <FormMessage />
@@ -96,7 +98,9 @@ const NewPlayersForm = () => {
                                  accept="video/*"
                                  multiple
                                  onChange={(e) => {
-                                    field.onChange(e.target.files);
+                                    if (typeof window !== 'undefined') {
+                                       field.onChange(e.target.files);
+                                    }
                                  }}
                               />
                            </FormControl>
