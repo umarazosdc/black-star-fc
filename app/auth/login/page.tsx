@@ -1,7 +1,6 @@
 import AuthCard from '@/components/auth/auth-card';
 import LoginForm from '@/components/auth/login-form';
 import Img from '@/components/utils/image';
-import React from 'react';
 
 const LoginPage = () => {
    return (

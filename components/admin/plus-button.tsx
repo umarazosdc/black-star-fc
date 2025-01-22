@@ -11,7 +11,12 @@ import {
    AlertDialogFooter,
    AlertDialogCancel,
 } from '@/components/ui/alert-dialog';
-import NewPlayersForm from '../explore/new-players-form';
+import dynamic from 'next/dynamic';
+
+const FileListNewPlayersForm = dynamic(
+   () => import('@/components/explore/new-players-form'),
+   { ssr: false }
+);
 
 const PlusButton = () => {
    return (
@@ -28,7 +33,7 @@ const PlusButton = () => {
                   Enter all the neccesary player&#39;s details
                </AlertDialogDescription>
             </AlertDialogHeader>
-            <NewPlayersForm />
+            <FileListNewPlayersForm />
             <AlertDialogFooter>
                <AlertDialogCancel className="hover:bg-secondary transition-colors duration-300">
                   Cancel

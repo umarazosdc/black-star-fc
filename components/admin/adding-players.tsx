@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import GridWrappers from '../utils/grid-wrappers';
 import AddPlayerCard from '@/components/admin/add-player-card';
