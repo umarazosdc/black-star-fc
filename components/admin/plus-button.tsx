@@ -20,7 +20,7 @@ const PlusButton = () => {
                <PlusIcon className="text-accent size-40" />
             </button>
          </AlertDialogTrigger>
-         <AlertDialogContent>
+         <AlertDialogContent className="max-h-[35rem] overflow-auto">
             <AlertDialogHeader>
                <AlertDialogTitle>Add new player</AlertDialogTitle>
                <AlertDialogDescription>
@@ -29,7 +29,9 @@ const PlusButton = () => {
             </AlertDialogHeader>
             <NewPlayersForm />
             <AlertDialogFooter>
-               <AlertDialogCancel>Cancel</AlertDialogCancel>
+               <AlertDialogCancel className="hover:bg-secondary transition-colors duration-300">
+                  Cancel
+               </AlertDialogCancel>
             </AlertDialogFooter>
          </AlertDialogContent>
       </AlertDialog>

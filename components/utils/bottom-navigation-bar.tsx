@@ -41,7 +41,7 @@ const BottomNavigationBar = () => {
                   <Link
                      href={item.path}
                      key={item.name}
-                     className="bg-accent p-2.5 rounded-full shadow-md text-primary"
+                     className="bg-accent p-2.5 rounded-full shadow-md text-primary hover:scale-110 transition-transform duration-300"
                   >
                      <PlusIcon strokeWidth={3} />
                   </Link>

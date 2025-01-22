@@ -23,9 +23,9 @@ import {
 } from '../ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Calendar } from '../ui/calendar';
-import { heights, months, positions, roles, weights } from '@/lib/data';
+import { heights, months, positions, roles, weights, years } from '@/lib/data';
 import { Button } from '../ui/button';
-import { format } from 'date-fns';
+import { format, setMonth, setYear } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { CalendarIcon } from 'lucide-react';
 
@@ -34,41 +34,49 @@ const NewPlayersForm = () => {
       defaultValues: {
          firstname: '',
          lastname: '',
-         image: '',
-         videos: [''],
+         image: undefined,
+         videos: undefined,
          side: '',
-         positon: '',
+         position: '',
          height: 0,
          weight: 0,
-         dob: '',
+         dob: undefined,
          nationality: '',
-         achievements: [''],
          stats: { spd: 0, sho: 0, def: 0, dri: 0, pac: 0, pas: 0 },
       },
       resolver: zodResolver(PlayerSchema),
    });
 
-   const handleAddPlayer = () => {
-      console.log('Added...');
+   const [selectedMonth, setSelectedMonth] = React.useState(
+      new Date().getMonth()
+   );
+   const [selectedYear, setSelectedYear] = React.useState(
+      new Date().getFullYear()
+   );
+
+   const handlePlayerSubmit = (value: z.infer<typeof PlayerSchema>) => {
+      console.log(value);
    };
 
    return (
       <Form {...form}>
-         <form onSubmit={form.handleSubmit(handleAddPlayer)}>
+         <form onSubmit={form.handleSubmit(handlePlayerSubmit)}>
             <div className="space-y-6 flex flex-col">
                <FlexAligned>
                   <FormField
                      control={form.control}
                      name="image"
                      render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="w-full">
                            <FormLabel>Image</FormLabel>
                            <FormControl>
                               <Input
-                                 {...field}
                                  className="text-sm"
                                  type="file"
                                  accept="image/*"
+                                 onChange={(e) =>
+                                    field.onChange(e.target.files)
+                                 }
                               />
                            </FormControl>
                            <FormMessage />
@@ -79,15 +87,17 @@ const NewPlayersForm = () => {
                      control={form.control}
                      name="videos"
                      render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="w-full">
                            <FormLabel>Videos</FormLabel>
                            <FormControl>
                               <Input
-                                 {...field}
                                  className="text-sm"
                                  type="file"
                                  accept="video/*"
                                  multiple
+                                 onChange={(e) => {
+                                    field.onChange(e.target.files);
+                                 }}
                               />
                            </FormControl>
                            <FormMessage />
@@ -100,7 +110,7 @@ const NewPlayersForm = () => {
                      control={form.control}
                      name="firstname"
                      render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="w-full">
                            <FormLabel>First name</FormLabel>
                            <FormControl>
                               <Input
@@ -117,7 +127,7 @@ const NewPlayersForm = () => {
                      control={form.control}
                      name="lastname"
                      render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="w-full">
                            <FormLabel>Last name</FormLabel>
                            <FormControl>
                               <Input
@@ -134,11 +144,13 @@ const NewPlayersForm = () => {
                <FlexAligned>
                   <FormField
                      control={form.control}
-                     name="side"
+                     name="position"
                      render={({ field }) => (
-                        <Select>
+                        <Select
+                           onValueChange={(value) => field.onChange(value)}
+                        >
                            <SelectTrigger>
-                              <FormItem>
+                              <FormItem className="w-full">
                                  <FormControl>
                                     <SelectValue
                                        placeholder="Position"
@@ -164,15 +176,18 @@ const NewPlayersForm = () => {
                      control={form.control}
                      name="side"
                      render={({ field }) => (
-                        <Select>
+                        <Select
+                           onValueChange={(value) => field.onChange(value)}
+                        >
                            <SelectTrigger>
-                              <FormItem>
+                              <FormItem className="w-full">
                                  <FormControl>
                                     <SelectValue
                                        placeholder="Role"
                                        {...field}
                                     />
                                  </FormControl>
+                                 <FormMessage />
                               </FormItem>
                            </SelectTrigger>
                            <SelectContent>
@@ -194,15 +209,20 @@ const NewPlayersForm = () => {
                      control={form.control}
                      name="weight"
                      render={({ field }) => (
-                        <Select>
+                        <Select
+                           onValueChange={(value) =>
+                              field.onChange(Number(value))
+                           }
+                        >
                            <SelectTrigger>
-                              <FormItem>
+                              <FormItem className="w-full">
                                  <FormControl>
                                     <SelectValue
                                        placeholder="Weight"
                                        {...field}
                                     />
                                  </FormControl>
+                                 <FormMessage />
                               </FormItem>
                            </SelectTrigger>
                            <SelectContent>
@@ -222,15 +242,20 @@ const NewPlayersForm = () => {
                      control={form.control}
                      name="height"
                      render={({ field }) => (
-                        <Select>
+                        <Select
+                           onValueChange={(value) =>
+                              field.onChange(Number(value))
+                           }
+                        >
                            <SelectTrigger>
-                              <FormItem>
+                              <FormItem className="w-full">
                                  <FormControl>
                                     <SelectValue
                                        placeholder="Height"
                                        {...field}
                                     />
                                  </FormControl>
+                                 <FormMessage />
                               </FormItem>
                            </SelectTrigger>
                            <SelectContent>
@@ -252,9 +277,9 @@ const NewPlayersForm = () => {
                      control={form.control}
                      name="dob"
                      render={({ field }) => (
-                        <FormItem>
+                        <FormItem className="w-full">
                            <Popover>
-                              <PopoverTrigger asChild className="w-full">
+                              <PopoverTrigger asChild>
                                  <FormControl>
                                     <Button
                                        variant={'outline'}
@@ -265,7 +290,7 @@ const NewPlayersForm = () => {
                                        )}
                                     >
                                        {field.value ? (
-                                          format(Number(field.value), 'PPP')
+                                          format(field.value, 'PPP')
                                        ) : (
                                           <span>Date of Birth</span>
                                        )}
@@ -274,50 +299,81 @@ const NewPlayersForm = () => {
                                  </FormControl>
                               </PopoverTrigger>
                               <PopoverContent
-                                 className="w-auto p-0 px-2 py-2"
+                                 className="w-auto p-0"
                                  align="start"
                               >
                                  <div className="flex justify-between gap-2 items-center">
-                                    <Select>
+                                    <Select
+                                       onValueChange={(value) => {
+                                          const monthIndex =
+                                             months.indexOf(value);
+                                          setSelectedMonth(monthIndex);
+                                          const updatedDate = setMonth(
+                                             field.value || new Date(),
+                                             monthIndex
+                                          );
+                                          field.onChange(updatedDate);
+                                          console.log(field.value);
+                                       }}
+                                       defaultValue={months[selectedMonth]}
+                                    >
                                        <SelectTrigger>
-                                          <SelectValue
-                                             placeholder="Month"
-                                             {...field}
-                                          />
+                                          <SelectValue placeholder="Month" />
                                        </SelectTrigger>
                                        <SelectContent>
-                                          {months.map((month, key) => (
+                                          {months.map((month: string, key) => (
                                              <SelectItem
                                                 key={key}
                                                 value={month}
-                                                onChange={field.onChange}
                                              >
                                                 {month}
                                              </SelectItem>
                                           ))}
                                        </SelectContent>
                                     </Select>
-                                    <Select>
+                                    <Select
+                                       onValueChange={(value) => {
+                                          const year = parseInt(value, 10);
+                                          setSelectedYear(year);
+                                          const updatedDate = setYear(
+                                             field.value || new Date(),
+                                             year
+                                          );
+                                          field.onChange(updatedDate);
+                                       }}
+                                       defaultValue={selectedYear.toString()}
+                                    >
                                        <SelectTrigger>
-                                          <SelectValue
-                                             placeholder="Year"
-                                             {...field}
-                                          />
+                                          <SelectValue placeholder="Year" />
                                        </SelectTrigger>
-                                       <SelectContent></SelectContent>
+                                       <SelectContent>
+                                          {years.map((year, key) => (
+                                             <SelectItem
+                                                key={key}
+                                                value={year.toString()}
+                                                onChange={field.onChange}
+                                             >
+                                                {year}
+                                             </SelectItem>
+                                          ))}
+                                       </SelectContent>
                                     </Select>
                                  </div>
                                  <Calendar
                                     mode="single"
-                                    selected={
-                                       field.value
-                                          ? new Date(field.value)
-                                          : undefined
-                                    }
+                                    selected={field.value}
                                     onSelect={field.onChange}
+                                    disabled={(date) =>
+                                       date > new Date() ||
+                                       date < new Date('1900-01-01')
+                                    }
+                                    initialFocus
+                                    month={field.value}
+                                    onMonthChange={field.onChange}
                                  />
                               </PopoverContent>
                            </Popover>
+                           <FormMessage />
                         </FormItem>
                      )}
                   />
@@ -325,20 +381,157 @@ const NewPlayersForm = () => {
                      control={form.control}
                      name="nationality"
                      render={({ field }) => (
-                        <Select>
-                           <SelectTrigger>
-                              <SelectValue
-                                 placeholder="Nationality"
-                                 {...field}
-                              />
-                           </SelectTrigger>
-                           <SelectContent>
-                              <SelectItem value="nigerian">Nigerian</SelectItem>
-                           </SelectContent>
-                        </Select>
+                        <FormItem className="w-full">
+                           <Select
+                              onValueChange={(value) => field.onChange(value)}
+                           >
+                              <FormControl>
+                                 <SelectTrigger>
+                                    <SelectValue
+                                       placeholder="Nationality"
+                                       {...field}
+                                    />
+                                 </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                 <SelectItem value="nigerian">
+                                    Nigerian
+                                 </SelectItem>
+                              </SelectContent>
+                           </Select>
+                           <FormMessage />
+                        </FormItem>
                      )}
                   />
                </FlexAligned>
+               <div className="flex gap-3 items-center">
+                  <FormField
+                     control={form.control}
+                     name="stats.spd"
+                     render={({ field }) => (
+                        <FormItem className="w-full">
+                           <FormLabel>Speed</FormLabel>
+                           <FormControl>
+                              <Input
+                                 {...field}
+                                 type="number"
+                                 className="text-sm"
+                                 onChange={(e) =>
+                                    field.onChange(parseInt(e.target.value, 10))
+                                 }
+                              />
+                           </FormControl>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
+                  <FormField
+                     control={form.control}
+                     name="stats.def"
+                     render={({ field }) => (
+                        <FormItem className="w-full">
+                           <FormLabel>Defence</FormLabel>
+                           <FormControl>
+                              <Input
+                                 {...field}
+                                 type="number"
+                                 className="text-sm"
+                                 onChange={(e) =>
+                                    field.onChange(parseInt(e.target.value, 10))
+                                 }
+                              />
+                           </FormControl>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
+                  <FormField
+                     control={form.control}
+                     name="stats.sho"
+                     render={({ field }) => (
+                        <FormItem className="w-full">
+                           <FormLabel>Shot</FormLabel>
+                           <FormControl>
+                              <Input
+                                 {...field}
+                                 type="number"
+                                 className="text-sm"
+                                 onChange={(e) =>
+                                    field.onChange(parseInt(e.target.value, 10))
+                                 }
+                              />
+                           </FormControl>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
+                  <FormField
+                     control={form.control}
+                     name="stats.pas"
+                     render={({ field }) => (
+                        <FormItem className="w-full">
+                           <FormLabel>Pass</FormLabel>
+                           <FormControl>
+                              <Input
+                                 {...field}
+                                 type="number"
+                                 className="text-sm"
+                                 onChange={(e) =>
+                                    field.onChange(parseInt(e.target.value, 10))
+                                 }
+                              />
+                           </FormControl>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
+                  <FormField
+                     control={form.control}
+                     name="stats.pac"
+                     render={({ field }) => (
+                        <FormItem className="w-full">
+                           <FormLabel>Pacing</FormLabel>
+                           <FormControl>
+                              <Input
+                                 {...field}
+                                 type="number"
+                                 className="text-sm"
+                                 onChange={(e) =>
+                                    field.onChange(parseInt(e.target.value, 10))
+                                 }
+                              />
+                           </FormControl>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
+                  <FormField
+                     control={form.control}
+                     name="stats.dri"
+                     render={({ field }) => (
+                        <FormItem className="w-full">
+                           <FormLabel>Dribble</FormLabel>
+                           <FormControl>
+                              <Input
+                                 {...field}
+                                 type="number"
+                                 className="text-sm"
+                                 onChange={(e) =>
+                                    field.onChange(parseInt(e.target.value, 10))
+                                 }
+                              />
+                           </FormControl>
+                           <FormMessage />
+                        </FormItem>
+                     )}
+                  />
+               </div>
+               <Button
+                  className="bg-accent text-primary hover:bg-accent md:w-fit md:ml-auto"
+                  type="submit"
+               >
+                  Add
+               </Button>
             </div>
          </form>
       </Form>
