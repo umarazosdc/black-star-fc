@@ -1,6 +1,9 @@
+'use client';
 import AuthCard from '@/components/auth/auth-card';
-import LoginForm from '@/components/auth/login-form';
 import Img from '@/components/utils/image';
+import dynamic from 'next/dynamic';
+
+const LoginForm = dynamic(() => import('@/components/auth/login-form'), {ssr: false});
 
 const LoginPage = () => {
    return (

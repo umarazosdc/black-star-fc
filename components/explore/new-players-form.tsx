@@ -70,16 +70,21 @@ const NewPlayersForm = () => {
                         <FormItem className="w-full">
                            <FormLabel>Image</FormLabel>
                            <FormControl>
-                              <Input
-                                 className="text-sm"
-                                 type="file"
-                                 accept="image/*"
-                                 onChange={(e) => {
-                                    if (typeof window !== 'undefined') {
-                                       field.onChange(e.target.files);
-                                    }
-                                 }}
-                              />
+                              {typeof window !== 'undefined' && (
+                                 <Input
+                                    className="text-sm"
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={(e) => {
+                                       if (
+                                          typeof window !== 'undefined' &&
+                                          e.target.files instanceof FileList
+                                       ) {
+                                          field.onChange(e.target.files);
+                                       }
+                                    }}
+                                 />
+                              )}
                            </FormControl>
                            <FormMessage />
                         </FormItem>
@@ -92,17 +97,22 @@ const NewPlayersForm = () => {
                         <FormItem className="w-full">
                            <FormLabel>Videos</FormLabel>
                            <FormControl>
-                              <Input
-                                 className="text-sm"
-                                 type="file"
-                                 accept="video/*"
-                                 multiple
-                                 onChange={(e) => {
-                                    if (typeof window !== 'undefined') {
-                                       field.onChange(e.target.files);
-                                    }
-                                 }}
-                              />
+                              {typeof window !== 'undefined' && (
+                                 <Input
+                                    className="text-sm"
+                                    type="file"
+                                    accept="video/*"
+                                    multiple
+                                    onChange={(e) => {
+                                       if (
+                                          typeof window !== 'undefined' &&
+                                          e.target.files instanceof FileList
+                                       ) {
+                                          field.onChange(e.target.files);
+                                       }
+                                    }}
+                                 />
+                              )}
                            </FormControl>
                            <FormMessage />
                         </FormItem>
@@ -151,7 +161,9 @@ const NewPlayersForm = () => {
                      name="position"
                      render={({ field }) => (
                         <Select
-                           onValueChange={(value) => field.onChange(value)}
+                           onValueChange={(value: string) =>
+                              field.onChange(value)
+                           }
                         >
                            <SelectTrigger>
                               <FormItem className="w-full">
@@ -181,7 +193,9 @@ const NewPlayersForm = () => {
                      name="side"
                      render={({ field }) => (
                         <Select
-                           onValueChange={(value) => field.onChange(value)}
+                           onValueChange={(value: string) =>
+                              field.onChange(value)
+                           }
                         >
                            <SelectTrigger>
                               <FormItem className="w-full">
@@ -214,7 +228,7 @@ const NewPlayersForm = () => {
                      name="weight"
                      render={({ field }) => (
                         <Select
-                           onValueChange={(value) =>
+                           onValueChange={(value: string) =>
                               field.onChange(Number(value))
                            }
                         >
@@ -247,7 +261,7 @@ const NewPlayersForm = () => {
                      name="height"
                      render={({ field }) => (
                         <Select
-                           onValueChange={(value) =>
+                           onValueChange={(value: string) =>
                               field.onChange(Number(value))
                            }
                         >
@@ -308,7 +322,7 @@ const NewPlayersForm = () => {
                               >
                                  <div className="flex justify-between gap-2 items-center">
                                     <Select
-                                       onValueChange={(value) => {
+                                       onValueChange={(value: string) => {
                                           const monthIndex =
                                              months.indexOf(value);
                                           setSelectedMonth(monthIndex);
@@ -336,7 +350,7 @@ const NewPlayersForm = () => {
                                        </SelectContent>
                                     </Select>
                                     <Select
-                                       onValueChange={(value) => {
+                                       onValueChange={(value: string) => {
                                           const year = parseInt(value, 10);
                                           setSelectedYear(year);
                                           const updatedDate = setYear(
@@ -387,7 +401,9 @@ const NewPlayersForm = () => {
                      render={({ field }) => (
                         <FormItem className="w-full">
                            <Select
-                              onValueChange={(value) => field.onChange(value)}
+                              onValueChange={(value: string) =>
+                                 field.onChange(value)
+                              }
                            >
                               <FormControl>
                                  <SelectTrigger>

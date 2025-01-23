@@ -1,8 +1,11 @@
+'use client';
 import AuthCard from '@/components/auth/auth-card';
-import RegisterForm from '@/components/auth/register-form';
 import { ArrowLeft } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import React from 'react';
+
+const RegisterForm = dynamic(() => import('@/components/auth/register-form'), {ssr: false});
 
 const RegisterPage = () => {
    return (

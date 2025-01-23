@@ -1,4 +1,3 @@
-'use client';
 import { PlusIcon } from 'lucide-react';
 import React from 'react';
 import {
@@ -11,12 +10,7 @@ import {
    AlertDialogFooter,
    AlertDialogCancel,
 } from '@/components/ui/alert-dialog';
-import dynamic from 'next/dynamic';
-
-const FileListNewPlayersForm = dynamic(
-   () => import('@/components/explore/new-players-form'),
-   { ssr: false }
-);
+import NewPlayersForm from '../explore/new-players-form';
 
 const PlusButton = () => {
    return (
@@ -33,7 +27,7 @@ const PlusButton = () => {
                   Enter all the neccesary player&#39;s details
                </AlertDialogDescription>
             </AlertDialogHeader>
-            <FileListNewPlayersForm />
+            <NewPlayersForm />
             <AlertDialogFooter>
                <AlertDialogCancel className="hover:bg-secondary transition-colors duration-300">
                   Cancel
