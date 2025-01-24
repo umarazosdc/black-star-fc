@@ -1,4 +1,4 @@
-const formatDate = (dateString: string) => {
+export const formatDate = (dateString: string) => {
    const date = new Date(dateString);
    return new Intl.DateTimeFormat('en-US', {
       month: 'long',
@@ -6,4 +6,9 @@ const formatDate = (dateString: string) => {
    }).format(date);
 };
 
-export default formatDate;
+export const getHoursMinute = (dateString: string) => {
+   const date = new Date(dateString);
+   return new Intl.DateTimeFormat('en-US', {
+      timeStyle: 'short'
+   }).format(date);
+};

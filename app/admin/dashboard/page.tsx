@@ -12,7 +12,7 @@ import SearchNotificationBar from '@/components/utils/search-notification-bar';
 import SectionWrapper from '@/components/utils/section-wrapper';
 import StatusCard from '@/components/utils/status-card';
 import Wrapper from '@/components/utils/wrapper';
-import formatDate from '@/lib/date';
+import { formatDate } from '@/lib/date';
 import Link from 'next/link';
 import React from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -39,7 +39,7 @@ const AdminDashboardPage = () => {
          </header>
          <main className="flex flex-col gap-8">
             <SectionWrapper title="Upcoming event" label="Add event" link="#">
-               <EventStatusBar isAdmin/>
+               <EventStatusBar isAdmin />
             </SectionWrapper>
             <Wrapper title="Scout requests">
                <div className="flex flex-col gap-6 overflow-auto max-h-80 pb-1">

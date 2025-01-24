@@ -2,7 +2,7 @@ import React from 'react';
 import Wrapper from '../utils/wrapper';
 import SearchFilterBar from '../utils/search-filter-bar';
 import UserCard from './user-card';
-import formatDate from '@/lib/date';
+import {formatDate} from '@/lib/date';
 
 const Users = ({ totalUsers }: { totalUsers: number }) => {
    const date = formatDate('2017-07-01');

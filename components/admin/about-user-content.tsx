@@ -8,7 +8,7 @@ import {
 import React from 'react';
 import Wrapper from '../utils/wrapper';
 import Icontext from '../utils/icontext';
-import formatDate from '@/lib/date';
+import {formatDate} from '@/lib/date';
 import SectionWrapper from '../utils/section-wrapper';
 import BookmarkedPlayerCard from '../utils/bookmarked-player-card';
 import RequestedPlayerCard from '../utils/requested-player-card';

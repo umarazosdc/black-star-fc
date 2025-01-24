@@ -1,6 +1,5 @@
 'use client';
 import React from 'react';
-import NavIcons from './nav-icons';
 import {
    BellIcon,
    LayoutDashboardIcon,
@@ -18,10 +17,11 @@ import {
    SheetTitle,
    SheetTrigger,
 } from '@/components/ui/sheet';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import AdminSheetContent from '@/components/utils/admin-sheet-content';
+import AdminSheetContent from '@/components/admin/admin-sheet-content';
+import Avatarr from '../utils/avatarr';
+import NavIcons from '../utils/nav-icons';
 
-const BottomNavigationBar = () => {
+const AdminBottomNavigationBar = () => {
    const pathname = usePathname();
    const navItems = [
       { name: 'Home', path: '/admin/dashboard', icon: LayoutDashboardIcon },
@@ -63,10 +63,7 @@ const BottomNavigationBar = () => {
 
          <Sheet>
             <SheetTrigger>
-               <Avatar>
-                  <AvatarImage src="/imgs/users/scout/dc.jpg" />
-                  <AvatarFallback>IU</AvatarFallback>
-               </Avatar>
+               <Avatarr selectedImage={'/imgs/users/scout/dc.jpg'} />
             </SheetTrigger>
             <SheetContent>
                <SheetHeader>
@@ -80,4 +77,4 @@ const BottomNavigationBar = () => {
    );
 };
 
-export default BottomNavigationBar;
+export default AdminBottomNavigationBar;

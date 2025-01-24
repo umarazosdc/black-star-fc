@@ -1,14 +1,14 @@
 import React from 'react';
-import SheetHeader from './sheet-header';
-import SheetAccordion from './sheet-accordion';
+import SheetHeader from '../utils/sheet-header';
+import SheetAccordion from '../utils/sheet-accordion';
 import { LayersIcon, LogOutIcon, Users2Icon } from 'lucide-react';
 
 const AdminSheetContent = () => {
    return (
       <div className="flex flex-col h-full">
-         <main className="flex flex-col gap-8">
+         <main className="flex flex-col gap-6">
             <SheetHeader />
-            <div className="flex flex-col gap-6">
+            <div className="flex flex-col gap-4">
                <SheetAccordion
                   icon={LayersIcon}
                   field="Players"

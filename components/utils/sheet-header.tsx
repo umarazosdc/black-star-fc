@@ -1,16 +1,15 @@
 import { PencilIcon } from 'lucide-react';
 import React from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Avatarr from './avatarr';
 
 const SheetHeader = () => {
    return (
       <div className="flex justify-between items-center py-4 border-b">
          <div className="flex items-center gap-4 w-full">
-            <Avatar className="border">
-               <AvatarImage src="/imgs/users/scout/dc.jpg" />
-               <AvatarFallback>CN</AvatarFallback>
-            </Avatar>
-
+            <Avatarr
+               selectedImage="/imgs/users/scout/dc.jpg"
+               className="border"
+            />
             <div className="flex flex-col items-start gap-1 w-full overflow-hidden">
                <h2 className="font-bold text-sm">Umar Isa</h2>
                <p className="text-xs opacity-70">malamisa360@gmail.com</p>
