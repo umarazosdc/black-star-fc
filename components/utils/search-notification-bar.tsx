@@ -7,12 +7,11 @@ import {
    PopoverTrigger,
 } from '@/components/ui/popover';
 import { getHoursMinute } from '@/lib/date';
-import PopoverNotificationContent from './popover-notification-content';
+import NotificationContent from './notification-content';
 
 const SearchNotificationBar = ({ placeholder }: { placeholder: string }) => {
    const dateString = new Date();
    const time = getHoursMinute(dateString.toString());
-   console.log(time);
    return (
       <div className="flex items-center gap-4">
          <SearchBar placeholder={placeholder} />
@@ -28,30 +27,31 @@ const SearchNotificationBar = ({ placeholder }: { placeholder: string }) => {
                   ></span>
                </button>
             </PopoverTrigger>
-            <PopoverContent className='flex flex-col gap-2 max-h-80 overflow-auto'>
-               <PopoverNotificationContent
+            <PopoverContent className="flex flex-col gap-2 max-h-80 overflow-auto">
+               <NotificationContent
                   time={time}
                   title="Black stars' match"
+                  content={`I am a software engineer and web developer with a vision to build an organization dedicated to teaching programming and software development skills. My goal is to empower individuals, especially in underserved communities, with the knowledge and tools they need to thrive in the digital economy`}
                />
-               <PopoverNotificationContent
+               <NotificationContent
                   time={time}
                   title="Black stars' match"
+                  content={`I am a software engineer and web developer with a vision to build an organization dedicated to teaching programming and software development skills. My goal is to empower individuals, especially in underserved communities, with the knowledge and tools they need to thrive in the digital economy`}
                />
-               <PopoverNotificationContent
+               <NotificationContent
                   time={time}
                   title="Black stars' match"
+                  content={`I am a software engineer and web developer with a vision to build an organization dedicated to teaching programming and software development skills. My goal is to empower individuals, especially in underserved communities, with the knowledge and tools they need to thrive in the digital economy`}
                />
-               <PopoverNotificationContent
+               <NotificationContent
                   time={time}
                   title="Black stars' match"
+                  content={`I am a software engineer and web developer with a vision to build an organization dedicated to teaching programming and software development skills. My goal is to empower individuals, especially in underserved communities, with the knowledge and tools they need to thrive in the digital economy`}
                />
-               <PopoverNotificationContent
+               <NotificationContent
                   time={time}
                   title="Black stars' match"
-               />
-               <PopoverNotificationContent
-                  time={time}
-                  title="Black stars' match"
+                  content={`I am a software engineer and web developer with a vision to build an organization dedicated to teaching programming and software development skills. My goal is to empower individuals, especially in underserved communities, with the knowledge and tools they need to thrive in the digital economy`}
                />
             </PopoverContent>
          </Popover>
