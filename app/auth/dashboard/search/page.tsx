@@ -7,7 +7,7 @@ import React from 'react';
 
 const SearchPage = () => {
    return (
-      <SearchComponent>
+      <SearchComponent basePath='/auth/dashboard/search'>
          <ScoutPreference />
          <ScoutSuggestedPlayers />
          <ScoutRequests />

@@ -16,7 +16,10 @@ const DashboardPage = () => {
             <p className="text-sm">
                Welcome back, <b>Isa</b>
             </p>
-            <SearchNotificationBar placeholder="Search for player..." />
+            <SearchNotificationBar
+               placeholder="Search for player..."
+               basePath="/auth/dashboard"
+            />
             <GridWrappers>
                <Link href="/explore/requests">
                   <StatusCard value={6} name="Requests" />

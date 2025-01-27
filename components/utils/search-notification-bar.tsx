@@ -9,12 +9,12 @@ import {
 import { getHoursMinute } from '@/lib/date';
 import NotificationContent from './notification-content';
 
-const SearchNotificationBar = ({ placeholder }: { placeholder: string }) => {
+const SearchNotificationBar = ({ placeholder, basePath }: { placeholder: string, basePath:string }) => {
    const dateString = new Date();
    const time = getHoursMinute(dateString.toString());
    return (
       <div className="flex items-center gap-4">
-         <SearchBar placeholder={placeholder} />
+         <SearchBar placeholder={placeholder} basePath={basePath} />
 
          <Popover>
             <PopoverTrigger asChild>

@@ -2,12 +2,12 @@ import NotificationContent from '@/components/utils/notification-content';
 import { getHoursMinute } from '@/lib/date';
 import React from 'react';
 
-const NotificationPage = () => {
+const AdminNotificationPage = () => {
    const dateString = new Date();
    const time = getHoursMinute(dateString.toString());
    return (
-      <div className='flex flex-col gap-3'>
-         <h1 className='font-bold text-base'>Notifications</h1>
+      <div className="flex flex-col gap-3">
+         <h1 className="font-bold text-base">Notifications</h1>
          <div className="flex flex-col gap-2">
             <NotificationContent
                time={time}
@@ -39,4 +39,4 @@ const NotificationPage = () => {
    );
 };
 
-export default NotificationPage;
+export default AdminNotificationPage;

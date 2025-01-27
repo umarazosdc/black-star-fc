@@ -29,7 +29,7 @@ const AdminBottomNavigationBar = () => {
       { name: 'new', path: '/admin/dashboard/new', icon: PlusIcon },
       {
          name: 'Notification',
-         path: '/auth/dashboard/notification',
+         path: '/admin/dashboard/notification',
          icon: BellIcon,
       },
    ];

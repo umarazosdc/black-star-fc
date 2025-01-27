@@ -10,18 +10,20 @@ import {
    SelectGroup,
 } from '@/components/ui/select';
 
-import {} from "@/components/ui/popover"
+import {} from '@/components/ui/popover';
 
 const SearchFilterBar = ({
    placeholder,
    items,
+   basePath,
 }: {
    placeholder: string;
    items: string[];
+   basePath: string;
 }) => {
    return (
       <div className="flex items-center gap-4">
-         <SearchBar placeholder={placeholder} />
+         <SearchBar placeholder={placeholder} basePath={basePath} />
          <Select>
             <SelectTrigger className="size-10 rounded-full p-2 bg-card flex items-center justify-center border-">
                <Settings2Icon className="text-accent" />

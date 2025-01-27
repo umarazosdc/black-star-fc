@@ -20,6 +20,7 @@ const ExplorePlayers = () => {
             <SearchFilterBar
                placeholder="Search for a player..."
                items={['A-Z', 'Newest', 'Age', 'Oldest']}
+               basePath='/explore'
             />
             <SearchFilter />
             <GridWrappers>

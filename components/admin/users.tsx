@@ -12,6 +12,7 @@ const Users = ({ totalUsers }: { totalUsers: number }) => {
             <SearchFilterBar
                placeholder="Search for users..."
                items={['A-Z', 'Newest', 'Oldest', "Suspended"]}
+               basePath='/admin/dashboard/users'
             />
             <div className="flex flex-col gap-4">
                <div className="text-sm flex items-center gap-1 self-end">

@@ -12,6 +12,7 @@ const Players = () => {
             <SearchFilterBar
                placeholder="Search players..."
                items={['A-Z', 'Newest', 'Age', 'Oldest']}
+               basePath="/admin/dashboard/players"
             />
             <div className="flex flex-col gap-6">
                <Link

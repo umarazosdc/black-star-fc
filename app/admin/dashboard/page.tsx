@@ -27,7 +27,7 @@ const AdminDashboardPage = () => {
             <p className="text-sm">
                Welcome back, <b>Isa</b>
             </p>
-            <SearchNotificationBar placeholder="Search..." />
+            <SearchNotificationBar placeholder="Search..." basePath='/admin/dashboard' />
             <GridWrappers>
                <Link href="/admin/dashboard/users">
                   <StatusCard value={1400} name="Total Users" />
