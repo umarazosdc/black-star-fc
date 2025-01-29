@@ -10,8 +10,6 @@ import {
    SelectGroup,
 } from '@/components/ui/select';
 
-import {} from '@/components/ui/popover';
-
 const SearchFilterBar = ({
    placeholder,
    items,

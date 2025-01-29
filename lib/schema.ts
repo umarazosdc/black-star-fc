@@ -59,7 +59,7 @@ export const PlayerSchema = z.object({
 
 export const EventSchema = z.object({
    name: z.string().min(1, 'Event name cannot be empty.').max(25, 'Max is 25.'),
-   venue: z.string().min(1, 'Venue cannot be empty.'),
+   venue: z.string().optional(),
    date: z.date(),
    time: z.string(),
    about: z.string().optional(),
