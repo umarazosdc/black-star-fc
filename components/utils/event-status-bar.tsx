@@ -1,9 +1,25 @@
+'use client';
 import React from 'react';
 import Icontext from '@/components/utils/icontext';
 import { CalendarRangeIcon, ClockIcon, MapPinIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import Link from 'next/link';
 import PromptsDialog from './prompts-dialog';
+import {
+   AlertDialog,
+   AlertDialogContent,
+   AlertDialogHeader,
+   AlertDialogTrigger,
+   AlertDialogTitle,
+   AlertDialogDescription,
+   AlertDialogFooter,
+   AlertDialogCancel,
+} from '@/components/ui/alert-dialog';
+import dynamic from 'next/dynamic';
+
+const EventContentForm = dynamic(
+   () => import('@/components/admin/event-content-form'),
+   { ssr: false }
+);
 
 const EventStatusBar = ({ isAdmin }: { isAdmin?: boolean }) => {
    return (
@@ -29,7 +45,23 @@ const EventStatusBar = ({ isAdmin }: { isAdmin?: boolean }) => {
             </div>
             {isAdmin && (
                <div className="flex items-center gap-4 font-bold">
-                  <Link href="#">Edit</Link>
+                  <AlertDialog>
+                     <AlertDialogTrigger>Edit</AlertDialogTrigger>
+                     <AlertDialogContent>
+                        <AlertDialogHeader>
+                           <AlertDialogTitle>Manage Event</AlertDialogTitle>
+                           <AlertDialogDescription>
+                              All users are seeing this.
+                           </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <EventContentForm />
+                        <AlertDialogFooter className="flex flex-col">
+                           <AlertDialogCancel className="hover:bg-secondary mt-0">
+                              Cancel
+                           </AlertDialogCancel>
+                        </AlertDialogFooter>
+                     </AlertDialogContent>
+                  </AlertDialog>
                   <PromptsDialog
                      title="Are you sure you want to cancel this event?"
                      description="There is no going back after you made this action"
