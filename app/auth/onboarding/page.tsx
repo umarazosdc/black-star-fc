@@ -16,7 +16,6 @@ const OnboardingPage = () => {
          setSelectedImage(imageURL);
       }
    };
-   // console.log(selectedImage)
    return (
       <div className="min-h-full flex flex-col gap-6 p-4">
          <nav

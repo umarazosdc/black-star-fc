@@ -1,6 +1,7 @@
 import { PencilIcon } from 'lucide-react';
 import React from 'react';
 import Avatarr from './avatarr';
+import Link from 'next/link';
 
 const SheetHeader = () => {
    return (
@@ -15,10 +16,13 @@ const SheetHeader = () => {
                <p className="text-xs opacity-70">malamisa360@gmail.com</p>
             </div>
          </div>
-         <button className="p-2 rounded-full border text-accent">
+         <Link
+            href="/profile/edit"
+            className="p-2 rounded-full border text-accent"
+         >
             <PencilIcon className="size-3" strokeWidth={3} />
             <div className="sr-only">Edit</div>
-         </button>
+         </Link>
       </div>
    );
 };

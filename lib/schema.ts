@@ -64,3 +64,12 @@ export const EventSchema = z.object({
    time: z.string(),
    about: z.string().optional(),
 });
+
+export const EditProfileSchema = z.object({
+   name: z.string().min(1, 'Event name cannot be empty.').max(25, 'Max is 25.'),
+   bio: z.string().max(45, 'Max is 45').optional(),
+   image: z.instanceof(FileList).optional(),
+   state: z.string().optional(),
+   phone: z.number().optional(),
+   preference: z.string(),
+});
