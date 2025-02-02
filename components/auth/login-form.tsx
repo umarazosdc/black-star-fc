@@ -30,7 +30,7 @@ const LoginForm = () => {
    return (
       <Form {...form}>
          <form onSubmit={form.handleSubmit(handleLogin)}>
-            <div className="space-y-6 flex flex-col">
+            <div className="space-y-4 flex flex-col">
                <FormField
                   control={form.control}
                   name="email"

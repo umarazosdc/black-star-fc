@@ -11,9 +11,9 @@ const AuthCard = ({
    children: React.ReactNode;
 }) => {
    return (
-      <div className="flex flex-col justify-center gap-12 bg-primary rounded-tl-[3rem] p-4">
+      <div className="flex flex-col justify-center gap-6 bg-primary rounded-tl-[3rem] p-4">
          {isLogin && (
-            <header className="flex justify-center mt-8">
+            <header className="flex justify-center mt-6">
                <h1 className="font-bold text-secondary text-xl">Login</h1>
             </header>
          )}
@@ -28,14 +28,14 @@ const AuthCard = ({
 
             <Socials />
             {isLogin ? (
-               <p className="text-sm text-secondary mt-8">
+               <p className="text-sm text-secondary mt-4">
                   Don&apos;t have an account?{' '}
                   <Link href="/auth/register">
                      <b>Sign up</b>
                   </Link>
                </p>
             ) : (
-               <p className="text-sm text-secondary mt-8">
+               <p className="text-sm text-secondary mt-4">
                   Already have an account?{' '}
                   <Link href="/auth/login">
                      <b>Sign in</b>
