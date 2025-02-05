@@ -1,18 +1,7 @@
-import { z } from 'zod';
-import { LoginSchema, RegisterSchema } from './schema';
+'use server';
 
-export const login = async (values: z.infer<typeof LoginSchema>) => {
-   const validatedValues = LoginSchema.safeParse(values);
-   if (validatedValues.error) {
-      return { error: 'Error' };
-   }
-   return { success: 'Valid' };
-};
+import { signIn } from '@/auth';
 
-export const register = async (values: z.infer<typeof RegisterSchema>) => {
-   const validatedValues = RegisterSchema.safeParse(values);
-   if (validatedValues.error) {
-      return { error: 'Error' };
-   }
-   return { success: 'Valid' };
+export const providerSignIn = async (provider: string) => {
+   await signIn(provider, { redirectTo: '/auth/dashboard' });
 };

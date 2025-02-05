@@ -13,7 +13,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { login } from '@/lib/actions';
+import { login } from '@/lib/validations';
 import { useForm } from 'react-hook-form';
 
 const LoginForm = () => {
@@ -42,7 +42,7 @@ const LoginForm = () => {
                               {...field}
                               placeholder="malamisa360@gmail.com"
                               type="email"
-                              className='text-sm'
+                              className="text-sm"
                            />
                         </FormControl>
                         <FormMessage />
@@ -60,7 +60,7 @@ const LoginForm = () => {
                               {...field}
                               placeholder="********"
                               type="password"
-                              className='text-sm'
+                              className="text-sm"
                            />
                         </FormControl>
                         <FormMessage />

@@ -22,10 +22,7 @@ const Stat = ({
             className="relative p-1 text-card rounded-md shadow-md size-10"
             style={{ backgroundColor: color }}
          >
-            <Icon
-               className="absolute size-3 text-primary"
-               strokeWidth={3}
-            />
+            <Icon className="absolute size-3 text-primary" strokeWidth={3} />
             <span className={`absolute bottom-1 right-1 ${swashed.className}`}>
                {rate}
             </span>

@@ -13,15 +13,10 @@ export default function Home() {
                Your ultimate platform for scouting and tracking football talent
                worldwide.
             </p>
-            <footer className="flex flex-col items-center gap-6 mt-8">
+            <footer className="mt-8">
                <Link href="/explore">
                   <Button className="bg-accent text-primary">
                      Explore players
-                  </Button>
-               </Link>
-               <Link href="/auth/login">
-                  <Button className="border-2 border-accent text-accent">
-                     Sign in for free
                   </Button>
                </Link>
             </footer>

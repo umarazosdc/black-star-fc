@@ -35,8 +35,8 @@ const RequestedPlayerCard = ({
                   <Age age={age} />
                   <Tag tag="Approved" className="bg-emerald-500 text-primary" />
                </div>
-               </div>
-               <Button className='bg-red-500 text-primary w-full'>Cancel</Button>
+            </div>
+            <Button className="bg-red-500 text-primary w-full">Cancel</Button>
          </div>
       </Link>
    );

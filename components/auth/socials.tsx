@@ -1,18 +1,14 @@
-import { FacebookIcon, GithubIcon, TwitterIcon } from 'lucide-react';
 import React from 'react';
-import Social from '../utils/social';
+import TwitterButton from '@/components/auth/twitter-button';
+import GoogleButton from '@/components/auth/google-button';
+import FacebookButton from '@/components/auth/facebook-button';
 
 const Socials = () => {
-   const socials = [
-      { icon: GithubIcon },
-      { icon: FacebookIcon },
-      { icon: TwitterIcon },
-   ];
    return (
-      <div className="flex justify-center items-center gap-4 w-full text-accent">
-         {socials.map((value, key) => (
-            <Social key={key}>{<value.icon />}</Social>
-         ))}
+      <div className="flex items-center justify-between w-full gap-4">
+         <TwitterButton />
+         <GoogleButton />
+         <FacebookButton />
       </div>
    );
 };

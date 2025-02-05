@@ -10,7 +10,10 @@ const Tag = ({
 } & React.HTMLAttributes<HTMLSpanElement>) => {
    return (
       <span
-         className={cn("px-2 py-1 rounded-md text-xs flex items-center justify-center font-semibold text-white", className)}
+         className={cn(
+            'px-2 py-1 rounded-md text-xs flex items-center justify-center font-semibold text-white',
+            className
+         )}
          {...props}
       >
          {tag}

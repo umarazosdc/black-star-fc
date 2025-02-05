@@ -2,6 +2,7 @@ import React from 'react';
 import { BookmarkIcon, BoxIcon, LogOutIcon, SendIcon } from 'lucide-react';
 import SheetHeader from '../utils/sheet-header';
 import AuthPagination from './auth-pagination';
+import { signOut } from 'next-auth/react';
 
 const AuthSheetContent = () => {
    const paths = [
@@ -25,7 +26,10 @@ const AuthSheetContent = () => {
             </div>
          </main>
          <footer className="absolute bottom-8">
-            <button className="flex gap-2 items-center text-sm">
+            <button
+               className="flex gap-2 items-center text-sm"
+               onClick={async () => await signOut()}
+            >
                <LogOutIcon />
                <span>Logout</span>
             </button>

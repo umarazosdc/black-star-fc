@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { register } from '@/lib/actions';
+import { register } from '@/lib/validations';
 
 const RegisterForm = () => {
    const form = useForm<z.infer<typeof RegisterSchema>>({

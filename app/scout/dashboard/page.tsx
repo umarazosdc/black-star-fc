@@ -1,3 +1,4 @@
+import { auth } from '@/auth';
 import BookmarkedPlayerCard from '@/components/utils/bookmarked-player-card';
 import EventStatusBar from '@/components/utils/event-status-bar';
 import GridWrappers from '@/components/utils/grid-wrappers';
@@ -7,9 +8,14 @@ import SectionWrapper from '@/components/utils/section-wrapper';
 import StatusCard from '@/components/utils/status-card';
 import Wrapper from '@/components/utils/wrapper';
 import Link from 'next/link';
+import { redirect } from 'next/navigation';
 import React from 'react';
 
-const DashboardPage = () => {
+const DashboardPage = async () => {
+   const session = await auth();
+   if (!session) {
+      redirect('/auth/login');
+   }
    return (
       <div className="flex flex-col gap-12">
          <header className="flex flex-col gap-6">
@@ -18,7 +24,7 @@ const DashboardPage = () => {
             </p>
             <SearchNotificationBar
                placeholder="Search for player..."
-               basePath="/auth/dashboard"
+               basePath="/scout/dashboard"
             />
             <GridWrappers>
                <Link href="/explore/requests">
