@@ -13,10 +13,73 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum UserRole {
+  scout
+  admin
+}
+
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                 String     @id @default(cuid())
+  email              String     @unique
+  name               String
+  image              String?
+  password           String?
+  city               String?
+  phone              Int?
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  role               UserRole   @default(scout)
+  isOnboardingPassed Boolean    @default(false)
+  bookmarks          Bookmark[]
+  requests           Request[]
+}
+
+model Stats {
+  id       String @id @default(cuid())
+  playerId String @unique
+  speed    Int
+  dribble  Int
+  pass     Int
+  pace     Int
+  defence  Int
+  shot     Int
+  player   Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+}
+
+model Player {
+  id          String    @id @default(cuid())
+  firsname    String
+  lastname    String
+  image       String
+  age         Int
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  videos      String[]
+  side        String
+  position    String
+  height      Int
+  weight      Int
+  nationality String
+  dob         String
+  Stats       Stats?
+  Bookmarked  Bookmark?
+  Requested   Request?
+}
+
+model Bookmark {
+  id           String  @id @default(cuid())
+  isBookmarked Boolean @default(false)
+  playerId     String  @unique
+  player       Player  @relation(fields: [playerId], references: [id])
+  userId       String
+  user         User    @relation(fields: [userId], references: [id])
+}
+
+model Request {
+  id          String  @id @default(cuid())
+  isRequested Boolean @default(false)
+  playerId    String  @unique
+  player      Player  @relation(fields: [playerId], references: [id])
+  userId      String
+  user        User    @relation(fields: [userId], references: [id])
 }
