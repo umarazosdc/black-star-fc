@@ -33,8 +33,9 @@ export const PlayerSchema = z.object({
             'Last name must contain only letters with no spaces or special characters.',
       })
       .min(1, { message: 'Last name cannot be empty.' }),
-   image: z.instanceof(FileList),
-   videos: z.instanceof(FileList),
+   image: typeof window !== 'undefined' ? z.instanceof(FileList) : z.any(),
+   videos:
+      typeof window !== 'undefined' ? z.instanceof(FileList) : z.array(z.any()),
    side: z.string(),
    position: z.string(),
    height: z.number(),
@@ -68,7 +69,10 @@ export const EventSchema = z.object({
 export const EditProfileSchema = z.object({
    name: z.string().min(1, 'Event name cannot be empty.').max(25, 'Max is 25.'),
    bio: z.string().max(45, 'Max is 45').optional(),
-   image: z.instanceof(FileList).optional(),
+   image:
+      typeof window !== 'undefined'
+         ? z.instanceof(FileList).optional()
+         : z.any(),
    state: z.string().optional(),
    phone: z.number().optional(),
    preference: z.string(),

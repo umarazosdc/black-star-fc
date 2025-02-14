@@ -1,12 +1,12 @@
 import Button from '@/components/homepage/button';
 import Hero from '@/components/homepage/hero';
-import Navbar from '@/components/utils/navbar';
+import Sidebar from '@/components/utils/sidebar';
 import Link from 'next/link';
 
 export default function Home() {
    return (
       <div className="min-h-screen flex flex-col">
-         <Navbar />
+         <Sidebar />
          <main className="flex-grow flex flex-col items-center gap-8 mt-12 px-4">
             <Hero />
             <p className="text-center w-[20rem] text-sm select-none">

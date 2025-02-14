@@ -19,23 +19,24 @@ enum UserRole {
 }
 
 model User {
-  id                 String     @id @default(cuid())
-  email              String     @unique
+  id                 String        @id @default(uuid())
+  email              String        @unique
   name               String
   image              String?
   password           String?
   city               String?
   phone              Int?
-  createdAt          DateTime   @default(now())
-  updatedAt          DateTime   @updatedAt
-  role               UserRole   @default(scout)
-  isOnboardingPassed Boolean    @default(false)
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+  role               UserRole      @default(scout)
+  isOnboardingPassed Boolean       @default(false)
   bookmarks          Bookmark[]
   requests           Request[]
+  Notification       Notification?
 }
 
 model Stats {
-  id       String @id @default(cuid())
+  id       String @id @default(uuid())
   playerId String @unique
   speed    Int
   dribble  Int
@@ -67,7 +68,7 @@ model Player {
 }
 
 model Bookmark {
-  id           String  @id @default(cuid())
+  id           String  @id @default(uuid())
   isBookmarked Boolean @default(false)
   playerId     String  @unique
   player       Player  @relation(fields: [playerId], references: [id])
@@ -76,10 +77,21 @@ model Bookmark {
 }
 
 model Request {
-  id          String  @id @default(cuid())
+  id          String  @id @default(uuid())
   isRequested Boolean @default(false)
   playerId    String  @unique
   player      Player  @relation(fields: [playerId], references: [id])
   userId      String
   user        User    @relation(fields: [userId], references: [id])
+}
+
+model Notification {
+  id        String   @id @default(uuid())
+  title     String
+  venue     String
+  date      String
+  createdAt DateTime @default(now())
+  message   String?
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
 }

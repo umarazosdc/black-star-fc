@@ -19,11 +19,11 @@ import AuthSheetContent from './auth-sheet-content';
 const AuthBottomNavigationBar = () => {
    const pathname = usePathname();
    const navItems = [
-      { name: 'Home', path: '/auth/dashboard', icon: LayoutDashboardIcon },
-      { name: 'Search', path: '/auth/dashboard/search', icon: SearchIcon },
+      { name: 'Home', path: '/scout/dashboard', icon: LayoutDashboardIcon },
+      { name: 'Search', path: '/scout/dashboard/search', icon: SearchIcon },
       {
          name: 'Notification',
-         path: '/auth/dashboard/notification',
+         path: '/scout/dashboard/notification',
          icon: BellIcon,
       },
    ];

@@ -8,10 +8,11 @@ import {
    SheetTrigger,
    SheetTitle,
    SheetHeader,
-   SheetFooter,
+   SheetDescription,
 } from '@/components/ui/sheet';
+import SidebarContent from '@/components/homepage/sidebar-content';
 
-const Navbar = () => {
+const Sidebar = () => {
    return (
       <div className="flex justify-between items-center p-4 w-full bg-primary sticky top-0 z-50 border-b px-4">
          <Link href="/">
@@ -25,14 +26,14 @@ const Navbar = () => {
             </SheetTrigger>
             <SheetContent>
                <SheetHeader>
-                  <SheetTitle>DC</SheetTitle>
+                  <SheetTitle></SheetTitle>
+                  <SheetDescription></SheetDescription>
                </SheetHeader>
-               Hello world
-               <SheetFooter>Dream Chaser</SheetFooter>
+               <SidebarContent />
             </SheetContent>
          </Sheet>
       </div>
    );
 };
 
-export default Navbar;
+export default Sidebar;

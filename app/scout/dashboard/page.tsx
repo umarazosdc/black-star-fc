@@ -7,20 +7,21 @@ import SearchNotificationBar from '@/components/utils/search-notification-bar';
 import SectionWrapper from '@/components/utils/section-wrapper';
 import StatusCard from '@/components/utils/status-card';
 import Wrapper from '@/components/utils/wrapper';
+import { getTotalBookmarks, getTotalRequests } from '@/lib/database/queries';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import React from 'react';
 
 const DashboardPage = async () => {
    const session = await auth();
-   if (!session) {
-      redirect('/auth/login');
-   }
+   const user = session?.user;
+   const totalBookmarks = await getTotalBookmarks();
+   const totalRequests = await getTotalRequests();
+
    return (
       <div className="flex flex-col gap-12">
          <header className="flex flex-col gap-6">
             <p className="text-sm">
-               Welcome back, <b>Isa</b>
+               Welcome back, <b>{user?.name?.split(' ').slice(-1)}</b>
             </p>
             <SearchNotificationBar
                placeholder="Search for player..."
@@ -28,10 +29,10 @@ const DashboardPage = async () => {
             />
             <GridWrappers>
                <Link href="/explore/requests">
-                  <StatusCard value={6} name="Requests" />
+                  <StatusCard value={totalRequests} name="Requests" />
                </Link>
                <Link href="/explore/bookmarks">
-                  <StatusCard value={12} name="Bookmarks" />
+                  <StatusCard value={totalBookmarks} name="Bookmarks" />
                </Link>
             </GridWrappers>
          </header>

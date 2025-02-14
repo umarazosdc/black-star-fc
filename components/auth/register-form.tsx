@@ -15,8 +15,13 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { register } from '@/lib/validations';
+import SuccessMessage from './success-message';
+import ErrorMessage from './error-message';
 
 const RegisterForm = () => {
+   const [success, setSuccess] = React.useState<string | undefined>('');
+   const [error, setError] = React.useState<string | undefined>('');
+   const [isLoading, startTransition] = React.useTransition();
    const form = useForm<z.infer<typeof RegisterSchema>>({
       resolver: zodResolver(RegisterSchema),
       defaultValues: {
@@ -28,7 +33,16 @@ const RegisterForm = () => {
       },
    });
    const handleLogin = (values: z.infer<typeof RegisterSchema>) => {
-      register(values).then((data) => console.log(data));
+      startTransition(() => {
+         register(values)
+            .then((data) => {
+               setSuccess(data?.success);
+               setError(data?.error);
+            })
+            .catch(() => {
+               setError('Something went wrong');
+            });
+      });
    };
    return (
       <Form {...form}>
@@ -124,11 +138,16 @@ const RegisterForm = () => {
                      </FormItem>
                   )}
                />
+               <span className="my-4">
+                  {success && <SuccessMessage>{success}</SuccessMessage>}
+                  {error && <ErrorMessage>{error}</ErrorMessage>}
+               </span>
                <Button
                   className="w-full bg-accent text-primary shadow-md hover:bg-accent hover:text-primary font-bold"
                   type="submit"
+                  disabled={isLoading}
                >
-                  Sign up
+                  Create an account
                </Button>
             </div>
          </form>

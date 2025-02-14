@@ -15,8 +15,13 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { login } from '@/lib/validations';
 import { useForm } from 'react-hook-form';
+import SuccessMessage from './success-message';
+import ErrorMessage from './error-message';
 
 const LoginForm = () => {
+   const [success, setSuccess] = React.useState<string | undefined>('');
+   const [error, setError] = React.useState<string | undefined>('');
+   const [isLoading, startTransition] = React.useTransition();
    const form = useForm<z.infer<typeof LoginSchema>>({
       resolver: zodResolver(LoginSchema),
       defaultValues: {
@@ -25,7 +30,16 @@ const LoginForm = () => {
       },
    });
    const handleLogin = (values: z.infer<typeof LoginSchema>) => {
-      login(values).then((data) => console.log(data));
+      startTransition(() => {
+         login(values)
+            .then((data) => {
+               setSuccess(data?.success);
+               setError(data?.error);
+            })
+            .catch(() => {
+               setError('Something went wrong');
+            });
+      });
    };
    return (
       <Form {...form}>
@@ -73,9 +87,14 @@ const LoginForm = () => {
                >
                   Forgot password?
                </Link>
+               <span className="my-4">
+                  {success && <SuccessMessage>{success}</SuccessMessage>}
+                  {error && <ErrorMessage>{error}</ErrorMessage>}
+               </span>
                <Button
                   className="w-full bg-accent text-primary shadow-md hover:bg-accent hover:text-primary font-bold"
                   type="submit"
+                  disabled={isLoading}
                >
                   Login
                </Button>

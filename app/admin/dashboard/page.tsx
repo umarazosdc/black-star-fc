@@ -12,6 +12,7 @@ import SearchNotificationBar from '@/components/utils/search-notification-bar';
 import SectionWrapper from '@/components/utils/section-wrapper';
 import StatusCard from '@/components/utils/status-card';
 import Wrapper from '@/components/utils/wrapper';
+import { getTotalUsers } from '@/lib/database/queries';
 import { formatDate } from '@/lib/date';
 import Link from 'next/link';
 import React from 'react';
@@ -19,18 +20,38 @@ import { useInView } from 'react-intersection-observer';
 
 const AdminDashboardPage = () => {
    const { ref } = useInView({ threshold: 1 });
-   // console.log(inView);
    const date = formatDate('2024-01-03');
+   const [userCount, setUserCount] = React.useState<number>(0);
+
+   React.useEffect(() => {
+      const fetchData = async () => {
+         try {
+            console.log("Entry")
+            const data = await getTotalUsers();
+            console.log("Data logged")
+            console.log(data)
+            setUserCount(userCount);
+            console.log(userCount)
+         } catch (error) {
+            console.log('Failed to fetch total users.', error);
+         }
+      };
+      fetchData();
+   }, [userCount]);
+
    return (
       <div className="flex flex-col gap-12">
          <header className="flex flex-col gap-6">
             <p className="text-sm">
                Welcome back, <b>Isa</b>
             </p>
-            <SearchNotificationBar placeholder="Search..." basePath='/admin/dashboard' />
+            <SearchNotificationBar
+               placeholder="Search..."
+               basePath="/admin/dashboard"
+            />
             <GridWrappers>
                <Link href="/admin/dashboard/users">
-                  <StatusCard value={1400} name="Total Users" />
+                  <StatusCard value={userCount} name="Total Users" />
                </Link>
                <Link href="/admin/dashboard/players">
                   <StatusCard value={25} name="Total Players" />

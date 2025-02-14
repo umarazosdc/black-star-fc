@@ -2,6 +2,7 @@ import React from 'react';
 import SheetHeader from '../utils/sheet-header';
 import SheetAccordion from '../utils/sheet-accordion';
 import { LayersIcon, LogOutIcon, Users2Icon } from 'lucide-react';
+import { signOut } from 'next-auth/react';
 
 const AdminSheetContent = () => {
    return (
@@ -39,7 +40,7 @@ const AdminSheetContent = () => {
             </div>
          </main>
          <footer className="absolute bottom-8">
-            <button className="flex gap-2 items-center text-sm">
+            <button className="flex gap-2 items-center text-sm" onClick={async () => await signOut()}>
                <LogOutIcon />
                <span>Logout</span>
             </button>

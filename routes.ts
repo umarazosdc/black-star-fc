@@ -4,9 +4,9 @@
 export const authRoutes: Array<string> = ['/auth/login', '/auth/register'];
 
 /**
- * publicRoutes: Array<string> - This is an array of routes that are public.
+ * publicRoutes: string - This public a public route.
  */
-export const publicRoutes: Array<string> = ['/'];
+export const publicRoutes: string = '/';
 
 /**
  * privateRoutes: Array<string> - This is an array of routes that are private.
@@ -18,3 +18,8 @@ export const privateRoutes: Array<string> = [
    '/onboarding',
    '/profile',
 ];
+
+/**
+ * adminRoute: string - This route is mainly for CRUD.
+ */
+export const adminRoute: string = '/admin';
