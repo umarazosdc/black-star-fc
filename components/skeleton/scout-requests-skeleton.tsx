@@ -1,14 +1,9 @@
 import React from 'react';
 
-const ScoutRequestsSkeleton = ({
-   ref,
-}: {
-   ref: React.ForwardedRef<HTMLDivElement>;
-}) => {
+const ScoutRequestsSkeleton = () => {
    return (
       <div
          className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md animate-pulse"
-         ref={ref}
       >
          <div className="self-start flex justify-between items-center w-full">
             <div className="flex items-center gap-4">

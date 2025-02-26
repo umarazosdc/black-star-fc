@@ -30,14 +30,14 @@ const AuthCard = ({
             {isLogin ? (
                <p className="text-sm text-secondary mt-4">
                   Don&apos;t have an account?{' '}
-                  <Link href="/auth/register">
+                  <Link href="/register">
                      <b>Sign up</b>
                   </Link>
                </p>
             ) : (
                <p className="text-sm text-secondary mt-4">
                   Already have an account?{' '}
-                  <Link href="/auth/login">
+                  <Link href="/login">
                      <b>Sign in</b>
                   </Link>
                </p>

@@ -33,15 +33,14 @@ export const PlayerSchema = z.object({
             'Last name must contain only letters with no spaces or special characters.',
       })
       .min(1, { message: 'Last name cannot be empty.' }),
-   image: typeof window !== 'undefined' ? z.instanceof(FileList) : z.any(),
-   videos:
-      typeof window !== 'undefined' ? z.instanceof(FileList) : z.array(z.any()),
    side: z.string(),
    position: z.string(),
    height: z.number(),
    weight: z.number(),
+   videos: z.array(z.string()),
+   thumbnail: z.string(),
+   statImage: z.string(),
    dob: z.date(),
-   nationality: z.string(),
    stats: z.object({
       spd: z.number().min(1, 'Speed cannot be empty.').max(100, 'Max is 100.'),
       def: z

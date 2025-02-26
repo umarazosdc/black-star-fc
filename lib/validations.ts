@@ -1,11 +1,14 @@
 'use server';
 import { z } from 'zod';
-import { LoginSchema, RegisterSchema } from './schema';
+import { LoginSchema, PlayerSchema, RegisterSchema } from './schema';
 import { getUserByEmail } from './database/queries';
 import bcrypt from 'bcryptjs';
 import { db } from '@/lib/prisma';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
+import { Resend } from 'resend';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
    const validatedValues = LoginSchema.safeParse(values);
@@ -73,35 +76,78 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
    const hashedPassword = await bcrypt.hash(confirmPassword, 10);
 
    // Getting name as a single string
-   const name = `${firstname} ${lastname}`;
+   // const name = `${firstname} ${lastname}`;
 
+   // Email verification
+   let data = '';
+   const resend = new Resend(process.env.RESEND_API_KEY);
    try {
-      await db.user.create({
-         data: {
-            name,
-            email,
-            password: hashedPassword,
-         },
-      });
-
-      // // Checking if new user was created
-      // if (!newUser) {
-      //    return { error: 'Failed to create user in the database' };
-      // }
-
-      // // Assigning Supabase user role
-      // const { error } = await supabase
-      //    .from('user_roles')
-      //    .insert([{ id: newUser.id, role: newUser.role }]);
-
-      // // Handling supabase error
-      // if (error) {
-      //    console.error('Error inserting data into supabase table: ', error);
-      // }
+      // await db.user.create({
+      //    data: {
+      //       name,
+      //       email,
+      //       password: hashedPassword,
+      //    },
+      // });
 
       return { success: 'User created' };
    } catch (error) {
       console.error('Error creating user:', error);
       return { error: 'Error creating user, please try again' };
+   }
+};
+
+// Adding new players
+export const newPlayer = async (values: z.infer<typeof PlayerSchema>) => {
+   console.log('Received values:', values);
+   const validatedValues = PlayerSchema.safeParse(values);
+
+   if (!validatedValues.success) {
+      console.error('Validation failed:', validatedValues.error.format());
+      return { error: 'Invalid player data' };
+   }
+   const {
+      firstname,
+      lastname,
+      side,
+      position,
+      height,
+      weight,
+      dob,
+      stats,
+      videos,
+      thumbnail,
+      statImage,
+   } = validatedValues.data;
+
+   try {
+      await db.preUploadedPlayer.create({
+         data: {
+            firstname,
+            lastname,
+            weight,
+            dob: new Date(dob).toISOString(),
+            side,
+            videos,
+            thumbnail,
+            image: statImage,
+            position,
+            height,
+            stats: {
+               create: {
+                  speed: stats.spd,
+                  dribble: stats.dri,
+                  pass: stats.pas,
+                  pace: stats.pac,
+                  defence: stats.def,
+                  shot: stats.sho,
+               },
+            },
+         },
+      });
+      revalidatePath('/admin/dashboard/new');
+      redirect('/admin/dashboard/new');
+   } catch (error) {
+      console.error('Error creating player', error);
    }
 };

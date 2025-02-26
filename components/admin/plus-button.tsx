@@ -7,8 +7,6 @@ import {
    AlertDialogHeader,
    AlertDialogTitle,
    AlertDialogDescription,
-   AlertDialogFooter,
-   AlertDialogCancel,
 } from '@/components/ui/alert-dialog';
 import NewPlayersForm from '../explore/new-players-form';
 
@@ -28,11 +26,6 @@ const PlusButton = () => {
                </AlertDialogDescription>
             </AlertDialogHeader>
             <NewPlayersForm />
-            <AlertDialogFooter>
-               <AlertDialogCancel className="hover:bg-secondary transition-colors duration-300">
-                  Cancel
-               </AlertDialogCancel>
-            </AlertDialogFooter>
          </AlertDialogContent>
       </AlertDialog>
    );

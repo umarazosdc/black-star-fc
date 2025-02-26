@@ -18,6 +18,11 @@ enum UserRole {
   admin
 }
 
+enum UserStatus {
+  suspended
+  active
+}
+
 model User {
   id                 String        @id @default(uuid())
   email              String        @unique
@@ -30,26 +35,29 @@ model User {
   updatedAt          DateTime      @updatedAt
   role               UserRole      @default(scout)
   isOnboardingPassed Boolean       @default(false)
+  status             UserStatus    @default(active)
   bookmarks          Bookmark[]
   requests           Request[]
-  Notification       Notification?
+  notification       Notification?
 }
 
 model Stats {
-  id       String @id @default(uuid())
-  playerId String @unique
-  speed    Int
-  dribble  Int
-  pass     Int
-  pace     Int
-  defence  Int
-  shot     Int
-  player   Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  id                  String             @id @default(uuid())
+  speed               Int
+  dribble             Int
+  pass                Int
+  pace                Int
+  defence             Int
+  shot                Int
+  player              Player?            @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  playerId            String?            @unique
+  preUploadedPlayer   PreUploadedPlayer? @relation(fields: [preUploadedPlayerId], references: [id], onDelete: Cascade)
+  preUploadedPlayerId String             @unique
 }
 
 model Player {
   id          String    @id @default(cuid())
-  firsname    String
+  firstname   String
   lastname    String
   image       String
   age         Int
@@ -62,9 +70,26 @@ model Player {
   weight      Int
   nationality String
   dob         String
-  Stats       Stats?
-  Bookmarked  Bookmark?
-  Requested   Request?
+  stats       Stats?
+  bookmarked  Bookmark?
+  requested   Request?
+}
+
+model PreUploadedPlayer {
+  id        String   @id @default(cuid())
+  firstname  String
+  lastname  String
+  thumbnail String
+  image     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  videos    String[]
+  side      String
+  position  String
+  height    Int
+  weight    Int
+  dob       String
+  stats     Stats?
 }
 
 model Bookmark {
@@ -92,6 +117,6 @@ model Notification {
   date      String
   createdAt DateTime @default(now())
   message   String?
-  userId    String   @unique
   user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
 }

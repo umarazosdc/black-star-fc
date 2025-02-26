@@ -5,12 +5,14 @@ declare module 'next-auth' {
       user: {
          role?: string;
          city?: string;
+         supabaseAccessToken?: string
       } & DefaultSession['user'];
    }
 
    interface User extends DefaultUser {
       role?: string;
       city?: string;
+      supabaseAccessToken?: string;
    }
 }
 
@@ -18,5 +20,6 @@ declare module 'next-auth/jwt' {
    interface JWT {
       role?: string;
       city?: string;
+      supabaseAccessToken?: string;
    }
 }

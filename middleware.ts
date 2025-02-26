@@ -1,48 +1,61 @@
-import { adminRoute, authRoutes, privateRoutes } from '@/routes';
+import { adminRoute, authRoutes, privateRoutes, publicRoutes } from '@/routes';
 
 import NextAuth from 'next-auth';
 import authConfig from './auth.config';
 import { getToken } from 'next-auth/jwt';
+import { NextResponse } from 'next/server';
 
 const { auth } = NextAuth(authConfig);
 
 export default auth(async (req) => {
    const isLoggedIn = !!req.auth;
    const { pathname } = req.nextUrl;
-   const url = 'http://localhost:3000';
-
+   const baseURL = 'http://localhost:3000';
+   const res = NextResponse.next();
    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
-
    const role = token?.role;
    const isAdmin = role === 'admin';
 
    const isPrivateRoute = privateRoutes.includes(pathname);
+   const isPublicRoute = publicRoutes.includes(pathname);
    const isAuthRoute = authRoutes.includes(pathname);
-   const isApiRoutes = pathname.includes('/api');
-   const isAdminRoute = pathname.startsWith(adminRoute);
-   const isUnthorizedRoute = pathname.startsWith('/unauthorized');
+   const isApiRoute = pathname.startsWith('/api');
+   const isAdminRoute =
+      pathname.startsWith(adminRoute + '/') || pathname === adminRoute;
 
-   if (isApiRoutes) {
-      return;
+   // API route
+   if (isApiRoute) {
+      return res;
    }
 
-   if (isLoggedIn && isAdminRoute && !isAdmin)
-      return Response.redirect(`${url}/unauthorized`);
-
-   if (isLoggedIn && isAdmin && isUnthorizedRoute)
-      return Response.redirect(`${url}/${role}/dashboard`);
-
-   if (isLoggedIn && isAuthRoute && isAdmin) {
-      return Response.redirect(`${url}/${role}/dashboard`);
+   // Authentication route
+   if (isAuthRoute) {
+      if (isLoggedIn) {
+         return NextResponse.redirect(new URL(`/${role}/dashboard`, baseURL));
+      }
+      return res;
    }
 
-   if (isLoggedIn && isAuthRoute && !isAdmin)
-      return Response.redirect(`${url}/${role}/dashboard`);
+   // Private route
+   if (isPrivateRoute && !isLoggedIn) {
+      return NextResponse.redirect(new URL('/login', baseURL));
+   }
 
-   if (!isLoggedIn && isAuthRoute) return;
+   // Public route
+   if (isPublicRoute) {
+      return res;
+   }
 
-   if (!isLoggedIn && isPrivateRoute)
-      return Response.redirect(`${url}/auth/login`);
+   // Admin route
+   if (isAdminRoute) {
+      if (!isAdmin || !isLoggedIn) {
+         return NextResponse.redirect(new URL('/unauthorized', baseURL));
+      }
+      return res;
+   }
+
+   // Allow other access
+   return res;
 });
 
 export const config = {

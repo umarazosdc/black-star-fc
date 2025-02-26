@@ -1,6 +1,5 @@
 'use client'
 import React from 'react';
-import Img from '../utils/image';
 import Button from '../utils/button';
 import Icontext from '../utils/icontext';
 import { Clock3Icon, MailIcon, MailsIcon } from 'lucide-react';
@@ -14,6 +13,7 @@ import {
    DialogDescription,
 } from '../ui/dialog';
 import Age from '../utils/age';
+import Avatarr from '../utils/avatarr';
 
 const UserCard = ({
    src,
@@ -25,7 +25,7 @@ const UserCard = ({
    playersAge,
    children,
 }: {
-   src: string;
+   src: string | undefined;
    name: string;
    email: string;
    date: string;
@@ -42,9 +42,7 @@ const UserCard = ({
       <div className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md">
          <div className="self-start flex justify-between items-center w-full">
             <div className="flex items-center gap-4">
-               <div className="relative size-[5rem]">
-                  <Img src={src} alt="Player" className="rounded-full border" />
-               </div>
+               <Avatarr selectedImage={src} className="size-[5rem]" />
                <div className="flex flex-col gap-2">
                   <div className="text-base font-bold tracking-wide truncate w-48">
                      {name}

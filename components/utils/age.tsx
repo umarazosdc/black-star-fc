@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import React from 'react';
 
-const Age = ({ age, className }: { age?: number; className?: string }) => {
+const Age = ({ age, className }: { age?: number | null; className?: string }) => {
    return (
       <div className={cn('flex items-end', className)}>
          <span className="font-bold text-2xl">{age}</span>

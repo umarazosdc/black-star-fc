@@ -49,3 +49,12 @@ export const years = Array.from(
    { length: 101 },
    (_, i) => new Date().getFullYear() - i
 );
+
+export const stats = {
+      spd: 'Speed',
+      sho: 'Shooting',
+      def: 'Defense',
+      dri: 'Dribbling',
+      pac: 'Pace',
+      pas: 'Passing',
+   };
