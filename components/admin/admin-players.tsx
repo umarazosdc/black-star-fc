@@ -1,24 +1,25 @@
-import React from 'react'
-import Img from '../utils/image';
-import SearchContainer from '../utils/search-container';
+import React from 'react';
+import SearchContainer from '@/components/utils/search-container';
+import { getPlayers } from '@/lib/database/queries';
+import CldImg from '@/components/utils/cldimg';
 
-const AdminPlayers = () => {
-  return (
-     <SearchContainer path="/admin/dashboard/players" name="Players">
-        <div className="relative h-36">
-           <Img src="/imgs/users/scout/dc2.jpg" alt="Player picture" />
-        </div>
-        <div className="relative h-36">
-           <Img src="/imgs/users/scout/dc.jpg" alt="Player picture" />
-        </div>
-        <div className="relative h-36">
-           <Img src="/imgs/users/scout/dc2.jpg" alt="Player picture" />
-        </div>
-        <div className="relative h-36">
-           <Img src="/imgs/users/scout/dc.jpg" alt="Player picture" />
-        </div>
-     </SearchContainer>
-  );
-}
+const AdminPlayers = async () => {
+   const players = await getPlayers();
+   const playerSubset = players.slice(0, 4);
+   return (
+      <SearchContainer path="/admin/dashboard/players" name="Players">
+         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {playerSubset.map((player) => (
+               <CldImg
+                  key={player.id}
+                  src={player.image}
+                  alt={'Player image'}
+                  className="h-36"
+               />
+            ))}
+         </div>
+      </SearchContainer>
+   );
+};
 
-export default AdminPlayers
+export default AdminPlayers;

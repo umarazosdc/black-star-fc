@@ -3,10 +3,18 @@ import React from 'react';
 import BookmarkedPlayerCard from '../utils/bookmarked-player-card';
 import GridWrappers from '../utils/grid-wrappers';
 import SearchFilterBar from '../utils/search-filter-bar';
+import { getPlayers } from '@/lib/database/queries';
+import { getAge } from '@/lib/date';
+import { auth } from '@/auth';
 
-const ExplorePlayers = () => {
+const ExplorePlayers = async () => {
+   const players = await getPlayers();
+   const session = await auth();
+
+   const isAdmin = session?.user.role == 'admin';
+
    return (
-      <div className="flex flex-col space-y-16">
+      <div className="flex flex-col space-y-8">
          <header className="flex flex-col space-y-6">
             <h2 className="font-bold text-xl text-secondary text-center">
                Uncover hidden talents, build unstoppable teams
@@ -16,32 +24,25 @@ const ExplorePlayers = () => {
                generation of football stars
             </p>
          </header>
-         <main className="flex flex-col space-y-6">
+         <main className="flex flex-col space-y-4">
             <SearchFilterBar
                placeholder="Search for a player..."
                items={['A-Z', 'Newest', 'Age', 'Oldest']}
-               basePath='/explore'
+               basePath="/explore"
             />
             <SearchFilter />
             <GridWrappers>
-               <BookmarkedPlayerCard
-                  src="/imgs/players/player.jpg"
-                  position="striker"
-                  name="Ahmed Abdullahi"
-                  age={16}
-               />
-               <BookmarkedPlayerCard
-                  src="/imgs/players/player.jpg"
-                  position="striker"
-                  name="Ahmed Abdullahi"
-                  age={16}
-               />
-               <BookmarkedPlayerCard
-                  src="/imgs/players/player.jpg"
-                  position="striker"
-                  name="Ahmed Abdullahi"
-                  age={16}
-               />
+               {players.map((player, key) => (
+                  <BookmarkedPlayerCard
+                     key={key}
+                     src={player.image}
+                     position={player.position}
+                     name={player.firstname + ' ' + player.lastname}
+                     age={getAge(player.dob)}
+                     isAdmin={isAdmin}
+                     id={player.id}
+                  />
+               ))}
             </GridWrappers>
          </main>
       </div>

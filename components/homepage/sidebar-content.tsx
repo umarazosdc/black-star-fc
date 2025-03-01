@@ -7,9 +7,10 @@ import useSessionHook from '@/lib/hook/use-session';
 
 const SidebarContent = () => {
    const user = useSessionHook();
-   
+   const role = user?.role
+
    const paths = [
-      { name: 'Dashboard', path: `/${user?.role}/dashboard`, icon: BoxIcon },
+      { name: 'Dashboard', path: `/${role}/dashboard`, icon: BoxIcon },
       { name: 'Bookmarks', path: '/explore/bookmarks', icon: BookmarkIcon },
       { name: 'Requested', path: '/explore/requests', icon: SendIcon },
    ];

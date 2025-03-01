@@ -1,14 +1,29 @@
 import React from 'react';
 import PlayerDetailCard from './player-detail-card';
 
-const PlayerDetails = () => {
+const PlayerDetails = ({
+   nationality,
+   height,
+   weight,
+   dob,
+   position,
+   side,
+}: {
+   nationality: string;
+   height: number;
+   weight: number;
+   dob: string;
+   position: string;
+   side: string;
+}) => {
    return (
-      <div className="grid grid-cols-2 gap-8">
-         <PlayerDetailCard label="Nationality" value={'Nigerian'} />
-         <PlayerDetailCard label="Position" value={'Forward'} />
-         <PlayerDetailCard label="Height" value={6} ft />
-         <PlayerDetailCard label="D O B" value={'12-12-09'} />
-         <PlayerDetailCard label="Weight" value={'84'} kg />
+      <div className="grid grid-cols-2 gap-4">
+         <PlayerDetailCard label="Nationality" value={nationality} />
+         <PlayerDetailCard label="Position" value={position} />
+         <PlayerDetailCard label="Height" value={height} ft />
+         <PlayerDetailCard label="Side" value={side} />
+         <PlayerDetailCard label="D O B" value={dob} />
+         <PlayerDetailCard label="Weight" value={weight} kg />
       </div>
    );
 };

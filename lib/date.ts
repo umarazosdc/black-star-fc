@@ -9,7 +9,7 @@ export const formatDate = (dateString: string) => {
 export const getHoursMinute = (dateString: string) => {
    const date = new Date(dateString);
    return new Intl.DateTimeFormat('en-US', {
-      timeStyle: 'short'
+      timeStyle: 'short',
    }).format(date);
 };
 
@@ -27,4 +27,13 @@ export const getAge = (dobString: string) => {
    }
 
    return age;
-}
+};
+
+export const setDate = (dobString: string) => {
+   const dob = new Date(dobString);
+
+   const year = dob.getFullYear();
+   const day = dob.getDate();
+   const month = dob.getMonth();
+   return `${day}-${month}-${year}`;
+};

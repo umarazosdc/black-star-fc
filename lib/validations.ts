@@ -1,14 +1,14 @@
 'use server';
 import { z } from 'zod';
 import { LoginSchema, PlayerSchema, RegisterSchema } from './schema';
-import { getUserByEmail } from './database/queries';
+import { getPreUploadedPlayers, getUserByEmail } from './database/queries';
 import bcrypt from 'bcryptjs';
 import { db } from '@/lib/prisma';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 import { Resend } from 'resend';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
+import { getAge } from './date';
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
    const validatedValues = LoginSchema.safeParse(values);
@@ -146,8 +146,67 @@ export const newPlayer = async (values: z.infer<typeof PlayerSchema>) => {
          },
       });
       revalidatePath('/admin/dashboard/new');
-      redirect('/admin/dashboard/new');
+      return {
+         success: `Successfully added ${firstname + ' ' + lastname} to cart`,
+      };
    } catch (error) {
-      console.error('Error creating player', error);
+      console.error('Error adding player to cart', error);
+      return { error: 'Error adding player cart' };
+   }
+};
+
+export const addNewPlayers = async () => {
+   try {
+      const preUploadedPlayers = await getPreUploadedPlayers();
+
+      if (!preUploadedPlayers.length) {
+         return { error: 'No player to add, add players' };
+      }
+
+      // Step 1: Create Players
+      const createdPlayers = await db.$transaction(
+         preUploadedPlayers.map((player) =>
+            db.player.create({
+               data: {
+                  firstname: player.firstname,
+                  lastname: player.lastname,
+                  image: player.thumbnail,
+                  age: getAge(player.dob),
+                  side: player.side,
+                  position: player.position,
+                  weight: player.weight,
+                  nationality: 'Nigerian',
+                  height: player.height,
+                  dob: player.dob,
+                  videos: player.videos,
+                  thumbnail: player.thumbnail,
+               },
+            })
+         )
+      );
+
+      // Step 2: Transfer Stats to the newly created Players
+      await Promise.all(
+         preUploadedPlayers.map(async (player, index) => {
+            await db.stats.updateMany({
+               where: { preUploadedPlayerId: player.id },
+               data: {
+                  playerId: createdPlayers[index].id,
+                  preUploadedPlayerId: null,
+               },
+            });
+         })
+      );
+
+      // Step 3: Delete preUploadedPlayers
+      await db.preUploadedPlayer.deleteMany();
+
+      revalidatePath('/admin/dashboard/players');
+      return preUploadedPlayers.length > 1
+         ? { success: 'Successfully added players' }
+         : { success: 'Successfully added player' };
+   } catch (error) {
+      console.error('Error adding players:', error);
+      return { error: 'Error adding players' };
    }
 };

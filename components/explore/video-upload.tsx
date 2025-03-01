@@ -1,8 +1,22 @@
+'use client';
+import { CldVideoPlayer } from 'next-cloudinary';
+import 'next-cloudinary/dist/cld-video-player.css';
 import React from 'react';
 
-const VideoUpload = ({src}:{src:string}) => {
+const VideoUpload = ({ src }: { src: string }) => {
    return (
-      <video src={src} controls width={180} className='rounded-md' />
+      <CldVideoPlayer
+         src={src?.trim() ? src : 'samples/sea-turtle'}
+         aspectRatio="9:16"
+         className="rounded-md"
+         transformation={{
+            aspect_ratio: '9:16',
+            crop: 'fill',
+            gravity: 'auto',
+            // width: 5000,
+         }}
+         logo={false}
+      />
    );
 };
 

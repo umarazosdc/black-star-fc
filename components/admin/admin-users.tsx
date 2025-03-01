@@ -1,21 +1,22 @@
 import React from 'react';
-import Img from '../utils/image';
-import SearchContainer from '../utils/search-container';
+import SearchContainer from '@/components/utils/search-container';
+import { getUsers } from '@/lib/database/queries';
+import CldImg from '@/components/utils/cldimg';
 
-const AdminUsers = () => {
+const AdminUsers = async () => {
+   const users = await getUsers();
+   const userSubset = users.slice(0, 4);
    return (
       <SearchContainer path="/admin/dashboard/users" name="Users">
-         <div className="relative h-36">
-            <Img src="/imgs/users/scout/dc2.jpg" alt="Player picture" />
-         </div>
-         <div className="relative h-36">
-            <Img src="/imgs/users/scout/dc.jpg" alt="Player picture" />
-         </div>
-         <div className="relative h-36">
-            <Img src="/imgs/users/scout/dc2.jpg" alt="Player picture" />
-         </div>
-         <div className="relative h-36">
-            <Img src="/imgs/users/scout/dc.jpg" alt="Player picture" />
+         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {userSubset.map((user) => (
+               <CldImg
+                  key={user.id}
+                  src={user.image as string}
+                  alt={'User image'}
+                  className="h-36"
+               />
+            ))}
          </div>
       </SearchContainer>
    );

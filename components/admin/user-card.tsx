@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import React from 'react';
 import Button from '../utils/button';
 import Icontext from '../utils/icontext';
@@ -14,6 +14,8 @@ import {
 } from '../ui/dialog';
 import Age from '../utils/age';
 import Avatarr from '../utils/avatarr';
+import { removeUserById } from '@/lib/database/queries';
+import { useRouter } from 'next/navigation';
 
 const UserCard = ({
    src,
@@ -24,6 +26,7 @@ const UserCard = ({
    playerName,
    playersAge,
    children,
+   id,
 }: {
    src: string | undefined;
    name: string;
@@ -33,10 +36,18 @@ const UserCard = ({
    children?: React.ReactNode;
    playerName?: string;
    playersAge?: number;
+   id: string;
 }) => {
    const [accept, setAccept] = React.useState<boolean>(false);
+
+   const router = useRouter();
+
    const handleRequest = () => {
       setAccept(!accept);
+   };
+   const handleRemoveUser = async () => {
+      await removeUserById(id);
+      router.refresh();
    };
    return (
       <div className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md">
@@ -104,7 +115,12 @@ const UserCard = ({
          ) : (
             <div className="self-end flex items-center gap-4">
                <Button className="bg-secondary text-primary">Supense</Button>
-               <Button className="bg-red-600 text-primary">Delete</Button>
+               <Button
+                  className="bg-red-600 text-primary"
+                  onClick={handleRemoveUser}
+               >
+                  Delete
+               </Button>
             </div>
          )}
       </div>

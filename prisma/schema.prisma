@@ -52,13 +52,14 @@ model Stats {
   player              Player?            @relation(fields: [playerId], references: [id], onDelete: Cascade)
   playerId            String?            @unique
   preUploadedPlayer   PreUploadedPlayer? @relation(fields: [preUploadedPlayerId], references: [id], onDelete: Cascade)
-  preUploadedPlayerId String             @unique
+  preUploadedPlayerId String?            @unique
 }
 
 model Player {
   id          String    @id @default(cuid())
   firstname   String
   lastname    String
+  thumbnail   String
   image       String
   age         Int
   createdAt   DateTime  @default(now())
@@ -77,7 +78,7 @@ model Player {
 
 model PreUploadedPlayer {
   id        String   @id @default(cuid())
-  firstname  String
+  firstname String
   lastname  String
   thumbnail String
   image     String

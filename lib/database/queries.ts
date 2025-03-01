@@ -61,6 +61,44 @@ export const getPlayers = async () => {
    return await db.player.findMany();
 };
 
+export const getPlayersById = async (id: string) => {
+   return await db.player.findMany({ where: { id } });
+};
+
 export const getPreUploadedPlayers = async () => {
    return await db.preUploadedPlayer.findMany();
+};
+
+export const removePlayerById = async (id: string) => {
+   return await db.player.delete({ where: { id } });
+};
+
+export const removePreUploadedPlayerById = async (id: string) => {
+   return await db.preUploadedPlayer.delete({ where: { id } });
+};
+
+export const removeUserById = async (id: string) => {
+   return await db.user.delete({ where: { id } });
+};
+
+export const getStatsById = async (id: string) => {
+   return await db.stats.findUnique({ where: { id } });
+};
+
+export const toggleBookmark = async (
+   status: boolean,
+   playerId: string,
+   userId: string
+) => {
+   return await db.bookmark.create({
+      data: { playerId, userId, isBookmarked: status },
+   });
+};
+
+export const getBookmarkStatus = async (playerId: string, userId: string) => {
+   return db.bookmark.findFirst({ where: { playerId, userId } });
+};
+
+export const getBookmarksById = async (userId: string) => {
+   return db.bookmark.findFirst({ where: { userId } });
 };

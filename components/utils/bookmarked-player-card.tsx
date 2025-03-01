@@ -5,6 +5,8 @@ import { BookmarkIcon } from 'lucide-react';
 import Link from 'next/link';
 import Age from './age';
 import { cn } from '@/lib/utils';
+import { getBookmarkStatus, toggleBookmark } from '@/lib/database/queries';
+import useSessionHook from '@/lib/hook/use-session';
 
 const BookmarkedPlayerCard = ({
    src,
@@ -13,6 +15,7 @@ const BookmarkedPlayerCard = ({
    age,
    className,
    isAdmin,
+   id,
    ...props
 }: {
    src: string;
@@ -20,18 +23,26 @@ const BookmarkedPlayerCard = ({
    name: string;
    age: number;
    isAdmin?: boolean;
+   id: string;
 } & React.HTMLAttributes<HTMLDivElement>) => {
-   const [bookmarked, setBookmark] = React.useState<boolean>(false);
-   const handleBookmark = (e: React.MouseEvent<SVGElement>) => {
-      /**
-       * Let Bookmark icon status ONLY reflect
-       * after getting it from the database
-       */
+   const [bookmarkStatus, setBookmarkStatus] = React.useState<boolean>();
+   const session = useSessionHook();
+   const userId = session?.id;
+   
+   const handleBookmark = async (e: React.MouseEvent<SVGElement>) => {
       e.preventDefault();
-      setBookmark(!bookmarked);
+
+      const bookmark = await getBookmarkStatus(id, userId as string);
+      setBookmarkStatus(bookmark?.isBookmarked);
+      try {
+         await toggleBookmark(!bookmarkStatus, id, userId as string);
+      } catch (error) {
+         console.log("Error trying to toggle player's bookmark ", error);
+         return null;
+      }
    };
    return (
-      <Link href="/explore/player">
+      <Link href={`/explore/player?id=${id}`}>
          <div
             className={cn(
                'shadow-md rounded-md bg-card border-t border-r flex flex-col gap-4 p-3 text-secondary select-none cursor-pointer w-full',
@@ -50,7 +61,7 @@ const BookmarkedPlayerCard = ({
                   <Age age={age} />
                   {isAdmin ? (
                      ''
-                  ) : bookmarked ? (
+                  ) : bookmarkStatus ? (
                      <BookmarkIcon
                         className="text-accent cursor-pointer size-9"
                         onClick={(e) => {

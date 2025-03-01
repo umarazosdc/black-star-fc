@@ -1,5 +1,5 @@
+'use client';
 import React from 'react';
-import Img from '../utils/image';
 import { cn } from '@/lib/utils';
 import Stat from './stat';
 import {
@@ -10,11 +10,12 @@ import {
    ShieldHalfIcon,
    ZapIcon,
 } from 'lucide-react';
+import { CldImage } from 'next-cloudinary';
 
 const ImageAndStats = ({
    src,
    className,
-   phy,
+   dri,
    sho,
    pas,
    def,
@@ -22,7 +23,7 @@ const ImageAndStats = ({
    spd,
 }: {
    src: string;
-   phy: number;
+   dri: number;
    sho: number;
    def: number;
    pac: number;
@@ -31,13 +32,24 @@ const ImageAndStats = ({
 } & React.HTMLAttributes<HTMLDivElement>) => {
    return (
       <div className={cn('relative size-[283px] mt-16', className)}>
-         <Img src={src} alt="Player" className="z-10" />
-         <div className="absolute top-3 left-1/2 -translate-x-1/2 size-36 bg-black/25 blur-xl rounded-full z-0"></div>
+         <div className="relative">
+            <CldImage
+               src={src}
+               alt="Player"
+               className="z-40 size-[283px]"
+               width={200}
+               height={100}
+               removeBackground
+            />
+            <div className="absolute top-3 left-1/2 -translate-x-1/2 size-36 bg-black/25 blur-xl rounded-full z-0" />
+            <div className="absolute h-[284px] w-[283px] bg-gradient-to-b from-blue-500/0 to-primary to-95% from-60% z-40 top-0" />
+         </div>
+
          <Stat
             color="#A52A2A"
             icon={HeartHandshakeIcon}
-            rate={phy}
-            name="phy"
+            rate={dri}
+            name="dri"
             className="absolute -right-[2rem] top-[38.99%]"
          />
          <Stat
@@ -75,7 +87,6 @@ const ImageAndStats = ({
             name="def"
             className="absolute -left-[2rem] top-[38.99%]"
          />
-         <div className="h-[284px] w-[283px] bg-gradient-to-b from-blue-500/0 to-primary to-95% from-60% absolute z-40"></div>
       </div>
    );
 };

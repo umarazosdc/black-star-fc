@@ -4,11 +4,14 @@ import Wrapper from '../utils/wrapper';
 import Link from 'next/link';
 import { PlusIcon } from 'lucide-react';
 import PlayerCard from './player-card';
+import { getPlayers } from '@/lib/database/queries';
+import { getAge } from '@/lib/date';
 
-const Players = () => {
+const Players = async () => {
+   const players = await getPlayers();
    return (
       <Wrapper title="Players">
-         <div className="flex flex-col gap-8">
+         <div className="flex flex-col gap-4">
             <SearchFilterBar
                placeholder="Search players..."
                items={['A-Z', 'Newest', 'Age', 'Oldest']}
@@ -23,37 +26,22 @@ const Players = () => {
                   <p>Add player</p>
                </Link>
             </div>
-            <div className="flex flex-col gap-6">
-               <PlayerCard
-                  src="/imgs/players/player.jpg"
-                  name="Ahmed Abdullahi"
-                  position="Winger"
-                  age={16}
-               />
-               <PlayerCard
-                  src="/imgs/players/player.jpg"
-                  name="Ahmed Abdullahi"
-                  position="Winger"
-                  age={16}
-               />
-               <PlayerCard
-                  src="/imgs/players/player.jpg"
-                  name="Ahmed Abdullahi"
-                  position="Winger"
-                  age={16}
-               />
-               <PlayerCard
-                  src="/imgs/players/player.jpg"
-                  name="Ahmed Abdullahi"
-                  position="Winger"
-                  age={16}
-               />
-               <PlayerCard
-                  src="/imgs/players/player.jpg"
-                  name="Ahmed Abdullahi"
-                  position="Winger"
-                  age={16}
-               />
+            <div className="flex flex-col gap-3">
+               {!(players.length > 0) ? (
+                  <p className="text-sm">No player available. Add players</p>
+               ) : (
+                  players.map((player, key) => (
+                     <PlayerCard
+                        key={key}
+                        id={player.id}
+                        name={player.firstname + ' ' + player.lastname}
+                        src={[player.image, player.thumbnail]}
+                        position={player.position}
+                        age={getAge(player.dob)}
+                        videos={player.videos}
+                     />
+                  ))
+               )}
             </div>
          </div>
       </Wrapper>

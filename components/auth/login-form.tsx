@@ -15,12 +15,9 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { login } from '@/lib/validations';
 import { useForm } from 'react-hook-form';
-import SuccessMessage from './success-message';
-import ErrorMessage from './error-message';
+import { toast } from 'sonner';
 
 const LoginForm = () => {
-   const [success, setSuccess] = React.useState<string | undefined>('');
-   const [error, setError] = React.useState<string | undefined>('');
    const [isLoading, startTransition] = React.useTransition();
    const form = useForm<z.infer<typeof LoginSchema>>({
       resolver: zodResolver(LoginSchema),
@@ -33,11 +30,14 @@ const LoginForm = () => {
       startTransition(() => {
          login(values)
             .then((data) => {
-               setSuccess(data?.success);
-               setError(data?.error);
+               if (data.error) {
+                  toast.error(data.error);
+               } else {
+                  toast.success(data.success);
+               }
             })
             .catch(() => {
-               setError('Something went wrong');
+               toast.error('Something went wrong.');
             });
       });
    };
@@ -87,10 +87,6 @@ const LoginForm = () => {
                >
                   Forgot password?
                </Link>
-               <span className="my-4">
-                  {success && <SuccessMessage>{success}</SuccessMessage>}
-                  {error && <ErrorMessage>{error}</ErrorMessage>}
-               </span>
                <Button
                   className="w-full bg-accent text-primary shadow-md hover:bg-accent hover:text-primary font-bold"
                   type="submit"

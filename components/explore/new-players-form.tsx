@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { Form } from '@/components/ui/form';
 import FlexAligned from '../utils/flex-aligned';
-import { Button } from '../ui/button';
 import { newPlayer } from '@/lib/validations';
 import PlayerStat from '../admin/player-stat';
 import FormInputField from './form-input-field';
@@ -18,7 +17,11 @@ import FormWeight from './form-weight';
 import FormImage from './form-image';
 import { Input } from '../ui/input';
 import { stats } from '@/lib/data';
-import { AlertDialogCancel } from '@/components/ui/alert-dialog';
+import {
+   AlertDialogAction,
+   AlertDialogCancel,
+} from '@/components/ui/alert-dialog';
+import { toast } from 'sonner';
 
 const NewPlayersForm = () => {
    const form = useForm<z.infer<typeof PlayerSchema>>({
@@ -30,177 +33,132 @@ const NewPlayersForm = () => {
          height: 0,
          weight: 0,
          dob: new Date(),
+         statImage: '',
+         thumbnail: '',
+         videos: [''],
          // stats: { spd: 0, sho: 0, def: 0, dri: 0, pac: 0, pas: 0 },
       },
       resolver: zodResolver(PlayerSchema),
    });
 
    const [isLoading, startTransition] = useTransition();
-   const [thumbnailPublicId, setThumbnailPublicId] = React.useState<string>();
    const [urlThumbnail, setUrlThumbnail] = React.useState<string>();
-   const [statImagePublicId, setStatImagePublicId] = React.useState<string>();
    const [urlStatImage, setUrlStatImage] = React.useState<string>();
-   const [playerVideosPublicIds, setPlayerVideosPublicIds] =
-      React.useState<Array<string>>();
+   React.useState<Array<string>>();
    const [thumbnailLoading, setThumbnailLoading] =
       React.useState<boolean>(false);
    const [statisticLoading, setStatisticLoading] =
       React.useState<boolean>(false);
    const [videoLoading, setVideoLoading] = React.useState<boolean>(false);
+   const [thumbnailFile, setThumbnailFile] = React.useState<File | null>(null);
+   const [statImageFile, setStatImageFile] = React.useState<File | null>(null);
+   const [videoFiles, setVideoFiles] = React.useState<File[]>([]);
 
    const statRef = React.useRef<HTMLInputElement>(null);
    const thumbnailRef = React.useRef<HTMLInputElement>(null);
 
-   const handleThumbnailImage = async (
-      e: React.ChangeEvent<HTMLInputElement>
-   ) => {
+   const handleThumbnailImage = (e: React.ChangeEvent<HTMLInputElement>) => {
       e.preventDefault();
       const file = e.target.files?.[0];
-      if (!file) {
-         console.log('Thumbnail file was not selected.');
-         return;
-      }
-
-      const url = URL.createObjectURL(file);
-      setUrlThumbnail(url);
-
-      const formData = new FormData();
-      formData.append('file', file);
-      setThumbnailLoading(true);
-      setThumbnailLoading(true);
-      try {
-         const res = await fetch('/api/image-upload', {
-            method: 'POST',
-            body: formData,
-         });
-         if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-         }
-         const data = await res.json();
-         setThumbnailPublicId(data.publicId);
-         form.setValue('thumbnail', data.publicId);
-      } catch (error) {
-         console.error('Error uploading data:', error);
-      } finally {
-         setThumbnailLoading(false);
-         setThumbnailLoading(false);
-      }
-   };
-
-   const handleStatImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      e.preventDefault();
-      const file = e.target.files?.[0];
-      if (!file) {
-         console.log('Statistic file was not selected.');
-         return;
-      }
-
-      const url = URL.createObjectURL(file);
-      setUrlStatImage(url);
-
-      const formData = new FormData();
-      formData.append('file', file);
-      setStatisticLoading(true);
-      try {
-         const res = await fetch('/api/image-upload', {
-            method: 'POST',
-            body: formData,
-         });
-         if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-         }
-         const data = await res.json();
-         setStatImagePublicId(data.publicId);
-         form.setValue('statImage', data.publicId);
-      } catch (error) {
-         console.error('Error fetching data:', error);
-      } finally {
-         setStatisticLoading(false);
-      }
-   };
-
-   const handleVideos = async (e: React.ChangeEvent<HTMLInputElement>) => {
-      e.preventDefault();
-      const file = e.target.files;
       if (!file) return;
-      const fileArr = [...file];
-      const formData = new FormData();
-      fileArr.forEach((file) => formData.append('file', file));
-      setVideoLoading(true);
-      try {
-         const res = await fetch('/api/videos-upload', {
-            method: 'POST',
-            body: formData,
-         });
-         if (!res.ok) {
-            throw new Error(`HTTP error! status: ${res.status}`);
-         }
-         const data = await res.json();
-         setPlayerVideosPublicIds(data.publicIds);
-         form.setValue('videos', data.publicIds);
-      } catch (error) {
-         console.error('Error uploading videos: ', error);
-         return;
-      } finally {
-         setVideoLoading(false);
-      }
+      setThumbnailFile(file);
+      setUrlThumbnail(URL.createObjectURL(file));
+   };
+
+   const handleStatImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      const file = e.target.files?.[0];
+      if (!file) return;
+      setStatImageFile(file);
+      setUrlStatImage(URL.createObjectURL(file));
+   };
+
+   const handleVideos = (e: React.ChangeEvent<HTMLInputElement>) => {
+      e.preventDefault();
+      const files = e.target.files;
+      if (!files) return;
+      setVideoFiles([...files]);
    };
 
    const handlePlayerSubmit = async (values: z.infer<typeof PlayerSchema>) => {
-      if (!thumbnailPublicId || !statImagePublicId || !playerVideosPublicIds) {
-         console.log('Failed to get the publid_id');
-         return;
-      }
-      startTransition(() => {
-         newPlayer({
-            ...values,
-            thumbnail: thumbnailPublicId,
-            statImage: statImagePublicId,
-            videos: playerVideosPublicIds,
-         });
-      });
-   };
+      try {
+         setThumbnailLoading(true);
+         setStatisticLoading(true);
+         setVideoLoading(true);
 
-   const handleCancelButton = async () => {
-      // // Check if all required public IDs are absent
-      // if (!thumbnailPublicId && !statImagePublicId && !playerVideosPublicIds) {
-      //    console.error('No file selected!');
-      //    return; // Exit the function if no files are selected
-      // }
-
-      // Initialize arrays for images and videos
-      const images = [];
-      const videos = [];
-
-      // Add image public IDs if they exist
-      if (thumbnailPublicId) images.push(thumbnailPublicId);
-      if (statImagePublicId) images.push(statImagePublicId);
-
-      // Add video public IDs if they exist
-      if (playerVideosPublicIds && Array.isArray(playerVideosPublicIds)) {
-         videos.push(...playerVideosPublicIds);
-      }
-
-      const payload = {
-         images,
-         videos,
-      };
-
-      // Check if there's any data to send
-      if (images.length > 0 || videos.length > 0) {
-         try {
-            await fetch('/api/delete', {
+         // Upload Thumbnail
+         let thumbnailPublicId = null;
+         if (thumbnailFile) {
+            const formData = new FormData();
+            formData.append('file', thumbnailFile);
+            const res = await fetch('/api/image-upload', {
                method: 'POST',
-               headers: {
-                  'Content-Type': 'application/json',
-               },
-               body: JSON.stringify(payload),
+               body: formData,
             });
-         } catch (error) {
-            console.log('Failed to cancel', error);
+            const data = await res.json();
+            thumbnailPublicId = data.publicId;
+            form.setValue('thumbnail', thumbnailPublicId);
          }
-      } else {
-         console.log('No valid files to cancel!');
+
+         // Upload Statistic Image
+         let statImagePublicId = null;
+         if (statImageFile) {
+            const formData = new FormData();
+            formData.append('file', statImageFile);
+            const res = await fetch('/api/image-upload', {
+               method: 'POST',
+               body: formData,
+            });
+            const data = await res.json();
+            statImagePublicId = data.publicId;
+            form.setValue('statImage', statImagePublicId);
+         }
+
+         // Upload Videos
+         let playerVideosPublicIds: string[] = [];
+         if (videoFiles.length > 0) {
+            const formData = new FormData();
+            videoFiles.forEach((file) => formData.append('file', file));
+            const res = await fetch('/api/videos-upload', {
+               method: 'POST',
+               body: formData,
+            });
+            const data = await res.json();
+            playerVideosPublicIds = data.publicIds;
+            form.setValue('videos', playerVideosPublicIds);
+         }
+
+         // Make sure uploads are successful
+         if (
+            !thumbnailPublicId ||
+            !statImagePublicId ||
+            playerVideosPublicIds.length === 0
+         ) {
+            console.log('Upload failed');
+            return;
+         }
+
+         // Submit Form Data
+         startTransition(() => {
+            newPlayer({
+               ...values,
+               thumbnail: thumbnailPublicId,
+               statImage: statImagePublicId,
+               videos: playerVideosPublicIds,
+            }).then((data) => {
+               if (data?.error) {
+                  toast.error(data.error);
+               } else {
+                  toast.success(data?.success);
+               }
+            });
+         });
+      } catch {
+         toast.error('Error during submission');
+      } finally {
+         setThumbnailLoading(false);
+         setStatisticLoading(false);
+         setVideoLoading(false);
       }
    };
 
@@ -213,11 +171,7 @@ const NewPlayersForm = () => {
                   thumbnailRef.current?.click();
                }}
             >
-               <FormImage
-                  selectedImage={urlThumbnail}
-                  name="Thumbnail"
-                  isLoading={thumbnailLoading}
-               />
+               <FormImage selectedImage={urlThumbnail} name="Thumbnail" />
                <input
                   type="file"
                   onChange={(e) => handleThumbnailImage(e)}
@@ -234,11 +188,7 @@ const NewPlayersForm = () => {
                   statRef.current?.click();
                }}
             >
-               <FormImage
-                  selectedImage={urlStatImage}
-                  name="Statistic image"
-                  isLoading={statisticLoading}
-               />
+               <FormImage selectedImage={urlStatImage} name="Statistic image" />
                <input
                   type="file"
                   onChange={(e) => handleStatImage(e)}
@@ -317,7 +267,7 @@ const NewPlayersForm = () => {
                   </div>
                </div>
                <footer className="flex flex-col mt-8">
-                  <Button
+                  <AlertDialogAction
                      className="bg-accent text-primary hover:bg-accent"
                      type="submit"
                      disabled={
@@ -328,12 +278,10 @@ const NewPlayersForm = () => {
                      }
                   >
                      Add
-                  </Button>
+                  </AlertDialogAction>
                   <AlertDialogCancel
-                     // variant="outline"
                      className="hover:bg-secondary transition-colors duration-300"
                      type="button"
-                     onClick={handleCancelButton}
                      disabled={
                         isLoading ||
                         thumbnailLoading ||
