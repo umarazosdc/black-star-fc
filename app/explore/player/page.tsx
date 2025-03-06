@@ -9,6 +9,7 @@ import PlayerUploads from '@/components/explore/player-uploads';
 import Button from '@/components/homepage/button';
 import { auth } from '@/auth';
 import { setDate } from '@/lib/date';
+import RequestPlayerButton from '@/components/auth/request-player-button';
 
 const PlayerOverviewPage = async ({
    searchParams,
@@ -20,8 +21,6 @@ const PlayerOverviewPage = async ({
    const player = await getPlayerById(id as string);
    const session = await auth();
    const isAdmin = session?.user.role === 'admin';
-
-   console.log(session?.user.role);
 
    if (!player) {
       return <div>Player not found</div>;
@@ -60,7 +59,7 @@ const PlayerOverviewPage = async ({
          </div>
          <Wrapper title="Uploads">
             {!(player.videos.length > 0) ? (
-               <p className='text-sm'>No available uploads</p>
+               <p className="text-sm">No available uploads</p>
             ) : (
                <PlayerUploads src={player.videos} />
             )}
@@ -72,9 +71,10 @@ const PlayerOverviewPage = async ({
             </Button>
          ) : (
             <div className="flex flex-col gap-2 items-center text-accent w-full">
-               <Button className="bg-accent text-primary w-full">
-                  Request for Player
-               </Button>
+               <RequestPlayerButton
+                  userId={session?.user.id as string}
+                  playerId={player.id}
+               />
                <Button className="border-2 w-full">Bookmark Player</Button>
             </div>
          )}

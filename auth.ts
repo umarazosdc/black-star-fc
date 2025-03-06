@@ -17,6 +17,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
             token.role = existingUser.role;
             token.city = existingUser.city ?? undefined;
+            token.id = token.sub;
          }
          return token;
       },
@@ -28,6 +29,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                ...session.user,
                role: token.role as string,
                city: token.city as string,
+               id: token.id as string,
             },
          };
       },

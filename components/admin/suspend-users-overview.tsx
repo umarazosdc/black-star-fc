@@ -9,7 +9,7 @@ const SuspendedUserOverview = () => {
    const date = formatDate('2024-01-03');
    return (
       <Wrapper title="Users on suspension">
-         <div className="flex flex-col gap-6 overflow-auto max-h-80 pb-1">
+         <div className="flex flex-col gap-3 overflow-auto max-h-[25rem] pb-1 rounded-md shadow-md border border-secondary">
             {/* Add on click to the take admin to user's page */}
             <SuspendedUser
                src="/imgs/users/scout/dc2.jpg"

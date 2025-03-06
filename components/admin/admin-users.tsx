@@ -8,13 +8,13 @@ const AdminUsers = async () => {
    const userSubset = users.slice(0, 4);
    return (
       <SearchContainer path="/admin/dashboard/users" name="Users">
-         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+         <div className="columns-2 gap-2 space-y-2">
             {userSubset.map((user) => (
                <CldImg
                   key={user.id}
-                  src={user.image as string}
+                  src={user.image ? user.image : 'uploads/images/defaultjpg'}
                   alt={'User image'}
-                  className="h-36"
+                  className="shadow-md rounded-md"
                />
             ))}
          </div>

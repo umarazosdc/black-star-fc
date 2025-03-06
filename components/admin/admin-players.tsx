@@ -8,13 +8,13 @@ const AdminPlayers = async () => {
    const playerSubset = players.slice(0, 4);
    return (
       <SearchContainer path="/admin/dashboard/players" name="Players">
-         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+         <div className="columns-2 gap-2 space-y-2">
             {playerSubset.map((player) => (
                <CldImg
                   key={player.id}
-                  src={player.image}
+                  src={player.thumbnail}
                   alt={'Player image'}
-                  className="h-36"
+                  className="shadow-md rounded-md"
                />
             ))}
          </div>

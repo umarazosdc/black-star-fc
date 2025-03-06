@@ -1,5 +1,8 @@
 import React from 'react';
-import { getTotalUsers, getUserBySearch } from '@/lib/database/queries';
+import {
+   getTotalUsers,
+   getUsersBySearchAndOrder,
+} from '@/lib/database/queries';
 import Wrapper from '@/components/utils/wrapper';
 import SearchFilterBar from '@/components/utils/search-filter-bar';
 import UserList from '@/components/admin/user-list';
@@ -13,22 +16,21 @@ const UsersPage = async ({
 }) => {
    const params = await searchParams;
    const search = params.search || '';
-   const sort = params.sort
+   const sort = params.sort;
 
-  const searchAndSort = (sortBy: string) => {
-     const sortOptions: Record<string, Prisma.UserOrderByWithRelationInput> = {
-        'a-z': { name: 'asc' },
-        newest: { createdAt: 'desc' },
-        oldest: { createdAt: 'asc' },
-        suspended: { status: 'desc' },
-     };
+   const searchAndSort = (sortBy: string) => {
+      const sortOptions: Record<string, Prisma.UserOrderByWithRelationInput> = {
+         'a-z': { name: 'asc' },
+         newest: { createdAt: 'desc' },
+         oldest: { createdAt: 'asc' },
+         suspended: { status: 'desc' },
+      };
 
-     return sortOptions[sortBy] || { name: 'asc' };
-  };
-
+      return sortOptions[sortBy] || { name: 'asc' };
+   };
 
    const orderBy = searchAndSort(sort as string);
-   const users = await getUserBySearch(search as string, orderBy);
+   const users = await getUsersBySearchAndOrder(search as string, orderBy);
    const totalUsers = await getTotalUsers();
    return (
       <Wrapper title="Users">

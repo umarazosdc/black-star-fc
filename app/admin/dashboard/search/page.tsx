@@ -1,7 +1,9 @@
 import AdminPlayers from '@/components/admin/admin-players';
 import AdminUsers from '@/components/admin/admin-users';
+import UserPlayerProfile from '@/components/admin/user-player-profile';
+import UserPlayerProfileSkeleton from '@/components/admin/user-player-profile-skeleton';
 import SearchComponent from '@/components/utils/search-component';
-import React from 'react';
+import React, { Suspense } from 'react';
 
 const AdminSearchPage = async ({
    searchParams,
@@ -9,12 +11,19 @@ const AdminSearchPage = async ({
    searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
    const params = await searchParams;
-   const search = params.search || undefined;
-   console.log(search);
+   const search = params.search || '';
    return (
       <SearchComponent basePath="/admin/dashboard/search">
-         <AdminPlayers />
-         <AdminUsers />
+         {search ? (
+            <Suspense fallback={<UserPlayerProfileSkeleton />}>
+               <UserPlayerProfile search={search as string} />
+            </Suspense>
+         ) : (
+            <Suspense fallback={<UserPlayerProfileSkeleton />}>
+               <AdminPlayers />
+               <AdminUsers />
+            </Suspense>
+         )}
       </SearchComponent>
    );
 };

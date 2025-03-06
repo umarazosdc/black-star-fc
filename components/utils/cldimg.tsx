@@ -1,7 +1,7 @@
-'use client';
-import { cn } from '@/lib/utils';
-import { CldImage } from 'next-cloudinary';
+'use client'
 import React from 'react';
+import { CldImage } from 'next-cloudinary';
+import { cn } from '@/lib/utils';
 
 const CldImg = ({
    src,
@@ -10,9 +10,17 @@ const CldImg = ({
 }: {
    src: string;
    alt: string;
-   className?: string | undefined;
+   className?: string;
 }) => {
-   return <CldImage src={src} alt={alt} className={cn(className)} />;
+   return (
+      <CldImage
+         src={src}
+         alt={alt}
+         height={400}
+         width={400}
+         className={cn(className)}
+      />
+   );
 };
 
 export default CldImg;

@@ -1,6 +1,6 @@
 import React from 'react';
 import UserCard from './user-card';
-import { getUserBySearch } from '@/lib/database/queries';
+import { getUsersBySearchAndOrder } from '@/lib/database/queries';
 import { formatDate } from '@/lib/date';
 import { Prisma } from '@prisma/client';
 
@@ -11,7 +11,7 @@ const UserList = async ({
    search: string | string[];
    orderBy: Prisma.UserOrderByWithRelationInput;
 }) => {
-   const users = await getUserBySearch(search as string, orderBy);
+   const users = await getUsersBySearchAndOrder(search as string, orderBy);
    return (
       <div className="flex flex-col gap-4">
          {users?.map((user) => (

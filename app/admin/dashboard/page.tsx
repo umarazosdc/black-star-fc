@@ -1,21 +1,25 @@
 import PlayersOverview from '@/components/admin/players-overview';
 import ScoutRequest from '@/components/admin/scout-request';
 import SuspendedUserOverview from '@/components/admin/suspend-users-overview';
-import EventStatusBar from '@/components/utils/event-status-bar';
 import GridWrappers from '@/components/utils/grid-wrappers';
 import SearchNotificationBar from '@/components/utils/search-notification-bar';
-import SectionWrapper from '@/components/utils/section-wrapper';
 import StatusCard from '@/components/utils/status-card';
-import { getTotalPlayers, getTotalUsers } from '@/lib/database/queries';
+import {
+   requests,
+   getTotalPlayers,
+   getTotalUsers,
+} from '@/lib/database/queries';
+import { formatDate } from '@/lib/date';
 import Link from 'next/link';
 import React from 'react';
 
 const AdminDashboardPage = async () => {
    const userTotal = await getTotalUsers();
    const playerTotal = await getTotalPlayers();
+   const rqsts = await requests();
    return (
-      <div className="flex flex-col gap-12">
-         <header className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6">
+         <header className="flex flex-col gap-4">
             <p className="text-sm">
                Welcome back, <b>Isa</b>
             </p>
@@ -32,11 +36,24 @@ const AdminDashboardPage = async () => {
                </Link>
             </GridWrappers>
          </header>
-         <main className="flex flex-col gap-8">
-            <SectionWrapper title="Upcoming event" label="Add event" link="#">
-               <EventStatusBar isAdmin />
-            </SectionWrapper>
-            <ScoutRequest />
+         <main className="flex flex-col gap-6">
+            {rqsts.map((rqst, key) => (
+               <ScoutRequest
+                  key={key}
+                  id={rqst.user.id}
+                  name={rqst.user.name}
+                  email={rqst.user.email}
+                  src={rqst.user.image as string}
+                  date={formatDate(String(rqst.user.createdAt))}
+                  playerAge={rqst.player.age}
+                  playerName={
+                     rqst.player.firstname + ' ' + rqst.player.lastname
+                  }
+                  playerImage={rqst.player.image}
+                  playerPosition={rqst.player.position}
+                  userId={rqst.userId}
+               />
+            ))}
             <PlayersOverview />
             <SuspendedUserOverview />
          </main>

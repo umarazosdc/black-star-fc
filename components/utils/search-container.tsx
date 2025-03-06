@@ -19,7 +19,7 @@ const SearchContainer = ({
                <ChevronRightIcon />
             </Link>
          </div>
-         <main className='rounded-md overflow-hidden w-full grid grid-cols-4 gap-0.5'>{children}</main>
+         <main className='rounded-md overflow-hidden w-full'>{children}</main>
       </div>
    );
 };

@@ -1,81 +1,47 @@
 import React from 'react';
 import Wrapper from '../utils/wrapper';
 import UserCard from './user-card';
-import { formatDate } from '@/lib/date';
 import PlayerImage from '../utils/player-image';
 import ScoutRequestsSkeleton from '../skeleton/scout-requests-skeleton';
 
-const ScoutRequest = () => {
-   const date = formatDate('2024-01-03');
+interface Scout {
+   id: string;
+   src: string;
+   name: string;
+   email: string;
+   date: string;
+   playerName: string;
+   playerAge: number;
+   playerImage: string;
+   playerPosition: string;
+   userId:string
+}
+
+const ScoutRequest = ({
+   src,
+   name,
+   email,
+   date,
+   playerAge,
+   playerName,
+   playerImage,
+   playerPosition,
+   userId
+}: Scout) => {
    return (
-      <Wrapper title="Scout requests">
-         <div className="flex flex-col gap-6 overflow-auto max-h-80 pb-1">
-            {/* Add on click to the take admin to user's page */}
+      <Wrapper title="Who requested for players">
+         <div className="flex flex-col gap-3 overflow-auto max-h-[25rem] pb-1 rounded-md shadow-md border border-secondary">
             <UserCard
-               src="/imgs/users/scout/dc2.jpg"
-               name="Michael Jordan"
-               email="j3@air.com"
+               src={src}
+               name={name}
+               email={email}
                date={date}
-               playerName="Lamine Yamal"
+               playerName={playerName}
                isAdminDashboard
-               playersAge={16}
+               playersAge={playerAge}
+               userId={userId}
             >
-               <PlayerImage src="/imgs/players/mal.jpg" position="Winger" />
-            </UserCard>
-            <UserCard
-               src="/imgs/users/scout/dc2.jpg"
-               name="Michael Jordan"
-               email="j3@air.com"
-               date={date}
-               playerName="Lamine Yamal"
-               isAdminDashboard
-               playersAge={16}
-            >
-               <PlayerImage src="/imgs/players/mal.jpg" position="Winger" />
-            </UserCard>
-            <UserCard
-               src="/imgs/users/scout/dc2.jpg"
-               name="Michael Jordan"
-               email="j3@air.com"
-               date={date}
-               playerName="Lamine Yamal"
-               isAdminDashboard
-               playersAge={16}
-            >
-               <PlayerImage src="/imgs/players/mal.jpg" position="Winger" />
-            </UserCard>
-            <UserCard
-               src="/imgs/users/scout/dc2.jpg"
-               name="Michael Jordan"
-               email="j3@air.com"
-               date={date}
-               playerName="Lamine Yamal"
-               isAdminDashboard
-               playersAge={16}
-            >
-               <PlayerImage src="/imgs/players/mal.jpg" position="Winger" />
-            </UserCard>
-            <UserCard
-               src="/imgs/users/scout/dc2.jpg"
-               name="Michael Jordan"
-               email="j3@air.com"
-               date={date}
-               playerName="Lamine Yamal"
-               isAdminDashboard
-               playersAge={16}
-            >
-               <PlayerImage src="/imgs/players/mal.jpg" position="Winger" />
-            </UserCard>
-            <UserCard
-               src="/imgs/users/scout/dc2.jpg"
-               name="Michael Jordan"
-               email="j3@air.com"
-               date={date}
-               playerName="Lamine Yamal"
-               isAdminDashboard
-               playersAge={16}
-            >
-               <PlayerImage src="/imgs/players/mal.jpg" position="Winger" />
+               <PlayerImage src={playerImage} position={playerPosition} />
             </UserCard>
             <ScoutRequestsSkeleton />
          </div>

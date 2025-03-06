@@ -13,7 +13,6 @@ const VideoUpload = ({ src }: { src: string }) => {
             aspect_ratio: '9:16',
             crop: 'fill',
             gravity: 'auto',
-            // width: 5000,
          }}
          logo={false}
       />

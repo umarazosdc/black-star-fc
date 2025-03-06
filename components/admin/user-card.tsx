@@ -13,9 +13,11 @@ import {
    DialogDescription,
 } from '../ui/dialog';
 import Age from '../utils/age';
-import Avatarr from '../utils/avatarr';
 import { removeUserById } from '@/lib/database/queries';
 import { useRouter } from 'next/navigation';
+import CldImg from '../utils/cldimg';
+import { toast } from 'sonner';
+import { updateIsRequested } from '@/lib/actions';
 
 const UserCard = ({
    src,
@@ -27,6 +29,7 @@ const UserCard = ({
    playersAge,
    children,
    id,
+   userId,
 }: {
    src: string | undefined;
    name: string;
@@ -36,24 +39,43 @@ const UserCard = ({
    children?: React.ReactNode;
    playerName?: string;
    playersAge?: number;
-   id: string;
+   id?: string;
+   userId: string;
 }) => {
    const [accept, setAccept] = React.useState<boolean>(false);
 
    const router = useRouter();
 
-   const handleRequest = () => {
-      setAccept(!accept);
+   const handleRequest = async () => {
+      try {
+         const result = await updateIsRequested(
+            id as string,
+            userId,
+            email,
+            name
+         );
+         if (result) {
+            setAccept(result.isRequested);
+            toast.success('Scout request accepted! Check your email!');
+         }
+      } catch (error) {
+         console.log('Failed to accept scout request', error);
+         toast.error('Failed to accept scout request');
+      }
    };
    const handleRemoveUser = async () => {
-      await removeUserById(id);
+      await removeUserById(id as string);
       router.refresh();
    };
    return (
       <div className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md">
          <div className="self-start flex justify-between items-center w-full">
             <div className="flex items-center gap-4">
-               <Avatarr selectedImage={src} className="size-[5rem]" />
+               <CldImg
+                  src={src ? src : 'uploads/images/defaultjpg'}
+                  alt="User image"
+                  className="size-[5rem] rounded-full border"
+               />
                <div className="flex flex-col gap-2">
                   <div className="text-base font-bold tracking-wide truncate w-48">
                      {name}
@@ -71,7 +93,8 @@ const UserCard = ({
                               icon={MailsIcon}
                               className="cursor-pointer"
                            >
-                              Requesting <b>{playerName}</b>
+                              {!accept ? 'Requesting' : 'Requested for'}{' '}
+                              <b>{playerName}</b>
                            </Icontext>
                            <DialogContent>
                               <DialogHeader>
@@ -94,14 +117,7 @@ const UserCard = ({
             </div>
          </div>
          {isAdminDashboard ? (
-            accept ? (
-               <Button
-                  className="self-end bg-red-600 text-primary"
-                  onClick={handleRequest}
-               >
-                  Cancel
-               </Button>
-            ) : (
+            !accept && (
                <div className="self-end flex items-center gap-4">
                   <Button
                      className="bg-emerald-500 text-primary"

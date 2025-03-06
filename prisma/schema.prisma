@@ -103,12 +103,14 @@ model Bookmark {
 }
 
 model Request {
-  id          String  @id @default(uuid())
-  isRequested Boolean @default(false)
-  playerId    String  @unique
-  player      Player  @relation(fields: [playerId], references: [id])
+  id          String   @id @default(uuid())
+  isRequested Boolean  @default(false)
+  playerId    String   @unique
+  player      Player   @relation(fields: [playerId], references: [id])
   userId      String
-  user        User    @relation(fields: [userId], references: [id])
+  updatedAt   DateTime @default(now()) @updatedAt
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 model Notification {
