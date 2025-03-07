@@ -97,20 +97,20 @@ model Bookmark {
   id           String  @id @default(uuid())
   isBookmarked Boolean @default(false)
   playerId     String  @unique
-  player       Player  @relation(fields: [playerId], references: [id])
+  player       Player  @relation(fields: [playerId], references: [id], onDelete: Cascade)
   userId       String
-  user         User    @relation(fields: [userId], references: [id])
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Request {
   id          String   @id @default(uuid())
   isRequested Boolean  @default(false)
   playerId    String   @unique
-  player      Player   @relation(fields: [playerId], references: [id])
+  player      Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
   userId      String
   updatedAt   DateTime @default(now()) @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Notification {
@@ -120,6 +120,6 @@ model Notification {
   date      String
   createdAt DateTime @default(now())
   message   String?
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String   @unique
 }

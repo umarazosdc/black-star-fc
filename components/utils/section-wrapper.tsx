@@ -13,14 +13,14 @@ const SectionWrapper = ({
    children: React.ReactNode;
 }) => {
    return (
-      <div className="flex flex-col gap-4 w-full">
+      <div className="flex flex-col gap-3 w-full">
          <div className="self-start flex items-center justify-between w-full">
             <h2 className="font-bold text-base">{title}</h2>
             <Link href={link} className="text-xs text-accent">
                {label}
             </Link>
          </div>
-         <main className='pb-6'>{children}</main>
+         <main>{children}</main>
       </div>
    );
 };

@@ -33,7 +33,7 @@ const RequestedPlayerCard = ({
                <h2 className="font-bold text-sm">{name}</h2>
                <div className="flex justify-between items-center">
                   <Age age={age} />
-                  <Tag tag="Approved" className="bg-emerald-500 text-primary" />
+                  <Tag tag="Pending" className="bg-orange-500 text-primary" />
                </div>
             </div>
             <Button className="bg-red-500 text-primary w-full">Cancel</Button>

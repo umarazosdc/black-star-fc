@@ -1,18 +1,17 @@
 import { auth } from '@/auth';
 import BookmarkedPlayerCard from '@/components/utils/bookmarked-player-card';
-import EventStatusBar from '@/components/utils/event-status-bar';
 import GridWrappers from '@/components/utils/grid-wrappers';
 import RequestedPlayerCard from '@/components/utils/requested-player-card';
 import SearchNotificationBar from '@/components/utils/search-notification-bar';
 import SectionWrapper from '@/components/utils/section-wrapper';
 import StatusCard from '@/components/utils/status-card';
-import Wrapper from '@/components/utils/wrapper';
 import {
    getBookmarksById,
    getPlayers,
    getPlayersById,
    getTotalBookmarks,
    getTotalRequests,
+   requests,
 } from '@/lib/database/queries';
 import { getAge } from '@/lib/date';
 import Link from 'next/link';
@@ -26,9 +25,10 @@ const DashboardPage = async () => {
    const bookmark = await getBookmarksById(user?.id as string);
    const bookmarkedPlayers = await getPlayersById(bookmark?.playerId as string);
    const suggestedPlayers = await getPlayers();
+   const requestedPlayers = await requests();
 
    return (
-      <div className="flex flex-col gap-12">
+      <div className="flex flex-col gap-6">
          <header className="flex flex-col gap-6">
             <p className="text-sm">
                Welcome back, <b>{user?.name?.split(' ').slice(-1)}</b>
@@ -47,15 +47,15 @@ const DashboardPage = async () => {
             </GridWrappers>
          </header>
          <main className="flex flex-col gap-6">
-            <Wrapper title="Upcoming event">
+            {/* <Wrapper title="Upcoming event">
                <EventStatusBar />
-            </Wrapper>
+            </Wrapper> */}
             <SectionWrapper title="Suggested Players" link="#" label="View all">
-               <div className="flex items-center gap-6 overflow-auto pb-1">
+               <div className="flex items-center gap-3 overflow-auto pb-1">
                   {!(suggestedPlayers.length > 0) ? (
                      <p className="text-sm">
-                        We scout for the best players. We&#39;ll add players
-                        soon...
+                        We&#39;re scouting for the best players. We&#39;ll add
+                        players soon...
                      </p>
                   ) : (
                      suggestedPlayers.map((player, key) => (
@@ -73,28 +73,20 @@ const DashboardPage = async () => {
                </div>
             </SectionWrapper>
             <SectionWrapper title="Requested players" link="#" label="View all">
-               <div className="flex items-center gap-6 overflow-auto pb-1">
-                  <RequestedPlayerCard
-                     name="Lamine Yamal"
-                     age={17}
-                     position="Winger"
-                     src="/imgs/players/mal.jpg"
-                     className="w-[10.5rem]"
-                  />
-                  <RequestedPlayerCard
-                     name="Lamine Yamal"
-                     age={17}
-                     position="Winger"
-                     src="/imgs/players/mal.jpg"
-                     className="w-[10.5rem]"
-                  />
-                  <RequestedPlayerCard
-                     name="Lamine Yamal"
-                     age={17}
-                     position="Winger"
-                     src="/imgs/players/mal.jpg"
-                     className="w-[10.5rem]"
-                  />
+               <div className="flex items-center gap-3 overflow-auto pb-1">
+                  {requestedPlayers.map((requestedPlayer, key) => (
+                     <RequestedPlayerCard
+                        key={key}
+                        name={
+                           requestedPlayer.player.firstname +
+                           ' ' +
+                           requestedPlayer.player.lastname
+                        }
+                        position={requestedPlayer.player.position}
+                        src={requestedPlayer.player.image}
+                        age={requestedPlayer.player.age}
+                     />
+                  ))}
                </div>
             </SectionWrapper>
             <SectionWrapper
@@ -102,7 +94,7 @@ const DashboardPage = async () => {
                link="#"
                label="View all"
             >
-               <div className="flex items-center gap-6 overflow-auto pb-1">
+               <div className="flex items-center gap-3 overflow-auto pb-1">
                   {!(bookmarkedPlayers.length > 0) ? (
                      <p className="text-sm">
                         Haven&lsquo;t yet bookmarked players
