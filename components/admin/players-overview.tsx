@@ -1,54 +1,32 @@
 import React from 'react';
-import AdminPlayersSkeleton from '../skeleton/admin-players-skeleton';
 import PlayerCard from './player-card';
 import SectionWrapper from '../utils/section-wrapper';
+import { getPlayers } from '@/lib/database/queries';
+import { auth } from '@/auth';
+import { getAge } from '@/lib/date';
 
-const PlayersOverview = () => {
+const PlayersOverview = async () => {
+   const session = await auth();
+   const user = session?.user;
+   const players = await getPlayers(user?.id as string);
    return (
       <SectionWrapper
          title="Players"
          label="Add player"
          link="/admin/dashboard/new"
       >
-         <div className="flex flex-col gap-3 overflow-auto max-h-[25rem] pb-1 rounded-md shadow-md border border-secondary">
-            {/* Add on click to the take admin to user's page */}
-            <PlayerCard
-               src="/imgs/players/player.jpg"
-               name="Ahmed Abdullahi"
-               position="Striker"
-               age={16}
-            />
-            <PlayerCard
-               src="/imgs/players/player.jpg"
-               name="Ahmed Abdullahi"
-               position="Striker"
-               age={16}
-            />
-            <PlayerCard
-               src="/imgs/players/player.jpg"
-               name="Ahmed Abdullahi"
-               position="Striker"
-               age={16}
-            />
-            <PlayerCard
-               src="/imgs/players/player.jpg"
-               name="Ahmed Abdullahi"
-               position="Striker"
-               age={16}
-            />
-            <PlayerCard
-               src="/imgs/players/player.jpg"
-               name="Ahmed Abdullahi"
-               position="Striker"
-               age={16}
-            />
-            <PlayerCard
-               src="/imgs/players/player.jpg"
-               name="Ahmed Abdullahi"
-               position="Striker"
-               age={16}
-            />
-            <AdminPlayersSkeleton />
+         <div className="flex flex-col gap-3 overflow-auto max-h-[25rem] rounded-md shadow-md border border-secondary">
+            {players.map((player, key) => (
+               <PlayerCard
+                  key={key}
+                  src={[player.image]}
+                  name={player.firstname + ' ' + player.lastname}
+                  position={player.position}
+                  age={getAge(player.dob)}
+                  videos={player.videos}
+                  id={player.id}
+               />
+            ))}
          </div>
       </SectionWrapper>
    );

@@ -14,10 +14,13 @@ const CldImg = ({
 }) => {
    return (
       <CldImage
-         src={src}
+         src={src ? src : 'uploads/images/defaultjpg'}
          alt={alt}
          height={400}
          width={400}
+         loading="lazy"
+         crop="thumb"
+         gravity="face"
          className={cn(className)}
       />
    );

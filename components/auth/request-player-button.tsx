@@ -15,8 +15,12 @@ const RequestPlayerButton = ({
       try {
          await requestPlayer(userId, playerId);
          toast.success('Successfully sent a request');
-      } catch {
-         toast.error('Failed to request player');
+      } catch (error){
+         if (error instanceof Error) {
+            toast.error(error.message);
+         } else {
+            toast.error('An unknown error occurred');
+         }
       }
    };
    return (

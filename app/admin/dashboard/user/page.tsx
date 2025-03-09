@@ -8,27 +8,35 @@ import {
 import React from 'react';
 import Wrapper from '@/components/utils/wrapper';
 import Icontext from '@/components/utils/icontext';
-import { formatDate } from '@/lib/date';
 import SectionWrapper from '@/components/utils/section-wrapper';
 import BookmarkedPlayerCard from '@/components/utils/bookmarked-player-card';
 import RequestedPlayerCard from '@/components/utils/requested-player-card';
 import Button from '@/components/utils/button';
-import Avatarr from '@/components/utils/avatarr';
+import CldImg from '@/components/utils/cldimg';
+import { getUserById } from '@/lib/database/queries';
 
-const UserAboutPage = () => {
-   const date = formatDate('2017-06-01');
+interface UserProps {
+   searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+const UserAboutPage = async ({ searchParams }: UserProps) => {
+   const params = await searchParams;
+   const id = params.id || undefined
+   const user = await getUserById(id as string);
+
    return (
       <div className="flex flex-col gap-6 min-h-full">
-         <div className="h-[85px] absolute inset-0 bg-card border-b" />
+         <div className="h-[85px] absolute inset-0 bg-card border-b z-0" />
          <div className="mt-[20px]">
-            <Avatarr
-               selectedImage="/imgs/users/scout/dc2.jpg"
-               className="size-[80px] p-1 border-2"
+            <CldImg
+               src={user?.image as string}
+               alt="Scout image"
+               className="size-20 rounded-full p-1 border-2"
             />
          </div>
 
          <div className="space-y-2">
-            <h2 className="text-xl font-bold tracking-wide">Michael Jordan</h2>
+            <h2 className="text-xl font-bold tracking-wide">{user?.name}</h2>
             <div className="flex items-center gap-3 text-sm">
                <div className="flex gap-1.5">
                   <span className="font-bold">6</span>

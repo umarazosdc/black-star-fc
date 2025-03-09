@@ -56,14 +56,14 @@ model Stats {
 }
 
 model Player {
-  id          String    @id @default(cuid())
+  id          String     @id @default(cuid())
   firstname   String
   lastname    String
   thumbnail   String
   image       String
   age         Int
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   videos      String[]
   side        String
   position    String
@@ -72,8 +72,8 @@ model Player {
   nationality String
   dob         String
   stats       Stats?
-  bookmarked  Bookmark?
-  requested   Request?
+  bookmarked  Bookmark[]
+  requested   Request[]
 }
 
 model PreUploadedPlayer {

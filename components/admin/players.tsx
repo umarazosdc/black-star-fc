@@ -6,9 +6,11 @@ import { PlusIcon } from 'lucide-react';
 import PlayerCard from './player-card';
 import { getPlayers } from '@/lib/database/queries';
 import { getAge } from '@/lib/date';
+import { auth } from '@/auth';
 
 const Players = async () => {
-   const players = await getPlayers();
+   const session = await auth()
+   const players = await getPlayers(session?.user.id as string);
    return (
       <Wrapper title="Players">
          <div className="flex flex-col gap-4">

@@ -6,6 +6,9 @@ declare module 'next-auth' {
          role?: string;
          city?: string;
          id?: string;
+         image?: string;
+         email?: string;
+         name?: string;
          supabaseAccessToken?: string;
       } & DefaultSession['user'];
    }
@@ -14,6 +17,9 @@ declare module 'next-auth' {
       role?: string;
       city?: string;
       id?: string;
+      image?: string;
+      email?: string;
+      name?: string;
       supabaseAccessToken?: string;
    }
 }
@@ -23,6 +29,9 @@ declare module 'next-auth/jwt' {
       role?: string;
       city?: string;
       id?: string;
+      image?: string;
+      email?: string;
+      name?: string;
       supabaseAccessToken?: string;
    }
 }

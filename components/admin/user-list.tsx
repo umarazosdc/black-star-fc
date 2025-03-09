@@ -22,6 +22,7 @@ const UserList = async ({
                src={user.image ?? ''}
                email={user.email}
                date={formatDate(String(user.createdAt))}
+               
             />
          ))}
       </div>

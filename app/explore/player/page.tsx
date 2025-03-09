@@ -1,6 +1,10 @@
 import React from 'react';
 
-import { getPlayerById, getStatsById } from '@/lib/database/queries';
+import {
+   getPlayerById,
+   getStatsById,
+   hasUserRequestedPlayer,
+} from '@/lib/database/queries';
 import ImageAndStats from '@/components/explore/image-stats';
 import { DotIcon } from 'lucide-react';
 import PlayerDetails from '@/components/explore/player-details';
@@ -21,6 +25,10 @@ const PlayerOverviewPage = async ({
    const player = await getPlayerById(id as string);
    const session = await auth();
    const isAdmin = session?.user.role === 'admin';
+   const hasRequestedPlayer = await hasUserRequestedPlayer(
+      session?.user.id as string,
+      id as string
+   );
 
    if (!player) {
       return <div>Player not found</div>;
@@ -69,11 +77,15 @@ const PlayerOverviewPage = async ({
             <Button className="bg-red-500 text-primary mx-auto w-full">
                Remove player
             </Button>
+         ) : hasRequestedPlayer ? (
+            <Button className="border-2 w-full" disabled>
+               Already requested for player
+            </Button>
          ) : (
             <div className="flex flex-col gap-2 items-center text-accent w-full">
                <RequestPlayerButton
                   userId={session?.user.id as string}
-                  playerId={player.id}
+                  playerId={id as string}
                />
                <Button className="border-2 w-full">Bookmark Player</Button>
             </div>

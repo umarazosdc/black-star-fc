@@ -2,9 +2,11 @@ import React from 'react';
 import SearchContainer from '@/components/utils/search-container';
 import { getPlayers } from '@/lib/database/queries';
 import CldImg from '@/components/utils/cldimg';
+import { auth } from '@/auth';
 
 const AdminPlayers = async () => {
-   const players = await getPlayers();
+   const session = await auth();
+   const players = await getPlayers(session?.user.id as string);
    const playerSubset = players.slice(0, 4);
    return (
       <SearchContainer path="/admin/dashboard/players" name="Players">

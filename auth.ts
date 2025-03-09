@@ -18,6 +18,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             token.role = existingUser.role;
             token.city = existingUser.city ?? undefined;
             token.id = token.sub;
+            token.image = existingUser.image ?? undefined;
+            token.email = existingUser.email;
+            token.name = existingUser.name;
          }
          return token;
       },
@@ -30,6 +33,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                role: token.role as string,
                city: token.city as string,
                id: token.id as string,
+               image: token.image as string,
+               email: token.email as string,
+               name: token.name as string,
             },
          };
       },

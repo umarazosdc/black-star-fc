@@ -1,19 +1,22 @@
 import { PencilIcon } from 'lucide-react';
 import React from 'react';
-import Avatarr from './avatarr';
 import Link from 'next/link';
+import CldImg from './cldimg';
+import useSessionHook from '@/lib/hook/use-session';
 
 const SheetHeader = () => {
+   const user = useSessionHook();
    return (
       <div className="flex justify-between items-center py-4 border-b">
          <div className="flex items-center gap-4 w-full">
-            <Avatarr
-               selectedImage="/imgs/users/scout/dc.jpg"
-               className="border"
+            <CldImg
+               src={user?.image ? user.image : 'uploads/images/defaultjpg'}
+               alt="User image"
+               className="rounded-full size-10 border"
             />
             <div className="flex flex-col items-start gap-1 w-full overflow-hidden">
-               <h2 className="font-bold text-sm">Umar Isa</h2>
-               <p className="text-xs opacity-70">malamisa360@gmail.com</p>
+               <h2 className="font-bold text-sm">{user?.name}</h2>
+               <p className="text-xs opacity-70">{user?.email}</p>
             </div>
          </div>
          <Link

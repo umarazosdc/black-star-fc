@@ -8,8 +8,8 @@ import { getAge } from '@/lib/date';
 import { auth } from '@/auth';
 
 const ExplorePlayers = async () => {
-   const players = await getPlayers();
    const session = await auth();
+   const players = await getPlayers(session?.user.id as string);
 
    const isAdmin = session?.user.role == 'admin';
 
@@ -32,17 +32,24 @@ const ExplorePlayers = async () => {
             />
             <SearchFilter />
             <GridWrappers>
-               {players.map((player, key) => (
-                  <BookmarkedPlayerCard
-                     key={key}
-                     src={player.image}
-                     position={player.position}
-                     name={player.firstname + ' ' + player.lastname}
-                     age={getAge(player.dob)}
-                     isAdmin={isAdmin}
-                     id={player.id}
-                  />
-               ))}
+               {!(players.length > 0) ? (
+                  <p className="text-muted-foreground text-sm">
+                     We&#39;re scouting for the best players. We&#39;ll add
+                     players soon...
+                  </p>
+               ) : (
+                  players.map((player, key) => (
+                     <BookmarkedPlayerCard
+                        key={key}
+                        src={player.image}
+                        position={player.position}
+                        name={player.firstname + ' ' + player.lastname}
+                        age={getAge(player.dob)}
+                        isAdmin={isAdmin}
+                        id={player.id}
+                     />
+                  ))
+               )}
             </GridWrappers>
          </main>
       </div>

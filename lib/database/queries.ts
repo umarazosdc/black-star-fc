@@ -17,6 +17,13 @@ export const getUsers = cache(async () => {
 });
 
 export const requestPlayer = cache(async (userId: string, playerId: string) => {
+   const existingRequest = await db.request.findUnique({
+      where: { playerId },
+   });
+
+   if (existingRequest) {
+      throw new Error('Player has already been requested');
+   }
    return await db.request.create({
       data: {
          playerId,
@@ -24,6 +31,32 @@ export const requestPlayer = cache(async (userId: string, playerId: string) => {
       },
    });
 });
+export const getRequestedPlayersById = cache(async (userId: string) => {
+   return await db.request.findMany({
+      where: { userId },
+      include: { player: true },
+   });
+});
+
+export const getBookmarkedPlayersById = cache(async (userId: string) => {
+   return await db.bookmark.findMany({
+      where: { userId },
+      include: { player: true },
+   });
+});
+
+export const hasUserRequestedPlayer = cache(
+   async (userId: string, playerId: string) => {
+      const request = await db.request.findFirst({
+         where: {
+            userId,
+            playerId,
+         },
+      });
+
+      return !!request; // Returns true if a request exists, false otherwise
+   }
+);
 
 export const requests = cache(async () => {
    return await db.request.findMany({
@@ -104,16 +137,34 @@ export const getTotalBookmarks = cache(async () => {
    return await db.bookmark.count();
 });
 
+export const getScoutTotalBookmarks = cache(async (id: string) => {
+   return await db.bookmark.count({ where: { userId: id } });
+});
+
 export const getTotalRequests = cache(async () => {
    return await db.request.count();
+});
+
+export const getScoutTotalRequests = cache(async (id: string) => {
+   return await db.request.count({ where: { userId: id } });
 });
 
 export const getTotalPlayers = async () => {
    return await db.player.count();
 };
 
-export const getPlayers = cache(async () => {
-   return await db.player.findMany();
+export const getPlayers = cache(async (userId: string) => {
+   return await db.player.findMany({
+      where: {
+         NOT: {
+            OR: [
+               { bookmarked: { some: { userId } } }, // Exclude bookmarked players
+               { requested: { some: { userId } } }, // Exclude requested players
+            ],
+         },
+      },
+      orderBy: { createdAt: 'asc' },
+   });
 });
 
 export const getPlayersById = cache(async (id: string) => {
@@ -137,7 +188,7 @@ export const removeUserById = cache(async (id: string) => {
 });
 
 export const getStatsById = cache(async (id: string) => {
-   return await db.stats.findUnique({ where: { id } });
+   return await db.stats.findUnique({ where: { playerId: id } });
 });
 
 export const toggleBookmark = cache(

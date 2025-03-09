@@ -28,7 +28,7 @@ const BookmarkedPlayerCard = ({
    const [bookmarkStatus, setBookmarkStatus] = React.useState<boolean>();
    const session = useSessionHook();
    const userId = session?.id;
-   
+
    const handleBookmark = async (e: React.MouseEvent<SVGElement>) => {
       e.preventDefault();
 

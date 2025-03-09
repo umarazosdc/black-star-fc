@@ -36,13 +36,14 @@ const ImageAndStats = ({
             <CldImage
                src={src}
                alt="Player"
-               className="z-40 size-[283px]"
+               className="z-40 size-[283px] absolute top-0 left-0"
                width={200}
                height={100}
+               loading="lazy"
                removeBackground
             />
-            <div className="absolute top-3 left-1/2 -translate-x-1/2 size-36 bg-black/25 blur-xl rounded-full z-0" />
-            <div className="absolute h-[284px] w-[283px] bg-gradient-to-b from-blue-500/0 to-primary to-95% from-60% z-40 top-0" />
+            <div className="absolute top-3 left-1/2 -translate-x-1/2 size-36 bg-black/25 blur-xl rounded-full z-10" />
+            <div className="absolute h-[284px] w-[283px] bg-gradient-to-b from-blue-500/0 to-primary to-95% from-60% z-50 top-0" />
          </div>
 
          <Stat

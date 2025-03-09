@@ -21,6 +21,9 @@ const PlayerImage = ({
             className="rounded-md"
             width={400}
             height={400}
+            loading="lazy"
+            crop="thumb"
+            gravity="face"
          />
          <span
             className={`w-16 text-[0.7rem] flex items-center justify-center bg-card absolute bottom-4 right-0 text-accent uppercase font-extrabold leading-none pb-1 pt-1.5 z-30 rounded-l-sm ${bowlby.className}`}

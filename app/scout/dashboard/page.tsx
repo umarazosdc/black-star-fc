@@ -6,12 +6,11 @@ import SearchNotificationBar from '@/components/utils/search-notification-bar';
 import SectionWrapper from '@/components/utils/section-wrapper';
 import StatusCard from '@/components/utils/status-card';
 import {
-   getBookmarksById,
+   getBookmarkedPlayersById,
    getPlayers,
-   getPlayersById,
-   getTotalBookmarks,
-   getTotalRequests,
-   requests,
+   getRequestedPlayersById,
+   getScoutTotalBookmarks,
+   getScoutTotalRequests,
 } from '@/lib/database/queries';
 import { getAge } from '@/lib/date';
 import Link from 'next/link';
@@ -20,12 +19,15 @@ import React from 'react';
 const DashboardPage = async () => {
    const session = await auth();
    const user = session?.user;
-   const totalBookmarks = await getTotalBookmarks();
-   const totalRequests = await getTotalRequests();
-   const bookmark = await getBookmarksById(user?.id as string);
-   const bookmarkedPlayers = await getPlayersById(bookmark?.playerId as string);
-   const suggestedPlayers = await getPlayers();
-   const requestedPlayers = await requests();
+   const totalBookmarks = await getScoutTotalBookmarks(user?.id as string);
+   const totalRequests = await getScoutTotalRequests(user?.id as string);
+   const bookmarkedPlayers = await getBookmarkedPlayersById(
+      session?.user.id as string
+   );
+   const suggestedPlayers = await getPlayers(session?.user.id as string);
+   const requestedPlayers = await getRequestedPlayersById(
+      session?.user.id as string
+   );
 
    return (
       <div className="flex flex-col gap-6">
@@ -53,7 +55,7 @@ const DashboardPage = async () => {
             <SectionWrapper title="Suggested Players" link="#" label="View all">
                <div className="flex items-center gap-3 overflow-auto pb-1">
                   {!(suggestedPlayers.length > 0) ? (
-                     <p className="text-sm">
+                     <p className="text-sm text-muted-foreground">
                         We&#39;re scouting for the best players. We&#39;ll add
                         players soon...
                      </p>
@@ -74,19 +76,27 @@ const DashboardPage = async () => {
             </SectionWrapper>
             <SectionWrapper title="Requested players" link="#" label="View all">
                <div className="flex items-center gap-3 overflow-auto pb-1">
-                  {requestedPlayers.map((requestedPlayer, key) => (
-                     <RequestedPlayerCard
-                        key={key}
-                        name={
-                           requestedPlayer.player.firstname +
-                           ' ' +
-                           requestedPlayer.player.lastname
-                        }
-                        position={requestedPlayer.player.position}
-                        src={requestedPlayer.player.image}
-                        age={requestedPlayer.player.age}
-                     />
-                  ))}
+                  {!(requestedPlayers.length > 0) ? (
+                     <p className="text-sm text-muted-foreground">
+                        You haven&#39;t yet requested for player...
+                     </p>
+                  ) : (
+                     requestedPlayers.map((requestedPlayer, key) => (
+                        <RequestedPlayerCard
+                           key={key}
+                           name={
+                              requestedPlayer.player.firstname +
+                              ' ' +
+                              requestedPlayer.player.lastname
+                           }
+                           position={requestedPlayer.player.position}
+                           src={requestedPlayer.player.image}
+                           age={requestedPlayer.player.age}
+                           id={requestedPlayer.playerId}
+                           className="w-[10.5rem]"
+                        />
+                     ))
+                  )}
                </div>
             </SectionWrapper>
             <SectionWrapper
@@ -96,18 +106,22 @@ const DashboardPage = async () => {
             >
                <div className="flex items-center gap-3 overflow-auto pb-1">
                   {!(bookmarkedPlayers.length > 0) ? (
-                     <p className="text-sm">
-                        Haven&lsquo;t yet bookmarked players
+                     <p className="text-sm text-muted-foreground">
+                        You haven&lsquo;t yet bookmarked player...
                      </p>
                   ) : (
                      bookmarkedPlayers.map((player, key) => (
                         <BookmarkedPlayerCard
                            key={key}
-                           src={player.image}
-                           position={player.position}
-                           name={player.firstname + ' ' + player.lastname}
-                           age={getAge(player.dob)}
-                           id={player.id}
+                           src={player.player.image}
+                           position={player.player.position}
+                           name={
+                              player.player.firstname +
+                              ' ' +
+                              player.player.lastname
+                           }
+                           age={getAge(player.player.dob)}
+                           id={player.player.id}
                            className="w-[10.5rem]"
                         />
                      ))

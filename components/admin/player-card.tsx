@@ -57,6 +57,9 @@ const PlayerCard = ({
                   className="rounded-full size-[5.5rem]"
                   width={400}
                   height={400}
+                  loading="lazy"
+                  crop="thumb"
+                  gravity="face"
                />
                <div className="flex flex-col gap-2">
                   <div className="text-base font-bold tracking-wide">
