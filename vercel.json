@@ -1,7 +1,8 @@
 {
   "build": {
     "env": {
-      "NEXT_PUBLIC_PRISMA_GENERATE": "true"
+      "NEXT_PUBLIC_PRISMA_GENERATE": "true",
+      "PRISMA_GENERATE": "true"
     }
   }
 }

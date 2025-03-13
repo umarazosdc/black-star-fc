@@ -2,7 +2,7 @@
 import { z } from "zod";
 import { LoginSchema, PlayerSchema, RegisterSchema } from "./schema";
 import { getPreUploadedPlayers, getUserByEmail } from "./database/queries";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import { db } from "@/lib/prisma";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
