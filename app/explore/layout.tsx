@@ -5,7 +5,7 @@ const ExploreLayout = ({ children }: { children: React.ReactNode }) => {
    return (
       <div className="min-h-screen flex flex-col">
          <Sidebar />
-         <main className="flex-grow mt-12 px-4">{children}</main>
+         <main className="flex-grow mt-4 px-4">{children}</main>
       </div>
    );
 };

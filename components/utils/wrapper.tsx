@@ -11,7 +11,7 @@ const Wrapper = ({
    children: React.ReactNode;
 }) => {
    return (
-      <div className={cn('flex flex-col space-y-4 w-full', className)}>
+      <div className={cn('flex flex-col space-y-3 w-full', className)}>
          <h2 className="self-start text-base font-bold">{title}</h2>
          <main className="self-start w-full">{children}</main>
       </div>
