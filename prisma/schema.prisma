@@ -30,39 +30,40 @@ enum Preference {
 }
 
 model User {
-  id                 String        @id @default(uuid())
-  email              String        @unique
+  id                 String         @id @default(uuid())
+  email              String         @unique
   name               String
   image              String?
   password           String?
   bio                String?
   state              String?
   phone              Int?
-  preference         Preference    @default(forward)
-  isSuspended        Boolean       @default(false)
+  preference         Preference     @default(forward)
+  isSuspended        Boolean        @default(false)
   suspendedUntil     DateTime?
-  createdAt          DateTime      @default(now())
-  updatedAt          DateTime      @updatedAt
-  role               UserRole      @default(scout)
-  isOnboardingPassed Boolean       @default(false)
-  status             UserStatus    @default(active)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  role               UserRole       @default(scout)
+  isOnboardingPassed Boolean        @default(false)
+  status             UserStatus     @default(active)
   bookmarks          Bookmark[]
   requests           Request[]
-  notification       Notification?
+  notification       Notification[]
 }
 
 model Stats {
-  id                  String             @id @default(uuid())
+  id                  String  @id @default(uuid())
   speed               Int
   dribble             Int
   pass                Int
   pace                Int
   defence             Int
   shot                Int
-  player              Player?            @relation(fields: [playerId], references: [id], onDelete: Cascade)
-  playerId            String?            @unique
-  preUploadedPlayer   PreUploadedPlayer? @relation(fields: [preUploadedPlayerId], references: [id], onDelete: Cascade)
-  preUploadedPlayerId String?            @unique
+  playerId            String? @unique
+  preUploadedPlayerId String? @unique
+
+  player            Player?            @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  preUploadedPlayer PreUploadedPlayer? @relation(fields: [preUploadedPlayerId], references: [id], onDelete: Cascade)
 }
 
 model Player {
@@ -106,30 +107,34 @@ model PreUploadedPlayer {
 model Bookmark {
   id           String  @id @default(uuid())
   isBookmarked Boolean @default(false)
-  playerId     String  @unique
-  player       Player  @relation(fields: [playerId], references: [id], onDelete: Cascade)
   userId       String
-  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  playerId     String
+
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, userId]) // Ensures a user can bookmark a player only once
 }
 
 model Request {
   id          String   @id @default(uuid())
   isRequested Boolean  @default(false)
-  playerId    String   @unique
-  player      Player   @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  playerId    String
   userId      String
   updatedAt   DateTime @default(now()) @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  player Player @relation(fields: [playerId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([playerId, userId]) // Ensures a user can request a player only once
 }
 
 model Notification {
   id        String   @id @default(uuid())
   title     String
-  venue     String
-  date      String
   createdAt DateTime @default(now())
   message   String?
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String   @unique
+  userId    String
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

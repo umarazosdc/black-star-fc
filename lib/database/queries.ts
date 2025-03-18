@@ -16,7 +16,7 @@ export const getUsers = cache(async () => {
   return await db.user.findMany();
 });
 
-export const requestPlayer = cache(async (userId: string, playerId: string) => {
+export const requestPlayer = async (userId: string, playerId: string) => {
   const existingRequest = await db.request.findUnique({
     where: { playerId },
   });
@@ -30,7 +30,8 @@ export const requestPlayer = cache(async (userId: string, playerId: string) => {
       userId,
     },
   });
-});
+};
+
 export const getRequestedPlayersById = cache(async (userId: string) => {
   return await db.request.findMany({
     where: { userId },
@@ -103,6 +104,16 @@ export const getPlayersBySearch = cache(async (search: string) => {
 export const getNotification = cache(async () => {
   return await db.notification.findMany();
 });
+
+export const adminOnlyNotification = cache(async()=>{
+  return await db.notification.findMany({where:{
+    NOT: {
+      title: {
+        
+      }
+    }
+  }})
+})
 
 export const getUsersBySearchAndOrder = cache(
   async (search: string, orderBy: Prisma.UserOrderByWithRelationInput) => {

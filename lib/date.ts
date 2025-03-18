@@ -6,13 +6,12 @@ export const formatDate = (dateString: string) => {
   }).format(date);
 };
 
-export const dayAndYear = (dateString: Date) => {
+export const suspendedSince = (suspendUntill: Date) => {
+  const since = suspendUntill.setDate(suspendUntill.getDate() - 3);
   const now = new Date();
-  const date = new Date(dateString);
+  const date = new Date(since);
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
 
-
-  
   if (diffInSeconds < 60) {
     return "Just now";
   } else if (diffInSeconds < 3600) {
@@ -24,9 +23,9 @@ export const dayAndYear = (dateString: Date) => {
   } else if (diffInSeconds < 172800) {
     return "Yesterday";
   } else if (diffInSeconds < 259200) {
-    return "Two days ago";
+    return "2 days";
   } else if (diffInSeconds < 345600) {
-    return "Three days ago";
+    return "3d";
   } else {
     return date.toLocaleDateString(); // Default for anything beyond 3 days
   }

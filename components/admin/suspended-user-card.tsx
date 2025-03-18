@@ -4,6 +4,7 @@ import { Clock3Icon, MailIcon } from "lucide-react";
 import CancelSuspensionButton from "./cancel-suspension-button";
 import DeleteUserButton from "./delete-user-button";
 import CldImg from "../utils/cldimg";
+import Link from "next/link";
 
 const SuspendedUserCard = ({
   src,
@@ -19,7 +20,7 @@ const SuspendedUserCard = ({
   userId: string;
 }) => {
   return (
-    <div className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md">
+    <Link className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md" href={`/admin/dashboard/user?id=${userId}`}>
       <div className="self-start flex justify-between items-center w-full">
         <div className="flex items-center gap-4">
           <CldImg
@@ -43,7 +44,7 @@ const SuspendedUserCard = ({
         <CancelSuspensionButton userId={userId} />
         <DeleteUserButton userId={userId} />
       </div>
-    </div>
+    </Link>
   );
 };
 

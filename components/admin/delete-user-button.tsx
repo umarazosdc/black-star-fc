@@ -15,21 +15,25 @@ const DeleteUserButton = ({
 }) => {
   const router = useRouter();
 
-  const handleUserDeletion = async () => {
+  const handleUserDeletion = async (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    event.preventDefault();
+    const toastId = toast.loading("Deleting user...");
     try {
       await removeUserById(userId);
       router.refresh();
-      toast.success("Delete user.");
+      toast.success("Delete user.", { id: toastId });
     } catch (error) {
       console.log("Failed to delete user", error);
-      toast.error("Failed to delete user");
+      toast.error("Failed to delete user", { id: toastId });
     }
   };
   return (
     <Button
       className={cn(className)}
       style={{ background: "red" }}
-      onClick={handleUserDeletion}
+      onClick={(e) => handleUserDeletion(e)}
     >
       Delete
     </Button>

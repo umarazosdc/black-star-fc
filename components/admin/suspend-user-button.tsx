@@ -16,13 +16,14 @@ const SuspendUserButton = ({
   const router = useRouter();
 
   const handleUserSuspension = async () => {
+    const toastId = toast.loading("Suspending user...");
     try {
       await suspendUser(userId, 3);
       router.refresh();
-      toast.success("Suspended user.");
+      toast.success("Suspended user.", { id: toastId });
     } catch (error) {
       console.log("Failed to suspend user", error);
-      toast.error("Failed to suspend user.");
+      toast.error("Failed to suspend user.", { id: toastId });
     }
   };
   return (

@@ -6,15 +6,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form } from "@/components/ui/form";
 import FlexAligned from "../utils/flex-aligned";
-import { newPlayer } from "@/lib/validations";
+import { editPlayer } from "@/lib/validations";
 import PlayerStat from "../admin/player-stat";
-import FormInputField from "./form-input-field";
-import FormCalendar from "./form-calendar";
-import FormPosition from "./form-position";
-import FormSide from "./form-side";
-import FormHeight from "./form-height";
-import FormWeight from "./form-weight";
-import FormImage from "./form-image";
 import { Input } from "../ui/input";
 import { stats } from "@/lib/data";
 import {
@@ -22,21 +15,42 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
+import FormImage from "../explore/form-image";
+import FormInputField from "../explore/form-input-field";
+import FormPosition from "../explore/form-position";
+import FormWeight from "../explore/form-weight";
+import FormSide from "../explore/form-side";
+import FormHeight from "../explore/form-height";
+import FormCalendar from "../explore/form-calendar";
+import { Player, Stats } from "@prisma/client";
 
-const NewPlayersForm = () => {
+const EditPlayerForm = ({
+  player,
+  playerStats,
+}: {
+  player: Player;
+  playerStats: Stats;
+}) => {
   const form = useForm<z.infer<typeof PlayerSchema>>({
     defaultValues: {
-      firstname: "",
-      lastname: "",
-      side: "",
-      position: "",
-      height: 0,
-      weight: 0,
-      dob: new Date(),
-      statImage: "",
-      thumbnail: "",
-      videos: [""],
-      // stats: { spd: 0, sho: 0, def: 0, dri: 0, pac: 0, pas: 0 },
+      firstname: player.firstname,
+      lastname: player.lastname,
+      side: player.side,
+      position: player.position,
+      height: player.height,
+      weight: player.weight,
+      dob: new Date(player.dob),
+      statImage: player.image,
+      thumbnail: player.thumbnail,
+      videos: player.videos,
+      stats: {
+        spd: playerStats.speed,
+        sho: playerStats.shot,
+        def: playerStats.defence,
+        dri: playerStats.dribble,
+        pac: playerStats.pace,
+        pas: playerStats.pass,
+      },
     },
     resolver: zodResolver(PlayerSchema),
   });
@@ -94,7 +108,7 @@ const NewPlayersForm = () => {
 
   const handlePlayerSubmit = async (values: z.infer<typeof PlayerSchema>) => {
     const toastId = toast.loading(
-      `Adding ${values.firstname + " " + values.lastname}...`
+      `Updating ${player.firstname + " " + player.lastname}...`
     );
 
     try {
@@ -107,7 +121,9 @@ const NewPlayersForm = () => {
       if (thumbnailFile) {
         const formData = new FormData();
         formData.append("file", thumbnailFile);
-        const res = await fetch("/api/image-upload", {
+        formData.append("publicId", player.thumbnail);
+
+        const res = await fetch("/api/update-image", {
           method: "POST",
           body: formData,
         });
@@ -121,7 +137,9 @@ const NewPlayersForm = () => {
       if (statImageFile) {
         const formData = new FormData();
         formData.append("file", statImageFile);
-        const res = await fetch("/api/image-upload", {
+        formData.append("publicId", player.image);
+
+        const res = await fetch("/api/update-image", {
           method: "POST",
           body: formData,
         });
@@ -135,7 +153,9 @@ const NewPlayersForm = () => {
       if (videoFiles.length > 0) {
         const formData = new FormData();
         videoFiles.forEach((file) => formData.append("file", file));
-        const res = await fetch("/api/videos-upload", {
+        player.videos.forEach((vid) => formData.append("publicId", vid));
+
+        const res = await fetch("/api/update-videos", {
           method: "POST",
           body: formData,
         });
@@ -144,23 +164,14 @@ const NewPlayersForm = () => {
         form.setValue("videos", playerVideosPublicIds);
       }
 
-      // Make sure uploads are successful
-      if (
-        !thumbnailPublicId ||
-        !statImagePublicId ||
-        playerVideosPublicIds.length === 0
-      ) {
-        console.log("Upload failed");
-        return;
-      }
-
       // Submit Form Data
       startTransition(() => {
-        newPlayer({
+        editPlayer({
           ...values,
-          thumbnail: thumbnailPublicId,
-          statImage: statImagePublicId,
-          videos: playerVideosPublicIds,
+          thumbnail: thumbnailPublicId ? thumbnailPublicId : player.thumbnail,
+          statImage: statImagePublicId ? statImagePublicId : player.image,
+          videos: playerVideosPublicIds ? playerVideosPublicIds : player.videos,
+          id: player.id,
         }).then((data) => {
           if (data?.error) {
             toast.error(data.error, { id: toastId });
@@ -170,7 +181,7 @@ const NewPlayersForm = () => {
         });
       });
     } catch {
-      toast.error("Error during submission");
+      toast.error("Error updating player");
     } finally {
       setThumbnailLoading(false);
       setStatisticLoading(false);
@@ -314,4 +325,4 @@ const NewPlayersForm = () => {
   );
 };
 
-export default NewPlayersForm;
+export default EditPlayerForm;

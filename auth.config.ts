@@ -4,7 +4,7 @@ import Facebook from "next-auth/providers/facebook";
 import Credentials from "next-auth/providers/credentials";
 import { LoginSchema } from "./lib/schema";
 import { getUserByEmail } from "./lib/database/queries";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 export default {
   providers: [

@@ -2,7 +2,7 @@
 import { z } from "zod";
 import { LoginSchema, PlayerSchema, RegisterSchema } from "./schema";
 import { getPreUploadedPlayers, getUserByEmail } from "./database/queries";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { db } from "@/lib/prisma";
 import { signIn } from "@/auth";
 import { AuthError } from "next-auth";
@@ -65,8 +65,7 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   }
 
   // Datas
-  const { email, password, confirmPassword } =
-    validatedValues.data;
+  const { email, password, confirmPassword } = validatedValues.data;
 
   // Check if password and confirm password match
   if (password !== confirmPassword) {
@@ -106,11 +105,9 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
 
 // Adding new players
 export const newPlayer = async (values: z.infer<typeof PlayerSchema>) => {
-  console.log("Received values:", values);
   const validatedValues = PlayerSchema.safeParse(values);
 
   if (!validatedValues.success) {
-    console.error("Validation failed:", validatedValues.error.format());
     return { error: "Invalid player data" };
   }
   const {
@@ -162,6 +159,64 @@ export const newPlayer = async (values: z.infer<typeof PlayerSchema>) => {
   }
 };
 
+export const editPlayer = async (values: z.infer<typeof PlayerSchema>) => {
+  const validatedValues = PlayerSchema.safeParse(values);
+
+  if (!validatedValues.success) {
+    console.log(validatedValues.error.format());
+    return { error: "Invalid player data" };
+  }
+  const {
+    firstname,
+    lastname,
+    side,
+    position,
+    height,
+    weight,
+    dob,
+    stats,
+    videos,
+    thumbnail,
+    statImage,
+    id,
+  } = validatedValues.data;
+
+  try {
+    await db.player.update({
+      where: { id },
+      data: {
+        firstname,
+        lastname,
+        weight,
+        dob: new Date(dob).toISOString(),
+        side,
+        videos,
+        thumbnail,
+        image: statImage,
+        position,
+        height,
+        stats: {
+          create: {
+            speed: stats.spd,
+            dribble: stats.dri,
+            pass: stats.pas,
+            pace: stats.pac,
+            defence: stats.def,
+            shot: stats.sho,
+          },
+        },
+      },
+    });
+    revalidatePath("/admin/dashboard/new");
+    return {
+      success: `Successfully edited ${firstname + " " + lastname}`,
+    };
+  } catch (error) {
+    console.error("Error editing player", error);
+    return { error: "Error editing player" };
+  }
+};
+
 export const addNewPlayers = async () => {
   try {
     const preUploadedPlayers = await getPreUploadedPlayers();
@@ -170,7 +225,6 @@ export const addNewPlayers = async () => {
       return { error: "No player to add, add players" };
     }
 
-    // Step 1: Create Players
     const createdPlayers = await db.$transaction(
       preUploadedPlayers.map((player) =>
         db.player.create({
@@ -194,7 +248,7 @@ export const addNewPlayers = async () => {
 
     // Step 2: Transfer Stats to the newly created Players
     await Promise.all(
-      preUploadedPlayers.map(async (player, index) => {
+      preUploadedPlayers.map(async (player, index: number) => {
         await db.stats.updateMany({
           where: { preUploadedPlayerId: player.id },
           data: {
@@ -210,10 +264,10 @@ export const addNewPlayers = async () => {
 
     revalidatePath("/admin/dashboard/players");
     return preUploadedPlayers.length > 1
-      ? { success: "Successfully added players" }
-      : { success: "Successfully added player" };
+      ? { success: "Successfully added new players" }
+      : { success: "Successfully added new player" };
   } catch (error) {
-    console.error("Error adding players:", error);
-    return { error: "Error adding players" };
+    console.error("Error adding new players:", error);
+    return { error: "Error adding new players" };
   }
 };

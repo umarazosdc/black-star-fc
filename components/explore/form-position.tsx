@@ -24,7 +24,7 @@ const FormPosition = ({
          control={form.control}
          name={field}
          render={({ field }) => (
-            <Select onValueChange={(value: string) => field.onChange(value)}>
+            <Select onValueChange={(value: string) => field.onChange(value)} value={field.value}>
                <SelectTrigger>
                   <FormItem className="w-full">
                      <FormControl>

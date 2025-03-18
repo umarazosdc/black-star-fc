@@ -27,6 +27,20 @@ import CancelSuspensionButton from "@/components/admin/cancel-suspension-button"
 interface UserProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }
+interface Player {
+  firstname: string;
+  lastname: string;
+  image: string;
+  dob: string;
+  position: string;
+  id: string;
+}
+
+interface Bookmark {
+  player: Player;
+}
+
+interface Request extends Bookmark {}
 
 const UserAboutPage = async ({ searchParams }: UserProps) => {
   const params = await searchParams;
@@ -83,7 +97,7 @@ const UserAboutPage = async ({ searchParams }: UserProps) => {
       <SectionWrapper title="Bookmarks" link="#" label="View all">
         <div className="flex items-center gap-4 overflow-auto pb-1">
           {bookmarks.length > 0 ? (
-            bookmarks.map((bookmark, key) => (
+            bookmarks.map((bookmark: Bookmark, key: number) => (
               <BookmarkedPlayerCard
                 key={key}
                 name={
@@ -107,7 +121,7 @@ const UserAboutPage = async ({ searchParams }: UserProps) => {
       <SectionWrapper title="Requests" link="#" label="View all">
         <div className="flex items-center gap-4 overflow-auto pb-1">
           {requests.length > 0 ? (
-            requests.map((request, key) => (
+            requests.map((request: Request, key: number) => (
               <BookmarkedPlayerCard
                 key={key}
                 name={request.player.firstname + " " + request.player.lastname}
