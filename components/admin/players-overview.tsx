@@ -13,7 +13,7 @@ const PlayersOverview = async () => {
       {players.map((player, key) => (
         <PlayerCard
           key={key}
-          src={[player.image]}
+          src={[player.image, player.thumbnail]}
           name={player.firstname + " " + player.lastname}
           position={player.position}
           age={getAge(player.dob)}

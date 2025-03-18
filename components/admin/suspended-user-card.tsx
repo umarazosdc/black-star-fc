@@ -20,18 +20,24 @@ const SuspendedUserCard = ({
   userId: string;
 }) => {
   return (
-    <Link className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md" href={`/admin/dashboard/user?id=${userId}`}>
+    <div className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md">
       <div className="self-start flex justify-between items-center w-full">
         <div className="flex items-center gap-4">
-          <CldImg
-            src={src}
-            alt="Player"
-            className="rounded-full border size-[5rem]"
-          />
+          <Link href={`/admin/dashboard/user?id=${userId}`}>
+            <CldImg
+              src={src}
+              alt="Player"
+              className="rounded-full border size-[5rem]"
+            />
+          </Link>
+
           <div className="flex flex-col gap-2">
-            <div className="text-base font-bold tracking-wide truncate w-48">
+            <Link
+              className="text-base font-bold tracking-wide truncate w-48"
+              href={`/admin/dashboard/user?id=${userId}`}
+            >
               {name}
-            </div>
+            </Link>
 
             <Icontext icon={MailIcon}>{email}</Icontext>
             <Icontext icon={Clock3Icon}>
@@ -44,7 +50,7 @@ const SuspendedUserCard = ({
         <CancelSuspensionButton userId={userId} />
         <DeleteUserButton userId={userId} />
       </div>
-    </Link>
+    </div>
   );
 };
 

@@ -13,6 +13,7 @@ import Button from "@/components/homepage/button";
 import { auth } from "@/auth";
 import { setDate } from "@/lib/date";
 import RequestPlayerButton from "@/components/auth/request-player-button";
+import PlayerCardRemoveButton from "@/components/admin/player-card-remove-button";
 
 const PlayerOverviewPage = async ({
   searchParams,
@@ -71,9 +72,12 @@ const PlayerOverviewPage = async ({
       </Wrapper>
 
       {isAdmin ? (
-        <Button className="bg-red-500 text-primary mx-auto w-full">
-          Remove player
-        </Button>
+        <PlayerCardRemoveButton
+          src={[player.thumbnail, player.image]}
+          videos={player.videos}
+          name={player.firstname + " " + player.lastname}
+          id={player.id}
+        />
       ) : hasRequestedPlayer ? (
         <Button className="border-2 w-full" disabled>
           Already requested for player

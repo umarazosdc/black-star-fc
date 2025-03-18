@@ -9,11 +9,15 @@ const PlayerCardRemoveButton = ({
   src,
   videos,
   id,
+  name,
 }: {
   src: string[];
   videos?: string[];
   id: string;
+  name: string;
 }) => {
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+
   const router = useRouter();
   const handleRemovePlayer = async () => {
     const toastId = toast.loading(`Removing ${name}...`);
@@ -36,16 +40,23 @@ const PlayerCardRemoveButton = ({
 
       // Only remove player from the database if the deletion succeeded
       await removePlayerById(id);
+      setIsLoading(true);
       router.refresh();
       toast.success(`${name} was successfully removed.`, { id: toastId });
     } catch (error) {
       console.error("Error trying to delete player: ", error);
       toast.error("Error trying to delete player.", { id: toastId });
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
-    <Button className="bg-red-600 text-primary" onClick={handleRemovePlayer}>
-      Remove
+    <Button
+      className="bg-red-600 text-primary"
+      onClick={handleRemovePlayer}
+      aria-disabled={isLoading}
+    >
+      {isLoading ? "Removing..." : "Remove"}
     </Button>
   );
 };

@@ -37,7 +37,7 @@ export async function updateIsRequested(
     });
     if (response.data?.id) {
       return await db.request.update({
-        where: { playerId, userId },
+        where: { playerId_userId: { playerId, userId } },
         data: {
           isRequested: true,
         },
@@ -93,4 +93,3 @@ export const sendRequest = cache(
     }
   }
 );
-
