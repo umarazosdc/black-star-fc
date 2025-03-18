@@ -6,7 +6,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { getHoursMinute } from "@/lib/date";
+import { formatTime } from "@/lib/date";
 import NotificationContent from "./notification-content";
 import { getNotificationByUserId } from "@/lib/database/queries";
 import { auth } from "@/auth";
@@ -40,14 +40,17 @@ const SearchNotificationBar = async ({
         </PopoverTrigger>
         <PopoverContent className="flex flex-col gap-2 max-h-80 overflow-auto">
           {!(notifications.length > 0) && (
-            <p className="text-sm">No notification</p>
+            <p className="text-sm text-muted-foreground">
+              No new notification yet.
+            </p>
           )}
           {notifications.map((notification, key) => (
             <NotificationContent
               key={key}
               content={notification.message as string}
-              time={getHoursMinute(notification.createdAt)}
+              time={formatTime(notification.createdAt)}
               title={notification.title}
+              isRead={notification.isRead}
             />
           ))}
         </PopoverContent>

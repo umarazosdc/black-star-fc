@@ -77,7 +77,7 @@ export const sendRequest = cache(
             data: {
               title: `📢 Scout Request for Player Approval: ${playerName}`,
               message: `
-                Scout ${userName} has submitted a request regarding ${playerName}, a ${playerPosition} currently in our system.
+                ${userName} has submitted a request regarding ${playerName}, a ${playerPosition} currently in our system.
                 They believe this player is ready for the next step and require management’s approval.
 
                 Please review the request and take action as needed. Tap to view details and respond.

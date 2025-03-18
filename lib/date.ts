@@ -16,10 +16,10 @@ export const suspendedSince = (suspendUntill: Date) => {
     return "Just now";
   } else if (diffInSeconds < 3600) {
     const minutes = Math.floor(diffInSeconds / 60);
-    return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+    return `${minutes} min${minutes > 1 ? "s" : ""} ago`;
   } else if (diffInSeconds < 86400) {
     const hours = Math.floor(diffInSeconds / 3600);
-    return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+    return `${hours} hr${hours > 1 ? "s" : ""} ago`;
   } else if (diffInSeconds < 172800) {
     return "Yesterday";
   } else if (diffInSeconds < 259200) {
@@ -31,29 +31,43 @@ export const suspendedSince = (suspendUntill: Date) => {
   }
 };
 
-export const getHoursMinute = (createdAt: Date) => {
+export const getHoursMinute = (dateString: string) => {
+  const date = new Date(dateString);
+  return new Intl.DateTimeFormat("en-US", {
+    timeStyle: "short",
+  }).format(date);
+};
+
+export const formatTime = (createdAt: Date) => {
   const now = new Date();
   const date = new Date(createdAt);
   const diffInSeconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  const time = new Intl.DateTimeFormat("en-US", {
+    timeStyle: "short",
+  }).format(date);
 
   if (diffInSeconds < 60) {
     return "Just now";
   } else if (diffInSeconds < 3600) {
     const minutes = Math.floor(diffInSeconds / 60);
-    return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+    return `${minutes} min${minutes > 1 ? "s" : ""} ago`;
   } else if (diffInSeconds < 86400) {
     const hours = Math.floor(diffInSeconds / 3600);
-    return `${hours} hour${hours > 1 ? "s" : ""} ago`;
-  } else if (diffInSeconds < 172800) {
-    return "Yesterday";
-  } else if (diffInSeconds < 259200) {
-    return "2 days ago";
-  } else if (diffInSeconds < 345600) {
-    return "3 days ago";
+    return `${hours} hr${hours > 1 ? "s" : ""} ago`;
+  } else if (diffInSeconds < 86400 * 10) {
+    const days = Math.floor(diffInSeconds / 86400);
+    return `${days} day${days > 1 ? "s" : ""} ago, ${time}`;
   } else {
-    return date.toLocaleDateString(); // Default for anything beyond 3 days
+    return (
+      new Intl.DateTimeFormat("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+      }).format(date) + `, ${time}`
+    );
   }
 };
+
 
 export const getAge = (dobString: string) => {
   const dob = new Date(dobString);
