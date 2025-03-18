@@ -22,6 +22,9 @@ const AdminNotificationPage = async () => {
               content={notification.message as string}
               time={formatTime(notification.createdAt)}
               isRead={notification.isRead}
+              userImage={notification.sender?.image as string}
+              userName={notification.sender?.name as string}
+              id={notification.id}
             />
           ))
         ) : (

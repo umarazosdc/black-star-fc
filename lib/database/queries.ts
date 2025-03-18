@@ -101,22 +101,38 @@ export const getPlayersBySearch = cache(async (search: string) => {
   });
 });
 
-export const getNotificationByUserId = cache(async (userId: string) => {
+export const getNotificationByUserId = async (userId: string) => {
   return await db.notification.findMany({
-    where: { userId },
+    where: { userId }, // Fetch notifications for this user
     orderBy: { createdAt: "desc" },
-  });
-});
-
-export const adminOnlyNotification = cache(async () => {
-  return await db.notification.findMany({
-    where: {
-      NOT: {
-        title: {},
+    include: {
+      sender: {
+        // Fetch sender details
+        select: { id: true, name: true, image: true },
       },
     },
   });
-});
+};
+
+export const getBellNotificationByUserId = async (userId: string) => {
+  return await db.notification.findMany({
+    where: { userId, NOT: { isRead: true } }, // Fetch notifications for this user
+    orderBy: { createdAt: "desc" },
+    include: {
+      sender: {
+        // Fetch sender details
+        select: { id: true, name: true, image: true },
+      },
+    },
+  });
+};
+
+export const readNotification = async (id: string) => {
+  return await db.notification.update({
+    where: { id },
+    data: { isRead: true },
+  });
+};
 
 export const getUsersBySearchAndOrder = cache(
   async (search: string, orderBy: Prisma.UserOrderByWithRelationInput) => {

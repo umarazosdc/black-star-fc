@@ -30,25 +30,27 @@ enum Preference {
 }
 
 model User {
-  id                 String         @id @default(uuid())
-  email              String         @unique
+  id                 String     @id @default(uuid())
+  email              String     @unique
   name               String
   image              String?
   password           String?
   bio                String?
   state              String?
   phone              Int?
-  preference         Preference     @default(forward)
-  isSuspended        Boolean        @default(false)
+  preference         Preference @default(forward)
+  isSuspended        Boolean    @default(false)
   suspendedUntil     DateTime?
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime       @updatedAt
-  role               UserRole       @default(scout)
-  isOnboardingPassed Boolean        @default(false)
-  status             UserStatus     @default(active)
+  createdAt          DateTime   @default(now())
+  updatedAt          DateTime   @updatedAt
+  role               UserRole   @default(scout)
+  isOnboardingPassed Boolean    @default(false)
+  status             UserStatus @default(active)
   bookmarks          Bookmark[]
   requests           Request[]
-  notification       Notification[]
+
+  receivedNotifications Notification[] @relation(name: "NotificationReceiver") // ✅ Notifications received by the user
+  sentNotifications     Notification[] @relation(name: "NotificationSender") // ✅ Notifications sent by the user
 }
 
 model Stats {
@@ -134,8 +136,10 @@ model Notification {
   title     String
   createdAt DateTime @default(now())
   message   String
-  userId    String
+  userId    String // The recipient of the notification
+  senderId  String? // The sender of the notification (nullable for system messages)
   isRead    Boolean  @default(false)
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User  @relation(fields: [userId], references: [id], onDelete: Cascade, name: "NotificationReceiver")
+  sender User? @relation(fields: [senderId], references: [id], onDelete: SetNull, name: "NotificationSender") // Reference to sender
 }

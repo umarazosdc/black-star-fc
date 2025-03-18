@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/popover";
 import { formatTime } from "@/lib/date";
 import NotificationContent from "./notification-content";
-import { getNotificationByUserId } from "@/lib/database/queries";
+import { getBellNotificationByUserId } from "@/lib/database/queries";
 import { auth } from "@/auth";
 
 const SearchNotificationBar = async ({
@@ -20,7 +20,7 @@ const SearchNotificationBar = async ({
 }) => {
   const session = await auth();
   const userId = session?.user.id;
-  const notifications = await getNotificationByUserId(userId as string);
+  const notifications = await getBellNotificationByUserId(userId as string);
 
   return (
     <div className="flex items-center gap-4">
@@ -41,7 +41,7 @@ const SearchNotificationBar = async ({
         <PopoverContent className="flex flex-col gap-2 max-h-80 overflow-auto">
           {!(notifications.length > 0) && (
             <p className="text-sm text-muted-foreground">
-              No new notification yet.
+              No recent notification yet.
             </p>
           )}
           {notifications.map((notification, key) => (
@@ -51,6 +51,9 @@ const SearchNotificationBar = async ({
               time={formatTime(notification.createdAt)}
               title={notification.title}
               isRead={notification.isRead}
+              userImage={notification.sender?.image as string}
+              userName={notification.sender?.name as string}
+              id={notification.id}
             />
           ))}
         </PopoverContent>
