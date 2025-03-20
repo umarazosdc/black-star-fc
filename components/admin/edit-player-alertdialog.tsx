@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import EditPlayerForm from "../auth/edit-player-form";
 import { Player, Stats } from "@prisma/client";
-import PlayerStat from "./player-stat";
 
 const EditPlayerAlertDialog = ({
   children,

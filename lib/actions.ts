@@ -94,3 +94,15 @@ export const sendRequest = cache(
     }
   }
 );
+
+export const bookmarkPlayer = async (
+  playerId: string,
+  userId: string,
+  status: boolean
+) => {
+  await db.bookmark.upsert({
+    where: { playerId_userId: { playerId, userId } },
+    update: { isBookmarked: status },
+    create: { playerId, userId, isBookmarked: status },
+  });
+};

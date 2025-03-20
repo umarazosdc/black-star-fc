@@ -17,7 +17,7 @@ const NewPlayerAlertDialog = ({ children }: { children: React.ReactNode }) => {
         <AlertDialogHeader>
           <AlertDialogTitle>Add new player</AlertDialogTitle>
           <AlertDialogDescription>
-            Enter all the neccesary player's details
+            Enter all the neccesary player&apos;s details
           </AlertDialogDescription>
         </AlertDialogHeader>
         <NewPlayersForm />

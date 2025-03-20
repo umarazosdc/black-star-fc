@@ -39,13 +39,6 @@ export const getRequestedPlayersById = cache(async (userId: string) => {
   });
 });
 
-export const getBookmarkedPlayersById = cache(async (userId: string) => {
-  return await db.bookmark.findMany({
-    where: { userId },
-    include: { player: true },
-  });
-});
-
 export const hasUserRequestedPlayer = cache(
   async (userId: string, playerId: string) => {
     const request = await db.request.findFirst({
@@ -195,14 +188,6 @@ export const getPlayerById = async (id: string) => {
   return await db.player.findUnique({ where: { id: id } });
 };
 
-export const getTotalBookmarks = cache(async () => {
-  return await db.bookmark.count();
-});
-
-export const getScoutTotalBookmarks = cache(async (id: string) => {
-  return await db.bookmark.count({ where: { userId: id } });
-});
-
 export const getTotalRequests = cache(async () => {
   return await db.request.count();
 });
@@ -253,20 +238,35 @@ export const getStatsById = cache(async (id: string) => {
   return await db.stats.findUnique({ where: { playerId: id } });
 });
 
-export const toggleBookmark = cache(
-  async (status: boolean, playerId: string, userId: string) => {
-    return await db.bookmark.create({
-      data: { playerId, userId, isBookmarked: status },
-    });
-  }
-);
+export const getBookmarkStatus = async (playerId: string, userId: string) => {
+  const status = await db.bookmark.findFirst({
+    where: { playerId, userId },
+    select: { isBookmarked: true },
+  });
+  return status?.isBookmarked ?? false; // ✅ Prevent undefined errors
+};
 
-export const getBookmarkStatus = cache(
-  async (playerId: string, userId: string) => {
-    return db.bookmark.findFirst({ where: { playerId, userId } });
-  }
-);
+export const getScoutTotalBookmarks = async (id: string) => {
+  return await db.bookmark.count({
+    where: { userId: id, isBookmarked: true },
+  });
 
-export const getBookmarksById = cache(async (userId: string) => {
-  return db.bookmark.findFirst({ where: { userId } });
+};
+
+export const getBookmarkedPlayersById = cache(async (userId: string) => {
+  return await db.bookmark.findMany({
+    where: { userId, isBookmarked: true },
+    include: { player: true },
+  });
 });
+
+export const getSuggestedPlayers = async (userId: string) => {
+  return await db.player.findMany({
+    where: {
+      AND: [
+        { requested: { none: { userId } } }, // Players not requested by this user
+        { bookmarked: { none: { userId, isBookmarked: true } } }, // Players not bookmarked by this user
+      ],
+    },
+  });
+};
