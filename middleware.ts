@@ -14,6 +14,8 @@ export default auth(async (req) => {
 
   const res = NextResponse.next();
   const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+  console.log("Token in production:", token);
+  
   const role = token?.role;
   const isAdmin = role === "admin";
 
