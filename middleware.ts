@@ -10,7 +10,8 @@ const { auth } = NextAuth(authConfig);
 export default auth(async (req) => {
    const isLoggedIn = !!req.auth;
    const { pathname } = req.nextUrl;
-   const baseURL = 'http://localhost:3000';
+   const baseURL =
+     "https://black-star-fc-git-master-is-projects-24c43765.vercel.app/";
    const res = NextResponse.next();
    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
    const role = token?.role;
