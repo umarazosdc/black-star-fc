@@ -1,67 +1,67 @@
-import { adminRoute, authRoutes, privateRoutes, publicRoutes } from '@/routes';
+import { adminRoute, authRoutes, privateRoutes, publicRoutes } from "@/routes";
 
-import NextAuth from 'next-auth';
-import authConfig from './auth.config';
-import { getToken } from 'next-auth/jwt';
-import { NextResponse } from 'next/server';
+import NextAuth from "next-auth";
+import authConfig from "./auth.config";
+import { getToken } from "next-auth/jwt";
+import { NextResponse } from "next/server";
 
 const { auth } = NextAuth(authConfig);
 
 export default auth(async (req) => {
-   const isLoggedIn = !!req.auth;
-   const { pathname } = req.nextUrl;
-   const baseURL =
-     "https://black-star-fc-git-master-is-projects-24c43765.vercel.app/";
-   const res = NextResponse.next();
-   const token = await getToken({ req, secret: process.env.AUTH_SECRET });
-   const role = token?.role;
-   const isAdmin = role === 'admin';
+  const isLoggedIn = !!req.auth;
+  const { pathname } = req.nextUrl;
+  const baseURL = req.nextUrl.origin;
 
-   const isPrivateRoute = privateRoutes.includes(pathname);
-   const isPublicRoute = publicRoutes.includes(pathname);
-   const isAuthRoute = authRoutes.includes(pathname);
-   const isApiRoute = pathname.startsWith('/api');
-   const isAdminRoute =
-      pathname.startsWith(adminRoute + '/') || pathname === adminRoute;
+  const res = NextResponse.next();
+  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
+  const role = token?.role;
+  const isAdmin = role === "admin";
 
-   // API route
-   if (isApiRoute) {
-      return res;
-   }
+  const isPrivateRoute = privateRoutes.includes(pathname);
+  const isPublicRoute = publicRoutes.includes(pathname);
+  const isAuthRoute = authRoutes.includes(pathname);
+  const isApiRoute = pathname.startsWith("/api");
+  const isAdminRoute =
+    pathname.startsWith(adminRoute + "/") || pathname === adminRoute;
 
-   // Authentication route
-   if (isAuthRoute) {
-      if (isLoggedIn) {
-         return NextResponse.redirect(new URL(`/${role}/dashboard`, baseURL));
-      }
-      return res;
-   }
+  // API route
+  if (isApiRoute) {
+    return res;
+  }
 
-   // Private route
-   if (isPrivateRoute && !isLoggedIn) {
-      return NextResponse.redirect(new URL('/login', baseURL));
-   }
+  // Authentication route
+  if (isAuthRoute) {
+    if (isLoggedIn) {
+      return NextResponse.redirect(new URL(`/${role}/dashboard`, baseURL));
+    }
+    return res;
+  }
 
-   // Public route
-   if (isPublicRoute) {
-      return res;
-   }
+  // Private route
+  if (isPrivateRoute && !isLoggedIn) {
+    return NextResponse.redirect(new URL("/login", baseURL));
+  }
 
-   // Admin route
-   if (isAdminRoute) {
-      if (!isAdmin || !isLoggedIn) {
-         return NextResponse.redirect(new URL('/unauthorized', baseURL));
-      }
-      return res;
-   }
+  // Public route
+  if (isPublicRoute) {
+    return res;
+  }
 
-   // Allow other access
-   return res;
+  // Admin route
+  if (isAdminRoute) {
+    if (!isAdmin || !isLoggedIn) {
+      return NextResponse.redirect(new URL("/unauthorized", baseURL));
+    }
+    return res;
+  }
+
+  // Allow other access
+  return res;
 });
 
 export const config = {
-   matcher: [
-      '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-      '/(api|trpc)(.*)',
-   ],
+  matcher: [
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+    "/(api|trpc)(.*)",
+  ],
 };
