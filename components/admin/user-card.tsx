@@ -14,11 +14,11 @@ import {
 } from "../ui/dialog";
 import Age from "../utils/age";
 import CldImg from "../utils/cldimg";
-import { toast } from "sonner";
-import { updateIsRequested } from "@/lib/actions";
 import Link from "next/link";
 import SuspendUserButton from "./suspend-user-button";
 import DeleteUserButton from "./delete-user-button";
+import AcceptRequestButton from "./accept-request-button";
+import { getRequestStatus } from "@/lib/database/queries";
 
 const UserCard = ({
   src,
@@ -29,8 +29,8 @@ const UserCard = ({
   playerName,
   playersAge,
   children,
-  id,
   userId,
+  playerId,
 }: {
   src: string | undefined;
   name: string;
@@ -40,23 +40,20 @@ const UserCard = ({
   children?: React.ReactNode;
   playerName?: string;
   playersAge?: number;
-  id?: string;
   userId: string;
+  playerId?: string;
 }) => {
   const [accept, setAccept] = React.useState<boolean>(false);
 
-  const handleRequest = async () => {
-    try {
-      const result = await updateIsRequested(id as string, userId, email, name);
-      if (result) {
-        setAccept(result.isRequested);
-        toast.success("Scout request accepted!");
-      }
-    } catch (error) {
-      console.log("Failed to accept scout request", error);
-      toast.error("Failed to accept scout request");
-    }
-  };
+  React.useEffect(() => {
+    const getPlayerStatus = async () => {
+      const status = await getRequestStatus(playerId as string, userId);
+
+      setAccept(status);
+    };
+
+    getPlayerStatus();
+  }, [playerId, userId]);
 
   return (
     <div className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md">
@@ -113,12 +110,11 @@ const UserCard = ({
       {isAdminDashboard ? (
         !accept && (
           <div className="self-end flex items-center gap-4">
-            <Button
-              className="bg-emerald-500 text-primary"
-              onClick={handleRequest}
-            >
-              Accept
-            </Button>
+            <AcceptRequestButton
+              playerId={playerId as string}
+              userId={userId}
+              playerName={playerName as string}
+            />
             <Button className="bg-red-600 text-primary">Reject</Button>
           </div>
         )

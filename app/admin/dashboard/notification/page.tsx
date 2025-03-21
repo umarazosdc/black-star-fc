@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
-import NotificationContent from "@/components/utils/notification-content";
+import InfinteScrollNotification from "@/components/utils/infinite-scroll-notification";
 import { getNotificationByUserId } from "@/lib/database/queries";
-import { formatTime } from "@/lib/date";
 import React from "react";
 
 const AdminNotificationPage = async () => {
@@ -13,24 +12,7 @@ const AdminNotificationPage = async () => {
   return (
     <div className="flex flex-col gap-3">
       <h1 className="font-bold text-base">Notifications</h1>
-      <div className="flex flex-col gap-2">
-        {notifications.length > 0 ? (
-          notifications.map((notification, key) => (
-            <NotificationContent
-              key={key}
-              title={notification.title}
-              content={notification.message as string}
-              time={formatTime(notification.createdAt)}
-              isRead={notification.isRead}
-              userImage={notification.sender?.image as string}
-              userName={notification.sender?.name as string}
-              id={notification.id}
-            />
-          ))
-        ) : (
-          <p className="text-sm text-muted-foreground">No notification yet.</p>
-        )}
-      </div>
+      <InfinteScrollNotification notifications={notifications}/>
     </div>
   );
 };

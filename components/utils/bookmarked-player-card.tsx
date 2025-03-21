@@ -36,15 +36,15 @@ const BookmarkedPlayerCard = ({
   const router = useRouter();
 
   // Get Bookmark status
-  const getStatus = async () => {
-    const status = await getBookmarkStatus(id, userId as string);
-
+  const getStatus = React.useCallback(async () => {
+    if (!userId) return;
+    const status = await getBookmarkStatus(id, userId);
     setIsBookmarked(status);
-  };
+  }, [id, userId]);
 
   React.useEffect(() => {
-    if (userId) getStatus();
-  }, [userId]);
+    getStatus();
+  }, [getStatus]);
 
   // Add player to BOOKMARK
   const handleBookmark = async (e: React.MouseEvent<SVGElement>) => {
@@ -55,11 +55,13 @@ const BookmarkedPlayerCard = ({
     const toastId = toast.loading("Bookmarking player...");
 
     try {
-      await bookmarkPlayer(id, userId, true); // Pass `true` for bookmarking
+      await bookmarkPlayer(id, userId); // Pass `true` for bookmarking
       setIsBookmarked(true); // ✅ Update state
       router.refresh();
       toast.success("Successfully bookmarked player", { id: toastId });
     } catch (error) {
+      console.log("Failed to remove player ", error);
+
       toast.error("Failed to bookmark player", { id: toastId });
     }
   };
@@ -72,11 +74,13 @@ const BookmarkedPlayerCard = ({
     const toastId = toast.loading("Removing player from bookmark...");
 
     try {
-      await bookmarkPlayer(id, userId, false); // Pass `false` for unbookmarking
+      await bookmarkPlayer(id, userId); // Pass `false` for unbookmarking
       setIsBookmarked(false); // ✅ Update state
       router.refresh();
       toast.success("Removed player from bookmark", { id: toastId });
     } catch (error) {
+      console.log("Failed to remove player ", error);
+
       toast.error("Failed to remove player from bookmark", { id: toastId });
     }
   };

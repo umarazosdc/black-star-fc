@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import React from "react";
+import React, { HTMLAttributes } from "react";
 import NotificationDialog from "./notification-dialog";
 
 const NotificationContent = async ({
@@ -20,7 +20,7 @@ const NotificationContent = async ({
   userName: string;
   userImage: string;
   id: string;
-}) => {
+} & HTMLAttributes<HTMLDivElement>) => {
   return (
     <NotificationDialog
       name={userName}
@@ -45,9 +45,8 @@ const NotificationContent = async ({
             "text-xs w-[85%]",
             !isRead ? "line-clamp-3" : "truncate"
           )}
-        >
-          {content}
-        </p>
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
         <p className="self-end text-xs">{time}</p>
         {!isRead && (
           <div className="size-2.5 rounded-full bg-accent absolute top-1/2 -translate-y-1/2 right-2" />

@@ -100,7 +100,6 @@ export const getNotificationByUserId = async (userId: string) => {
     orderBy: { createdAt: "desc" },
     include: {
       sender: {
-        // Fetch sender details
         select: { id: true, name: true, image: true },
       },
     },
@@ -250,7 +249,6 @@ export const getScoutTotalBookmarks = async (id: string) => {
   return await db.bookmark.count({
     where: { userId: id, isBookmarked: true },
   });
-
 };
 
 export const getBookmarkedPlayersById = cache(async (userId: string) => {
@@ -269,4 +267,38 @@ export const getSuggestedPlayers = async (userId: string) => {
       ],
     },
   });
+};
+
+export const updateRequestedPlayer = async (
+  userId: string,
+  playerId: string
+) => {
+  const existingRequest = await db.request.findUnique({
+    where: { playerId_userId: { playerId, userId } },
+  });
+
+  if (!existingRequest) {
+    throw new Error("Request not found");
+  }
+
+  await db.request.update({
+    where: { playerId_userId: { playerId, userId } },
+    data: { isRequested: true },
+  });
+};
+
+export const getRequestStatus = async (playerId: string, userId: string) => {
+  const status = await db.request.findFirst({
+    where: { playerId, userId },
+    select: { isRequested: true },
+  });
+
+  return status?.isRequested ?? false;
+};
+
+export const removeFromRequestList = async (
+  playerId: string,
+  userId: string
+) => {
+  await db.request.delete({ where: { playerId_userId: { playerId, userId } } });
 };

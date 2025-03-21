@@ -4,7 +4,11 @@ import { signIn } from "@/auth";
 import { db } from "./prisma";
 import { Resend } from "resend";
 import { cache } from "react";
-import { requestPlayer } from "./database/queries";
+import {
+  updateRequestedPlayer,
+  requestPlayer,
+  getUserById,
+} from "./database/queries";
 
 export const providerSignIn = async (provider: string) => {
   await signIn(provider, { redirectTo: "/scout/dashboard" });
@@ -77,7 +81,7 @@ export const sendRequest = cache(
             data: {
               title: `📢 Scout Request for Player Approval: ${playerName}`,
               message: `
-                ${userName} has submitted a request regarding ${playerName}, a ${playerPosition} currently in our system.
+                <strong>${userName}</strong>, has submitted a request regarding <strong>${playerName}</strong>, a <strong>${playerPosition}</strong> currently in our system.
                 They believe this player is ready for the next step and require management’s approval.
 
                 Please review the request and take action as needed. Tap to view details and respond.
@@ -95,14 +99,72 @@ export const sendRequest = cache(
   }
 );
 
-export const bookmarkPlayer = async (
-  playerId: string,
-  userId: string,
-  status: boolean
-) => {
-  await db.bookmark.upsert({
+export const bookmarkPlayer = async (playerId: string, userId: string) => {
+  const existingBookmark = await db.bookmark.findUnique({
     where: { playerId_userId: { playerId, userId } },
-    update: { isBookmarked: status },
-    create: { playerId, userId, isBookmarked: status },
   });
+
+  if (existingBookmark) {
+    // If already bookmarked, unbookmark by deleting
+    await db.bookmark.delete({
+      where: { playerId_userId: { playerId, userId } },
+    });
+  } else {
+    // If not bookmarked, create a new record
+    await db.bookmark.create({
+      data: { playerId, userId, isBookmarked: true },
+    });
+  }
+};
+
+export const acceptRequest = async (
+  userId: string,
+  playerId: string,
+  playerName: string
+) => {
+  try {
+    // Check user still exists
+    const scout = await getUserById(userId);
+    if (!scout) {
+      console.log("User does not exist.");
+      return;
+    }
+
+    // Get Admin
+    const adminId = await db.user.findFirst({
+      where: { role: "admin" },
+      select: { id: true },
+    });
+
+    await Promise.all([
+      // Update requested player
+      updateRequestedPlayer(userId, playerId),
+
+      // Send Notification
+      db.notification.create({
+        data: {
+          title: "✅ Your Scout Request Has Been Accepted – Next Steps!",
+          message: `
+        Hello <strong>${scout.name}</strong>,  
+        
+        We've reviewed your request regarding <strong>${playerName}</strong>, and we're pleased to inform you that it has been accepted! 🎉
+
+        Thank you for your keen eye and effort in identifying talent. We appreciate your contributions and look forward to working together to ensure the best opportunities for our players.
+
+        For the next steps and further discussion, kindly reach out to us on WhatsApp: <strong style="color: hsl(9, 75%, 62%);"><a href="https://wa.me/2347053837365" target="_blank" rel="noopener noreferrer">Chat with us on WhatsApp</a></strong> 📲
+
+        Looking forward to chatting with you!
+
+        Best regards,  
+        <strong>Black Stars Fc</strong>  
+        <strong>Management</strong>  
+        `.trim(),
+          userId,
+          senderId: adminId?.id,
+        },
+      }),
+    ]);
+  } catch (error) {
+    console.log("Could not accept request", error);
+  }
 };

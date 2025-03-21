@@ -16,7 +16,6 @@ const UserList = async ({
       <div className="flex flex-col gap-4">
          {users?.map((user) => (
             <UserCard
-               id={user.id}
                key={user.id}
                name={user.name}
                src={user.image ?? ''}

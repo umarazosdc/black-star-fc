@@ -14,6 +14,7 @@ import { auth } from "@/auth";
 import { setDate } from "@/lib/date";
 import RequestPlayerButton from "@/components/auth/request-player-button";
 import PlayerCardRemoveButton from "@/components/admin/player-card-remove-button";
+import BookmarkPlayerButton from "@/components/auth/bookmark-player-button";
 
 const PlayerOverviewPage = async ({
   searchParams,
@@ -91,7 +92,7 @@ const PlayerOverviewPage = async ({
             playerPosition={player.position}
             userName={session?.user.name as string}
           />
-          <Button className="border-2 w-full">Bookmark Player</Button>
+          <BookmarkPlayerButton playerId={player.id} />
         </div>
       )}
     </div>

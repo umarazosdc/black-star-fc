@@ -64,7 +64,7 @@ const NotificationDialog = ({
         </div>
         <main className="text-sm max-h-80 flex flex-col gap-2">
           <h2 className="font-bold">{subject}</h2>
-          <p>{message}</p>
+          <p dangerouslySetInnerHTML={{ __html: message }} />
         </main>
         <DialogFooter>
           <span className="text-xs text-muted-foreground ml-auto">{date}</span>

@@ -16,6 +16,7 @@ const ScoutRequest = async () => {
           email={rqst.user.email}
           date={formatDate(String(rqst.user.createdAt))}
           playerName={rqst.player.firstname + " " + rqst.player.lastname}
+          playerId={rqst.playerId}
           isAdminDashboard
           playersAge={getAge(rqst.player.dob)}
           userId={rqst.user.id}
