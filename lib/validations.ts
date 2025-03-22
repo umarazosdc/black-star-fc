@@ -149,7 +149,7 @@ export const newPlayer = async (values: z.infer<typeof PlayerSchema>) => {
         },
       },
     });
-    revalidatePath("/admin/dashboard/new");
+    revalidatePath("/ad/dashboard/new");
     return {
       success: `Successfully added ${firstname + " " + lastname} to cart`,
     };
@@ -207,7 +207,7 @@ export const editPlayer = async (values: z.infer<typeof PlayerSchema>) => {
         },
       },
     });
-    revalidatePath("/admin/dashboard/new");
+    revalidatePath("/ad/dashboard/new");
     return {
       success: `Successfully edited ${firstname + " " + lastname}`,
     };
@@ -262,7 +262,7 @@ export const addNewPlayers = async () => {
     // Step 3: Delete preUploadedPlayers
     await db.preUploadedPlayer.deleteMany();
 
-    revalidatePath("/admin/dashboard/players");
+    revalidatePath("/ad/dashboard/players");
     return preUploadedPlayers.length > 1
       ? { success: "Successfully added new players" }
       : { success: "Successfully added new player" };

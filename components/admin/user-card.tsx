@@ -59,7 +59,7 @@ const UserCard = ({
     <div className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md">
       <div className="self-start flex justify-between items-center w-full">
         <div className="flex items-center gap-4">
-          <Link href={`/admin/dashboard/user?id=${userId}`}>
+          <Link href={`/ad/dashboard/user?id=${userId}`}>
             <CldImg
               src={src ? src : "uploads/images/defaultjpg"}
               alt="User image"
@@ -70,7 +70,7 @@ const UserCard = ({
           <div className="flex flex-col gap-2">
             <Link
               className="text-base font-bold tracking-wide truncate w-48"
-              href={`/admin/dashboard/user?id=${userId}`}
+              href={`/ad/dashboard/user?id=${userId}`}
             >
               {name}
             </Link>

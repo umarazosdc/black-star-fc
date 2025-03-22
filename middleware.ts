@@ -15,7 +15,7 @@ export default auth(async (req) => {
   const res = NextResponse.next();
   const token = await getToken({ req, secret: process.env.AUTH_SECRET });
   console.log("Token in production:", token);
-  console.log("Headers:", req.headers)
+  console.log("Headers:", req.headers);
 
   const role = token?.role;
   const isAdmin = role === "admin";
@@ -35,8 +35,7 @@ export default auth(async (req) => {
   // Authentication route
   if (isAuthRoute) {
     if (isLoggedIn) {
-      if (role)
-        return NextResponse.redirect(new URL(`/${role}/dashboard`, baseURL));
+      return NextResponse.redirect(new URL(`/${role}/dashboard`, baseURL));
     }
     return res;
   }

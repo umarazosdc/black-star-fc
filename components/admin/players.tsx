@@ -17,11 +17,11 @@ const Players = async () => {
             <SearchFilterBar
                placeholder="Search players..."
                items={['A-Z', 'Newest', 'Age', 'Oldest']}
-               basePath="/admin/dashboard/players"
+               basePath="/ad/dashboard/players"
             />
             <div className="flex flex-col gap-6">
                <Link
-                  href="/admin/dashboard/new"
+                  href="/ad/dashboard/new"
                   className="self-end flex items-center gap-0.5 text-xs text-accent"
                >
                   <PlusIcon className="size-4" strokeWidth={3} />

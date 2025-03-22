@@ -59,7 +59,7 @@ const OnboardingPage = () => {
             </div>
             {selectedImage ? (
                <footer className="absolute bottom-4 right-4 left-4 flex flex-col gap-2">
-                  <Link href="/admin/dashboard">
+                  <Link href="/ad/dashboard">
                      <Button className="bg-accent text-primary hover:bg-accent hover:text-primary w-full text-sm">
                         Done
                      </Button>

@@ -13,7 +13,7 @@ export const publicRoutes: Array<string> = ['/'];
  */
 export const privateRoutes: Array<string> = [
    '/scout/dashboard',
-   '/admin/dashboard',
+   '/ad/dashboard',
    '/explore',
    '/onboarding',
    '/profile',

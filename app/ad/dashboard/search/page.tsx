@@ -13,7 +13,7 @@ const AdminSearchPage = async ({
    const params = await searchParams;
    const search = params.search || '';
    return (
-      <SearchComponent basePath="/admin/dashboard/search">
+      <SearchComponent basePath="/ad/dashboard/search">
          {search ? (
             <Suspense fallback={<UserPlayerProfileSkeleton />}>
                <UserPlayerProfile search={search as string} />

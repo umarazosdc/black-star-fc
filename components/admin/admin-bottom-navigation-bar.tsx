@@ -24,12 +24,12 @@ import NavIcons from "../utils/nav-icons";
 const AdminBottomNavigationBar = () => {
   const pathname = usePathname();
   const navItems = [
-    { name: "Home", path: "/admin/dashboard", icon: LayoutDashboardIcon },
-    { name: "Search", path: "/admin/dashboard/search", icon: SearchIcon },
-    { name: "new", path: "/admin/dashboard/new", icon: PlusIcon },
+    { name: "Home", path: "/ad/dashboard", icon: LayoutDashboardIcon },
+    { name: "Search", path: "/ad/dashboard/search", icon: SearchIcon },
+    { name: "new", path: "/ad/dashboard/new", icon: PlusIcon },
     {
       name: "Notification",
-      path: "/admin/dashboard/notification",
+      path: "/ad/dashboard/notification",
       icon: BellIcon,
     },
   ];
@@ -38,7 +38,7 @@ const AdminBottomNavigationBar = () => {
     <nav className="flex justify-between items-center py-1 px-3 bg-primary sticky bottom-0 z-50 border-t w-full">
       {navItems.map((item) =>
         item.name === "new" ? (
-          pathname !== "/admin/dashboard/new" && (
+          pathname !== "/ad/dashboard/new" && (
             <Link
               href={item.path}
               key={item.name}

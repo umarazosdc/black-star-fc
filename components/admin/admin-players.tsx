@@ -9,7 +9,7 @@ const AdminPlayers = async () => {
    const players = await getPlayers(session?.user.id as string);
    const playerSubset = players.slice(0, 4);
    return (
-      <SearchContainer path="/admin/dashboard/players" name="Players">
+      <SearchContainer path="/ad/dashboard/players" name="Players">
          <div className="columns-2 gap-2 space-y-2">
             {playerSubset.map((player) => (
                <CldImg

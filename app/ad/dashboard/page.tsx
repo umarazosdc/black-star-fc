@@ -22,13 +22,13 @@ const AdminDashboardPage = async () => {
         </p>
         <SearchNotificationBar
           placeholder="Search..."
-          basePath="/admin/dashboard"
+          basePath="/ad/dashboard"
         />
         <GridWrappers>
-          <Link href="/admin/dashboard/users">
+          <Link href="/ad/dashboard/users">
             <StatusCard value={userTotal} name="Total Users" />
           </Link>
-          <Link href="/admin/dashboard/players">
+          <Link href="/ad/dashboard/players">
             <StatusCard value={playerTotal} name="Total Players" />
           </Link>
         </GridWrappers>

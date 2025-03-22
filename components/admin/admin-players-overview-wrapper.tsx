@@ -8,7 +8,7 @@ const AdminPlayersOverviewWrapper = () => {
     <SectionWrapper
       title="Players"
       label="Add player"
-      link="/admin/dashboard/new"
+      link="/ad/dashboard/new"
     >
       <div className="flex flex-col gap-3 overflow-auto max-h-[25rem] rounded-md shadow-md border border-secondary">
         <React.Suspense fallback={<AdminPlayersSkeleton />}>
