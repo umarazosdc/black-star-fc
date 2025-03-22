@@ -2,7 +2,6 @@ import { adminRoute, authRoutes, privateRoutes, publicRoutes } from "@/routes";
 
 import NextAuth from "next-auth";
 import authConfig from "./auth.config";
-import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 
 const { auth } = NextAuth(authConfig);
@@ -10,14 +9,12 @@ const { auth } = NextAuth(authConfig);
 export default auth(async (req) => {
   const isLoggedIn = !!req.auth;
   const { pathname } = req.nextUrl;
-  const baseURL = req.nextUrl.origin;
+  const baseURL = "https://localhost:3000";
 
   const res = NextResponse.next();
-  const token = await getToken({ req, secret: process.env.AUTH_SECRET });
-  console.log("Token in production:", token);
-  console.log("Headers:", req.headers);
 
-  const role = token?.role;
+  const role = req.auth?.user.role;
+  console.log("Req role", role);
   const isAdmin = role === "admin";
 
   const isPrivateRoute = privateRoutes.includes(pathname);
