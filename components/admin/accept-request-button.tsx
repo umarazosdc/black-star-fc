@@ -18,19 +18,18 @@ const AcceptRequestButton = ({
 
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  console.log("Player id: ", playerId);
-
   const handleAcceptRequest = async () => {
     const toastId = toast.loading("Accepting request...");
 
-    setIsLoading(false);
+   if (isLoading) return; // Prevent multiple clicks
+   setIsLoading(true);
 
     try {
       await acceptRequest(userId, playerId, playerName);
       router.refresh();
       toast.success("Successfully accepted request", { id: toastId });
     } catch (error) {
-      console.log("Failed to accept ", error)
+      console.log("Failed to accept ", error);
       toast.error("Failed to accept request", { id: toastId });
     } finally {
       setIsLoading(true);
