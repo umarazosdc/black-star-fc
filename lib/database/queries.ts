@@ -5,7 +5,11 @@ import { Prisma } from "@prisma/client";
 import { cache } from "react";
 
 export const getUserById = cache(async (id: string) => {
-  return await db.user.findUnique({ where: { id: id } });
+  try {
+    return await db.user.findUnique({ where: { id: id } });
+  } catch {
+    return null;
+  }
 });
 
 export const getUserByEmail = cache(async (email: string) => {

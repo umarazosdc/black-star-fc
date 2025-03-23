@@ -13,7 +13,7 @@ export default auth(async (req) => {
 
   const res = NextResponse.next();
 
-  const role = req.auth?.user.role;
+  const role = req.auth?.user.role
   console.log("Req role", role);
   const isAdmin = role === "admin";
 

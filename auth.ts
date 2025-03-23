@@ -35,15 +35,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return true;
     },
 
-    jwt: async ({ token, user }) => {
-      if (user) {
-        token.role = user.role;
-        token.state = user.state;
-        token.id = user.id;
-        token.image = user.image;
-        token.email = user.email;
-        token.name = user.name;
-      }
+    jwt: async ({ token }) => {
+      if (!token.sub) return token;
+
+      const existingUser = await getUserById(token.sub);
+
+      if (!existingUser) return token;
+
+      token.role = existingUser.role;
+      token.id = token.sub;
+      token.state = existingUser.state;
+      token.email = token.email;
+      token.name = token.name;
+      token.image = existingUser.image;
+
       return token;
     },
 
@@ -54,7 +59,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           ...session.user,
           role: token.role as string,
           state: token.state as string,
-          id: token.id as string,
+          id: token.sub,
           image: token.image as string,
           email: token.email as string,
           name: token.name as string,

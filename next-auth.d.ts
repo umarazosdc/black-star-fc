@@ -5,22 +5,20 @@ declare module "next-auth" {
     user: {
       role?: string;
       state?: string;
-      id: string; // Ensure `id` is always a string (no `null` or `{}`)
+      id: string;
       image?: string | null;
       email?: string | null;
       name?: string | null;
-      supabaseAccessToken?: string;
     } & DefaultSession["user"];
   }
 
   interface User extends DefaultUser {
     role?: string;
     state?: string;
-    id: string; // Ensure `id` is always a string
+    id: string;
     image?: string | null;
     email?: string | null;
     name?: string | null;
-    supabaseAccessToken?: string;
   }
 }
 
@@ -32,6 +30,5 @@ declare module "next-auth/jwt" {
     image?: string | null;
     email?: string | null;
     name?: string | null;
-    supabaseAccessToken?: string;
   }
 }
