@@ -7,7 +7,7 @@ import { getUserById, unSuspendUser } from "./lib/database/queries";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
-  secret: process.env.AUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     signIn: async ({ user }) => {
       if (!user?.id) return false;
