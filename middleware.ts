@@ -13,16 +13,15 @@ export default auth(async (req) => {
 
   const res = NextResponse.next();
 
-  const role = req.auth?.user.role
+  const role = req.auth?.user.role;
   console.log("Req role", role);
   const isAdmin = role === "admin";
 
-  // const dashboardUrl =
-  //   user?.role === "admin"
-  //     ? "/admin/dashboard"
-  //     : user?.role === "scout"
-  //     ? "/scout/dashboard"
-  //     : "/";
+  const dashboardUrl = isAdmin
+    ? "/ad/dashboard"
+    : role === "scout"
+    ? "/scout/dashboard"
+    : "/";
 
   const isPrivateRoute = privateRoutes.includes(pathname);
   const isPublicRoute = publicRoutes.includes(pathname);
@@ -39,7 +38,7 @@ export default auth(async (req) => {
   // Authentication route
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return NextResponse.redirect(new URL(`/${role}/dashboard`, baseURL));
+      return NextResponse.redirect(new URL(dashboardUrl, baseURL));
     }
     return res;
   }
