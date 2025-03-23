@@ -2,13 +2,22 @@ import React from "react";
 import SheetHeader from "../utils/sheet-header";
 import SheetAccordion from "../utils/sheet-accordion";
 import { LayersIcon, LogOutIcon, Users2Icon } from "lucide-react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import BarSkeleton from "../utils/bar-skeleton";
 
 const AdminSheetContent = () => {
+  const { data: session, update } = useSession();
+
+  React.useEffect(() => {
+    update(); // Re-fetch user session when SidebarContent mounts
+  }, []);
+
+  const user = session?.user;
+
   return (
     <div className="flex flex-col h-full">
       <main className="flex flex-col gap-6">
-        <SheetHeader />
+        {user ? <SheetHeader user={user} /> : <BarSkeleton />}
         <div className="flex flex-col gap-4">
           <SheetAccordion
             icon={LayersIcon}

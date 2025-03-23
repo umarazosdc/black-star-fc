@@ -11,7 +11,7 @@ const AuthPagination = ({
    name: string;
 }) => {
    return (
-      <Link href={path} className="flex items-center gap-2 text-sm py-1.5 pl-2 rounded-md bg-primary">
+      <Link href={path} className="flex items-center gap-2 text-sm py-1.5 pl-2 rounded-md">
          <Icon />
          <p>{name}</p>
       </Link>

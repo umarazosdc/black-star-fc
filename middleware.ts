@@ -13,19 +13,17 @@ export default auth(async (req) => {
 
   const res = NextResponse.next();
 
-  const reqRole = req.auth?.user.role;
-  console.log("Req role:", reqRole);
+  console.log("NEXTAUTH_SECRET in Middleware:", process.env.NEXTAUTH_SECRET);
 
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const token = await getToken({
+    req,
+    secret: process.env.NEXTAUTH_SECRET,
+  });
 
   const role = token?.role;
   const isAdmin = role === "admin";
 
-  console.log("Token role:", role);
-
-  console.log("Req auth:", req.auth);
-  console.log("Token:", token);
-  console.log("Cookies:", req.cookies);
+  console.log("Token: ", token);
 
   const dashboardUrl = isAdmin
     ? "/ad/dashboard"

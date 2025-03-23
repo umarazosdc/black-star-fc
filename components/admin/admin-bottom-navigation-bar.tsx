@@ -18,10 +18,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import AdminSheetContent from "@/components/admin/admin-sheet-content";
-import Avatarr from "../utils/avatarr";
 import NavIcons from "../utils/nav-icons";
+import CldImg from "../utils/cldimg";
+import { useSession } from "next-auth/react";
 
 const AdminBottomNavigationBar = () => {
+  const [open, setOpen] = React.useState(false);
+  const { data: session, update } = useSession();
+
+  const user = session?.user;
+
   const pathname = usePathname();
   const navItems = [
     { name: "Home", path: "/ad/dashboard", icon: LayoutDashboardIcon },
@@ -62,9 +68,19 @@ const AdminBottomNavigationBar = () => {
         )
       )}
 
-      <Sheet>
+      <Sheet
+        open={open}
+        onOpenChange={(isOpen) => {
+          setOpen(isOpen);
+          if (isOpen) update(); // Refetch session on sheet open
+        }}
+      >
         <SheetTrigger>
-          <Avatarr selectedImage={"/imgs/users/scout/dc.jpg"} />
+          <CldImg
+            src={user?.image as string}
+            alt="Scout image"
+            className="size-10 rounded-full"
+          />
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>

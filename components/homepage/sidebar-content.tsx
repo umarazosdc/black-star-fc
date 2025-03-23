@@ -1,13 +1,25 @@
 "use client";
 import React from "react";
-import { BookmarkIcon, BoxIcon, LogOutIcon, SendIcon } from "lucide-react";
-import { signOut } from "next-auth/react";
+import {
+  BookmarkIcon,
+  BoxIcon,
+  LogInIcon,
+  LogOutIcon,
+  SendIcon,
+} from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import AuthPagination from "@/components/auth/auth-pagination";
-import useSessionHook from "@/lib/hook/use-session";
 import SheetHeader from "../utils/sheet-header";
+import Link from "next/link";
+import Img from "../utils/image";
 
 const SidebarContent = () => {
-  const user = useSessionHook();
+  const { data: session, update } = useSession();
+
+  React.useEffect(() => {
+    update(); // Re-fetch user session when SidebarContent mounts
+  }, []);
+  const user = session?.user;
   const role = user?.role;
 
   const paths = [
@@ -17,25 +29,50 @@ const SidebarContent = () => {
   ];
   return (
     <div className="flex flex-col h-full">
-      <SheetHeader />
-      <div className="flex flex-col gap-2 mt-2">
-        {paths.map((path, key) => (
-          <AuthPagination
-            key={key}
-            path={path.path}
-            icon={path.icon}
-            name={path.name}
-          />
-        ))}
-      </div>
-      <footer className="absolute bottom-8">
-        <button
-          className="flex gap-2 items-center text-sm"
-          onClick={async () => await signOut()}
-        >
-          <LogOutIcon />
-          <span>Logout</span>
-        </button>
+      {user ? (
+        <SheetHeader user={user}/>
+      ) : (
+        <Link href="/" className="flex items-center gap-2">
+          <div className="relative size-[2rem] select-none">
+            <Img src="/imgs/logo/logo.jpg" alt="Logo" />
+          </div>
+          <h1 className="text-xs font-bold uppercase tracking-widest">
+            Black Stars FC
+          </h1>
+        </Link>
+      )}
+
+      {user && (
+        <div className="flex flex-col gap-2 mt-4">
+          {paths.map((path, key) => (
+            <AuthPagination
+              key={key}
+              path={path.path}
+              icon={path.icon}
+              name={path.name}
+            />
+          ))}
+        </div>
+      )}
+
+      <footer className="absolute bottom-8 text-sm">
+        {user ? (
+          <button
+            className="flex gap-2 items-center"
+            onClick={async () => await signOut()}
+          >
+            <LogOutIcon />
+            <span>Logout</span>
+          </button>
+        ) : (
+          <Link
+            href="/login"
+            className="flex gap-2 items-center bg-accent py-2 px-4 rounded-md text-primary"
+          >
+            <LogInIcon className="size-4" />
+            <span>Sign In</span>
+          </Link>
+        )}
       </footer>
     </div>
   );
