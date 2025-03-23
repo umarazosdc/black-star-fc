@@ -7,7 +7,7 @@ import { getUserById, unSuspendUser } from "./lib/database/queries";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
-  secret: process.env.SECRET,
+  secret: process.env.AUTH_SECRET,
   callbacks: {
     signIn: async ({ user }) => {
       if (!user?.id) return false;
@@ -35,18 +35,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return true;
     },
 
-    jwt: async ({ token }) => {
-      if (token.sub) {
-        const existingUser = await getUserById(token.sub);
-        if (!existingUser) {
-          return token;
-        }
-        token.role = existingUser.role;
-        token.state = existingUser.state ?? undefined;
-        token.id = token.sub;
-        token.image = existingUser.image ?? undefined;
-        token.email = existingUser.email;
-        token.name = existingUser.name;
+    jwt: async ({ token, user }) => {
+      if (user) {
+        token.role = user.role;
+        token.state = user.state;
+        token.id = user.id;
+        token.image = user.image;
+        token.email = user.email;
+        token.name = user.name;
       }
       return token;
     },

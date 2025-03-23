@@ -17,6 +17,13 @@ export default auth(async (req) => {
   console.log("Req role", role);
   const isAdmin = role === "admin";
 
+  // const dashboardUrl =
+  //   user?.role === "admin"
+  //     ? "/admin/dashboard"
+  //     : user?.role === "scout"
+  //     ? "/scout/dashboard"
+  //     : "/";
+
   const isPrivateRoute = privateRoutes.includes(pathname);
   const isPublicRoute = publicRoutes.includes(pathname);
   const isAuthRoute = authRoutes.includes(pathname);
