@@ -9,7 +9,7 @@ const { auth } = NextAuth(authConfig);
 export default auth(async (req) => {
   const isLoggedIn = !!req.auth;
   const { pathname } = req.nextUrl;
-  const baseURL = "https://localhost:3000";
+  const baseURL = req.nextUrl.origin;
 
   const res = NextResponse.next();
 
