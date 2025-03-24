@@ -12,17 +12,23 @@ const BookmarksPage = async () => {
   return (
     <Wrapper title="Bookmarks">
       <GridWrappers>
-        {bookmarks.map((bookmark, key) => (
-          <BookmarkedPlayerCard
-            key={key}
-            src={bookmark.player.image}
-            position={bookmark.player.position}
-            age={bookmark.player.age}
-            id={bookmark.player.id}
-            name={bookmark.player.firstname + " " + bookmark.player.lastname}
-            isAdmin
-          />
-        ))}
+        {bookmarks.length > 0 ? (
+          bookmarks.map((bookmark, key) => (
+            <BookmarkedPlayerCard
+              key={key}
+              src={bookmark.player.image}
+              position={bookmark.player.position}
+              age={bookmark.player.age}
+              id={bookmark.player.id}
+              name={bookmark.player.firstname + " " + bookmark.player.lastname}
+              isAdmin
+            />
+          ))
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            You have not bookmarked any player yet.
+          </p>
+        )}
       </GridWrappers>
     </Wrapper>
   );

@@ -1,12 +1,17 @@
-'use client';
-import dynamic from 'next/dynamic';
-import React from 'react';
+import EditProfile from "@/components/utils/edit-profile";
+import { getUserById } from "@/lib/database/queries";
 
-const EditProfile = dynamic(() => import('@/components/utils/edit-profile'), {
-   ssr: false,
-});
-const EditProfilePage = () => {
-   return <EditProfile />;
+const EditProfilePage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) => {
+  const params = await searchParams;
+  const id = params.id || undefined;
+
+  const user = await getUserById(id as string);
+
+  return <EditProfile user={user} />;
 };
 
 export default EditProfilePage;

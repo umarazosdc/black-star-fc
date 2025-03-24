@@ -13,8 +13,6 @@ export default auth(async (req) => {
 
   const res = NextResponse.next();
 
-  console.log("NEXTAUTH_SECRET in Middleware:", process.env.NEXTAUTH_SECRET);
-
   const token = await getToken({
     req,
     secret: process.env.NEXTAUTH_SECRET,
@@ -22,8 +20,6 @@ export default auth(async (req) => {
 
   const role = token?.role;
   const isAdmin = role === "admin";
-
-  console.log("Token: ", token);
 
   const dashboardUrl = isAdmin
     ? "/ad/dashboard"

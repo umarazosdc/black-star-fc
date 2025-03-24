@@ -19,7 +19,7 @@ const SheetHeader = ({ user }: { user: User }) => {
         </div>
       </div>
       <Link
-        href="/profile/edit"
+        href={`/profile/edit?id=${user.id}`}
         className="p-2 rounded-full border text-accent"
       >
         <PencilIcon className="size-3" strokeWidth={3} />

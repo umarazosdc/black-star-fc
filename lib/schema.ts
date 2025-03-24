@@ -63,9 +63,11 @@ export const EventSchema = z.object({
 export const EditProfileSchema = z.object({
   name: z.string().min(1, "Event name cannot be empty.").max(25, "Max is 25."),
   bio: z.string().max(45, "Max is 45").optional(),
-  image:
-    typeof window !== "undefined" ? z.instanceof(FileList).optional() : z.any(),
+  image: z.string(),
   state: z.string().optional(),
-  phone: z.number().optional(),
+  phone: z
+    .string()
+    .regex(/^(\+234|0)[789][01]\d{8}$/, "Invalid phone number format")
+    .optional(),
   preference: z.string(),
 });
