@@ -18,7 +18,8 @@ const SidebarContent = () => {
 
   React.useEffect(() => {
     update(); // Re-fetch user session when SidebarContent mounts
-  }, []);
+  }, [update]);
+
   const user = session?.user;
   const role = user?.role;
 
@@ -30,7 +31,7 @@ const SidebarContent = () => {
   return (
     <div className="flex flex-col h-full">
       {user ? (
-        <SheetHeader user={user}/>
+        <SheetHeader user={user} />
       ) : (
         <Link href="/" className="flex items-center gap-2">
           <div className="relative size-[2rem] select-none">

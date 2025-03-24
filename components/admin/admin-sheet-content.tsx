@@ -10,7 +10,7 @@ const AdminSheetContent = () => {
 
   React.useEffect(() => {
     update(); // Re-fetch user session when SidebarContent mounts
-  }, []);
+  }, [update]);
 
   const user = session?.user;
 

@@ -36,25 +36,20 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     jwt: async ({ token }) => {
-      try {
-        if (!token.sub) return token;
+      if (!token.sub) return token;
 
-        const existingUser = await getUserById(token.sub);
+      const existingUser = await getUserById(token.sub);
 
-        if (!existingUser) return token;
+      if (!existingUser) return token;
 
-        token.role = existingUser.role;
-        token.id = token.sub;
-        token.state = existingUser.state ?? undefined;
-        token.email = existingUser.email;
-        token.name = existingUser.name;
-        token.image = existingUser.image;
+      token.role = existingUser.role;
+      token.id = token.sub;
+      token.state = existingUser.state ?? undefined;
+      token.email = existingUser.email;
+      token.name = existingUser.name;
+      token.image = existingUser.image;
 
-        return token;
-      } catch (error) {
-        console.error("Error in JWT callback:", error);
-        return token;
-      }
+      return token;
     },
 
     session: async ({ token, session }) => {
