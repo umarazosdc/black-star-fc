@@ -1,9 +1,10 @@
 import React from "react";
-import { BookmarkIcon, BoxIcon, LogOutIcon, SendIcon } from "lucide-react";
+import { BookmarkIcon, BoxIcon, SendIcon } from "lucide-react";
 import SheetHeader from "../utils/sheet-header";
 import AuthPagination from "./auth-pagination";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import BarSkeleton from "../utils/bar-skeleton";
+import LogOutButton from "../utils/log-out-button";
 
 const AuthSheetContent = () => {
   const { data: session, update } = useSession();
@@ -35,13 +36,7 @@ const AuthSheetContent = () => {
         </div>
       </main>
       <footer className="absolute bottom-8">
-        <button
-          className="flex gap-2 items-center text-sm"
-          onClick={async () => await signOut({ callbackUrl: "/login" })}
-        >
-          <LogOutIcon />
-          <span>Logout</span>
-        </button>
+        <LogOutButton />
       </footer>
     </div>
   );

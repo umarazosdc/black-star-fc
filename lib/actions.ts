@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { db } from "./prisma";
 import { Resend } from "resend";
 import { cache } from "react";
@@ -12,6 +12,10 @@ import {
 
 export const providerSignIn = async (provider: string) => {
   await signIn(provider, { redirectTo: "/scout/dashboard" });
+};
+
+export const logout = async () => {
+  await signOut();
 };
 
 const resend = new Resend(process.env.RESEND_API_KEY);

@@ -19,6 +19,7 @@ export default auth(async (req) => {
   });
 
   const role = token?.role;
+  console.log("User role:", role);
   const isAdmin = role === "admin";
 
   const dashboardUrl = isAdmin

@@ -1,9 +1,10 @@
 import React from "react";
 import SheetHeader from "../utils/sheet-header";
 import SheetAccordion from "../utils/sheet-accordion";
-import { LayersIcon, LogOutIcon, Users2Icon } from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
+import { LayersIcon, Users2Icon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import BarSkeleton from "../utils/bar-skeleton";
+import LogOutButton from "../utils/log-out-button";
 
 const AdminSheetContent = () => {
   const { data: session, update } = useSession();
@@ -37,25 +38,10 @@ const AdminSheetContent = () => {
               { path: "/explore/bookmarks", name: "Bookmarked players" },
             ]}
           />
-          {/* <SheetAccordion
-                  icon={Settings}
-                  field="Account settings"
-                  items={[
-                     { path: '/explore', name: 'View Profile' },
-                     { path: '/explore/requests', name: 'Requested' },
-                     { path: '/explore/bookmarks', name: 'Bookmarked' },
-                  ]}
-               /> */}
         </div>
       </main>
       <footer className="absolute bottom-8">
-        <button
-          className="flex gap-2 items-center text-sm"
-          onClick={async () => await signOut({ callbackUrl: "/login" })}
-        >
-          <LogOutIcon />
-          <span>Logout</span>
-        </button>
+        <LogOutButton />
       </footer>
     </div>
   );

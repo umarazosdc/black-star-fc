@@ -57,56 +57,61 @@ const UserCard = ({
 
   return (
     <div className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md">
-      <div className="self-start flex justify-between items-center w-full">
-        <div className="flex items-center gap-4">
-          <Link href={`/ad/dashboard/user?id=${userId}`}>
-            <CldImg
-              src={src ? src : "uploads/images/defaultjpg"}
-              alt="User image"
-              className="size-[5rem] rounded-full border"
-            />
+      <div className="grid grid-cols-[5rem_auto] gap-3 items-center w-full">
+        <Link
+          href={`/ad/dashboard/user?id=${userId}`}
+          className="size-[5rem] rounded-full"
+        >
+          <CldImg
+            src={src ? src : "uploads/images/defaultjpg"}
+            alt="User image"
+            className="size-[5rem] rounded-full border"
+          />
+        </Link>
+
+        <div className="flex flex-col gap-2 min-w-0">
+          <Link
+            className="text-base font-bold tracking-wide truncate w-full"
+            href={`/ad/dashboard/user?id=${userId}`}
+          >
+            {name}
           </Link>
 
-          <div className="flex flex-col gap-2">
-            <Link
-              className="text-base font-bold tracking-wide truncate w-48"
-              href={`/ad/dashboard/user?id=${userId}`}
-            >
-              {name}
-            </Link>
-            {!isAdminDashboard && (
-              <Icontext icon={MailIcon} className="w-52">
-                {email}
-              </Icontext>
-            )}
-            {isAdminDashboard ? (
-              // Add dialog to display player
-              <Dialog>
-                <DialogTrigger>
-                  <Icontext icon={MailsIcon} className="cursor-pointer">
-                    {!accept ? "Requesting" : "Requested for"}{" "}
-                    <b>{playerName}</b>
-                  </Icontext>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>{playerName}</DialogTitle>
-                      <DialogDescription></DialogDescription>
-                    </DialogHeader>
-                    {children}
-                    <DialogFooter>
-                      <Age age={playersAge} className="self-end" />
-                    </DialogFooter>
-                  </DialogContent>
-                </DialogTrigger>
-              </Dialog>
-            ) : (
-              <Icontext icon={Clock3Icon}>
-                Joined <b>{date}</b>
-              </Icontext>
-            )}
-          </div>
+          {!isAdminDashboard && (
+            <Icontext icon={MailIcon} className="w-52">
+              {email}
+            </Icontext>
+          )}
+
+          {isAdminDashboard ? (
+            <Dialog>
+              <DialogTrigger>
+                <Icontext
+                  icon={MailsIcon}
+                  className="cursor-pointer truncate w-full"
+                >
+                  {!accept ? "Requesting" : "Requested for"} <b>{playerName}</b>
+                </Icontext>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle className="truncate">{playerName}</DialogTitle>
+                    <DialogDescription></DialogDescription>
+                  </DialogHeader>
+                  {children}
+                  <DialogFooter>
+                    <Age age={playersAge} className="self-end" />
+                  </DialogFooter>
+                </DialogContent>
+              </DialogTrigger>
+            </Dialog>
+          ) : (
+            <Icontext icon={Clock3Icon}>
+              Joined <b>{date}</b>
+            </Icontext>
+          )}
         </div>
       </div>
+
       {isAdminDashboard ? (
         !accept && (
           <div className="self-end flex items-center gap-4">

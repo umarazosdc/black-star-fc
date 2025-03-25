@@ -1,17 +1,12 @@
 "use client";
 import React from "react";
-import {
-  BookmarkIcon,
-  BoxIcon,
-  LogInIcon,
-  LogOutIcon,
-  SendIcon,
-} from "lucide-react";
-import { signOut, useSession } from "next-auth/react";
+import { BookmarkIcon, BoxIcon, LogInIcon, SendIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import AuthPagination from "@/components/auth/auth-pagination";
 import SheetHeader from "../utils/sheet-header";
 import Link from "next/link";
 import Img from "../utils/image";
+import LogOutButton from "../utils/log-out-button";
 
 const SidebarContent = () => {
   const { data: session, update } = useSession();
@@ -58,13 +53,7 @@ const SidebarContent = () => {
 
       <footer className="absolute bottom-8 text-sm">
         {user ? (
-          <button
-            className="flex gap-2 items-center"
-            onClick={async () => await signOut()}
-          >
-            <LogOutIcon />
-            <span>Logout</span>
-          </button>
+          <LogOutButton />
         ) : (
           <Link
             href="/login"
