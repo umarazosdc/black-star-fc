@@ -15,7 +15,6 @@ import {
 } from "@/lib/database/queries";
 import { getAge } from "@/lib/date";
 import Link from "next/link";
-import React from "react";
 
 const DashboardPage = async () => {
   const session = await auth();
