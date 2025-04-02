@@ -151,6 +151,36 @@ export const getUsersBySearchAndOrder = cache(
   }
 );
 
+export const getPlayersBySearchAndOrder = cache(
+  async (
+    search: string,
+    orderBy: Prisma.PlayerOrderByWithRelationInput,
+    userId: string
+  ) => {
+    try {
+      return db.player.findMany({
+        where: {
+          OR: [
+            { firstname: { contains: search, mode: "insensitive" } },
+            { lastname: { contains: search, mode: "insensitive" } },
+          ],
+          NOT: {
+            OR: [
+              { bookmarked: { some: { userId } } },
+              { requested: { some: { userId } } },
+            ],
+          },
+        },
+        take: 15,
+        orderBy,
+      });
+    } catch (error) {
+      console.log("Failed to fetch players", error);
+      throw new Error("Unable to fetch players. Please try again later.");
+    }
+  }
+);
+
 export const getTotalUsers = cache(async () => {
   return await db.user.count({ where: { NOT: [{ role: "admin" }] } });
 });
@@ -213,7 +243,7 @@ export const getPlayers = cache(async (userId: string) => {
         ],
       },
     },
-    orderBy: { createdAt: "asc" },
+    orderBy: { createdAt: "desc" },
   });
 });
 

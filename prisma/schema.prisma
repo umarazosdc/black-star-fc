@@ -36,7 +36,7 @@ model User {
   image              String?
   password           String?
   bio                String?
-  state              String?
+  state              String?    @default("")
   phone              Int?
   preference         Preference @default(forward)
   isSuspended        Boolean    @default(false)

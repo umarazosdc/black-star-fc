@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
 import Button from "../homepage/button";
-import { bookmarkPlayer } from "@/lib/actions";
 import { toast } from "sonner";
 import { getBookmarkStatus } from "@/lib/database/queries";
 import { useRouter } from "next/navigation";
 import useSessionHook from "@/lib/hook/use-session";
+import { bookmarkPlayer } from "@/lib/actions/create";
 
 const BookmarkPlayerButton = ({ playerId }: { playerId: string }) => {
   const [isBookmarked, setIsBookmarked] = React.useState<boolean>(false);

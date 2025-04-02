@@ -36,7 +36,8 @@ const LoginForm = () => {
             toast.success(data.success);
           }
         })
-        .catch(() => {
+        .catch((error) => {
+          console.log("Something went wrong:", error);
           toast.error("Something went wrong.");
         });
     });

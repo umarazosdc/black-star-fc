@@ -36,7 +36,7 @@ const FormSide = ({
           <SelectTrigger>
             <FormItem className="w-full">
               <FormControl>
-                <SelectValue>{field.value ? field.value : "Role"}</SelectValue>
+                <SelectValue placeholder="Role" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

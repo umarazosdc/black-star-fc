@@ -1,9 +1,10 @@
 "use client";
+import { cn } from "@/lib/utils";
 import { addNewPlayers } from "@/lib/validations";
 import React from "react";
 import { toast } from "sonner";
 
-const DoneButton = () => {
+const DoneButton = ({ className }: { className?: string | undefined }) => {
   const handleAddNewPlayers = async () => {
     const toastId = toast.loading("Adding player...");
 
@@ -16,10 +17,7 @@ const DoneButton = () => {
     });
   };
   return (
-    <button
-      className="bg-accent text-primary py-2.5 px-6 text-sm rounded-md cursor-pointer"
-      onClick={handleAddNewPlayers}
-    >
+    <button className={cn(className)} onClick={handleAddNewPlayers}>
       Done
     </button>
   );

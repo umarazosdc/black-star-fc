@@ -2,19 +2,11 @@ import React from "react";
 import { BookmarkIcon, BoxIcon, SendIcon } from "lucide-react";
 import SheetHeader from "../utils/sheet-header";
 import AuthPagination from "./auth-pagination";
-import { useSession } from "next-auth/react";
 import BarSkeleton from "../utils/bar-skeleton";
 import LogOutButton from "../utils/log-out-button";
+import { SheetContentProps } from "../admin/admin-sheet-content";
 
-const AuthSheetContent = () => {
-  const { data: session, update } = useSession();
-
-  React.useEffect(() => {
-    update(); // Re-fetch user session when SidebarContent mounts
-  }, [update]);
-
-  const user = session?.user;
-
+const AuthSheetContent = ({ user }: SheetContentProps) => {
   const paths = [
     { name: "Explore players", path: "/explore", icon: BoxIcon },
     { name: "Bookmarks", path: "/explore/bookmarks", icon: BookmarkIcon },

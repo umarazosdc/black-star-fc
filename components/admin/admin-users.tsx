@@ -1,24 +1,20 @@
 import React from "react";
-import SearchContainer from "@/components/utils/search-container";
 import { getUsers } from "@/lib/database/queries";
-import CldImg from "@/components/utils/cldimg";
+import ImageDisplayCard from "./image-display-card";
 
 const AdminUsers = async () => {
   const users = await getUsers();
   const userSubset = users.slice(0, 4);
   return (
-    <SearchContainer path="//users" name="Users">
-      <div className="columns-2 gap-2 space-y-2">
-        {userSubset.map((user) => (
-          <CldImg
-            key={user.id}
-            src={user.image ? user.image : "uploads/images/defaultjpg"}
-            alt={"User image"}
-            className="shadow-md rounded-md"
-          />
-        ))}
-      </div>
-    </SearchContainer>
+    <div className="columns-2 gap-2 space-y-2">
+      {userSubset.map((user) => (
+        <ImageDisplayCard
+          key={user.id}
+          src={user.image ? user.image : "uploads/images/defaultjpg"}
+          alt={"User image"}
+        />
+      ))}
+    </div>
   );
 };
 

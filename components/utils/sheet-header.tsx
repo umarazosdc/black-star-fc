@@ -4,7 +4,7 @@ import Link from "next/link";
 import CldImg from "./cldimg";
 import { User } from "next-auth";
 
-const SheetHeader = ({ user }: { user: User }) => {
+const SheetHeader = ({ user }: { user: User | null }) => {
   return (
     <div className="flex justify-between items-center py-4 border-b">
       <div className="flex items-center gap-4 w-full">
@@ -19,7 +19,7 @@ const SheetHeader = ({ user }: { user: User }) => {
         </div>
       </div>
       <Link
-        href={`/profile/edit?id=${user.id}`}
+        href={`/profile/edit?id=${user?.id}`}
         className="p-2 rounded-full border text-accent"
       >
         <PencilIcon className="size-3" strokeWidth={3} />

@@ -2,19 +2,19 @@ import React from "react";
 import SheetHeader from "../utils/sheet-header";
 import SheetAccordion from "../utils/sheet-accordion";
 import { LayersIcon, Users2Icon } from "lucide-react";
-import { useSession } from "next-auth/react";
 import BarSkeleton from "../utils/bar-skeleton";
 import LogOutButton from "../utils/log-out-button";
+import { User } from "@prisma/client";
 
-const AdminSheetContent = () => {
-  const { data: session, update } = useSession();
+export interface ExtendUserProps extends User {
+  state: string;
+}
 
-  React.useEffect(() => {
-    update(); // Re-fetch user session when SidebarContent mounts
-  }, [update]);
+export interface SheetContentProps {
+  user: ExtendUserProps | null;
+}
 
-  const user = session?.user;
-
+const AdminSheetContent = ({ user }: SheetContentProps) => {
   return (
     <div className="flex flex-col h-full">
       <main className="flex flex-col gap-6">

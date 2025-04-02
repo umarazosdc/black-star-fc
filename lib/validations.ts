@@ -51,6 +51,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
             error: `Account is suspended until ${suspendedUntil?.toUTCString()}`,
           };
         default:
+          console.log("Something went wrong:", error);
           return { error: "Something went wrong" };
       }
     }
@@ -149,7 +150,7 @@ export const newPlayer = async (values: z.infer<typeof PlayerSchema>) => {
         },
       },
     });
-    revalidatePath("/ad/dashboard/new");
+    revalidatePath("/dashboard/new");
     return {
       success: `Successfully added ${firstname + " " + lastname} to cart`,
     };
@@ -207,7 +208,7 @@ export const editPlayer = async (values: z.infer<typeof PlayerSchema>) => {
         },
       },
     });
-    revalidatePath("/ad/dashboard/new");
+    revalidatePath("/dashboard/new");
     return {
       success: `Successfully edited ${firstname + " " + lastname}`,
     };
@@ -262,7 +263,7 @@ export const addNewPlayers = async () => {
     // Step 3: Delete preUploadedPlayers
     await db.preUploadedPlayer.deleteMany();
 
-    revalidatePath("/ad/dashboard/players");
+    revalidatePath("/dashboard/players");
     return preUploadedPlayers.length > 1
       ? { success: "Successfully added new players" }
       : { success: "Successfully added new player" };

@@ -1,25 +1,20 @@
 "use client";
 import React from "react";
 import { BookmarkIcon, BoxIcon, LogInIcon, SendIcon } from "lucide-react";
-import { useSession } from "next-auth/react";
 import AuthPagination from "@/components/auth/auth-pagination";
 import SheetHeader from "../utils/sheet-header";
 import Link from "next/link";
 import Img from "../utils/image";
 import LogOutButton from "../utils/log-out-button";
+import { SheetContentProps } from "../admin/admin-sheet-content";
 
-const SidebarContent = () => {
-  const { data: session, update } = useSession();
-
-  React.useEffect(() => {
-    update(); // Re-fetch user session when SidebarContent mounts
-  }, [update]);
-
-  const user = session?.user;
+const SidebarContent = ({ user }: SheetContentProps) => {
   const role = user?.role;
 
+  const route = role === "admin" ? "/dashboard" : "/scout/dashboard";
+
   const paths = [
-    { name: "Dashboard", path: `/${role}/dashboard`, icon: BoxIcon },
+    { name: "Dashboard", path: `${route}`, icon: BoxIcon },
     { name: "Bookmarks", path: "/explore/bookmarks", icon: BookmarkIcon },
     { name: "Requested", path: "/explore/requests", icon: SendIcon },
   ];

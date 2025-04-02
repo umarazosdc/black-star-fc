@@ -5,12 +5,8 @@ import AdminPlayersSkeleton from "../skeleton/admin-players-skeleton";
 
 const AdminPlayersOverviewWrapper = () => {
   return (
-    <SectionWrapper
-      title="Players"
-      label="Add player"
-      link="/ad/dashboard/new"
-    >
-      <div className="flex flex-col gap-3 overflow-auto max-h-[25rem] rounded-md shadow-md border border-secondary">
+    <SectionWrapper title="Players" label="Add player" link="/dashboard/new">
+      <div className="flex flex-col gap-3 overflow-auto max-h-[25rem] rounded-md shadow-md border border-secondary w-full">
         <React.Suspense fallback={<AdminPlayersSkeleton />}>
           <PlayersOverview />
         </React.Suspense>

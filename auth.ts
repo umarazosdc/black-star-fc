@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import type { Session } from "next-auth";
 import { db } from "@/lib/prisma";
 import authConfig from "./auth.config";
 import { getUserById, unSuspendUser } from "./lib/database/queries";
@@ -7,10 +8,10 @@ import { getUserById, unSuspendUser } from "./lib/database/queries";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.AUTH_SECRET,
   callbacks: {
-    signIn: async ({ user }) => {
-      if (!user?.id) return false;
+    async signIn({ user }) {
+      if (!user || !user?.id) return false;
 
       const existingUser = await getUserById(user.id);
       if (!existingUser) return false;
@@ -35,15 +36,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return true;
     },
 
-    jwt: async ({ token }) => {
-      if (!token.sub) return token;
+    async jwt({ token, user }) {
+      if (user) token.id = user.id as string;
+
+      if (!token.sub || !token) return token;
 
       const existingUser = await getUserById(token.sub);
 
       if (!existingUser) return token;
 
       token.role = existingUser.role;
-      token.id = token.sub;
+      token.id = existingUser.id;
       token.state = existingUser.state ?? undefined;
       token.email = existingUser.email;
       token.name = existingUser.name;
@@ -52,19 +55,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       return token;
     },
 
-    session: async ({ token, session }) => {
+    async session({ token, session }) {
       return {
         ...session,
         user: {
           ...session.user,
-          role: token.role,
-          state: token.state,
-          id: token.id,
-          image: token.image,
-          email: token.email,
-          name: token.name,
+          role: token.role as string | undefined,
+          state: token.state as string | undefined,
+          id: token.id as string | undefined,
+          image: token.image ?? null,
+          email: token.email ?? null,
+          name: token.name ?? null,
         },
-      };
+      } as Session;
     },
   },
   ...authConfig,

@@ -18,7 +18,6 @@ import Link from "next/link";
 import SuspendUserButton from "./suspend-user-button";
 import DeleteUserButton from "./delete-user-button";
 import AcceptRequestButton from "./accept-request-button";
-import { getRequestStatus } from "@/lib/database/queries";
 
 const UserCard = ({
   src,
@@ -31,6 +30,7 @@ const UserCard = ({
   children,
   userId,
   playerId,
+  isAccepted,
 }: {
   src: string | undefined;
   name: string;
@@ -42,24 +42,13 @@ const UserCard = ({
   playersAge?: number;
   userId: string;
   playerId?: string;
+  isAccepted?: boolean;
 }) => {
-  const [accept, setAccept] = React.useState<boolean>(false);
-
-  React.useEffect(() => {
-    const getPlayerStatus = async () => {
-      const status = await getRequestStatus(playerId as string, userId);
-
-      setAccept(status);
-    };
-
-    getPlayerStatus();
-  }, [playerId, userId]);
-
   return (
     <div className="flex flex-col gap-4 shadow-md p-4 bg-card rounded-md">
       <div className="grid grid-cols-[5rem_auto] gap-3 items-center w-full">
         <Link
-          href={`/ad/dashboard/user?id=${userId}`}
+          href={`/dashboard/user?id=${userId}`}
           className="size-[5rem] rounded-full"
         >
           <CldImg
@@ -72,7 +61,7 @@ const UserCard = ({
         <div className="flex flex-col gap-2 min-w-0">
           <Link
             className="text-base font-bold tracking-wide truncate w-full"
-            href={`/ad/dashboard/user?id=${userId}`}
+            href={`/dashboard/user?id=${userId}`}
           >
             {name}
           </Link>
@@ -90,7 +79,8 @@ const UserCard = ({
                   icon={MailsIcon}
                   className="cursor-pointer truncate w-full"
                 >
-                  {!accept ? "Requesting" : "Requested for"} <b>{playerName}</b>
+                  {!isAccepted ? "Requesting" : "Requested for"}{" "}
+                  <b>{playerName}</b>
                 </Icontext>
                 <DialogContent>
                   <DialogHeader>
@@ -113,7 +103,7 @@ const UserCard = ({
       </div>
 
       {isAdminDashboard ? (
-        !accept && (
+        !isAccepted && (
           <div className="self-end flex items-center gap-4">
             <AcceptRequestButton
               playerId={playerId as string}

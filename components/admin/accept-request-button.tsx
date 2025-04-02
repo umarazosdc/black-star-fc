@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import Button from "../utils/button";
-import { acceptRequest } from "@/lib/actions";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { acceptRequest } from "@/lib/actions/create";
 
 const AcceptRequestButton = ({
   userId,

@@ -5,11 +5,9 @@ import { BookmarkIcon } from "lucide-react";
 import Link from "next/link";
 import Age from "./age";
 import { cn } from "@/lib/utils";
-import useSessionHook from "@/lib/hook/use-session";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { bookmarkPlayer } from "@/lib/actions";
-import { getBookmarkStatus } from "@/lib/database/queries";
+import { bookmarkPlayer } from "@/lib/actions/create";
 
 const BookmarkedPlayerCard = ({
   src,
@@ -19,6 +17,7 @@ const BookmarkedPlayerCard = ({
   className,
   isAdmin,
   id,
+  userId,
   ...props
 }: {
   src: string;
@@ -27,44 +26,9 @@ const BookmarkedPlayerCard = ({
   age: number;
   isAdmin?: boolean;
   id: string;
+  userId:string;
 } & React.HTMLAttributes<HTMLDivElement>) => {
-  const [isBookmarked, setIsBookmarked] = React.useState<boolean>();
-
-  const session = useSessionHook();
-  const userId = session?.id;
-
   const router = useRouter();
-
-  // Get Bookmark status
-  const getStatus = React.useCallback(async () => {
-    if (!userId) return;
-    const status = await getBookmarkStatus(id, userId);
-    setIsBookmarked(status);
-  }, [id, userId]);
-
-  React.useEffect(() => {
-    getStatus();
-  }, [getStatus]);
-
-  // Add player to BOOKMARK
-  const handleBookmark = async (e: React.MouseEvent<SVGElement>) => {
-    e.preventDefault();
-    if (!userId)
-      return toast.error("You must be logged in to bookmark a player");
-
-    const toastId = toast.loading("Bookmarking player...");
-
-    try {
-      await bookmarkPlayer(id, userId); // Pass `true` for bookmarking
-      setIsBookmarked(true); // ✅ Update state
-      router.refresh();
-      toast.success("Successfully bookmarked player", { id: toastId });
-    } catch (error) {
-      console.log("Failed to remove player ", error);
-
-      toast.error("Failed to bookmark player", { id: toastId });
-    }
-  };
 
   const handleUnBookmark = async (e: React.MouseEvent<SVGElement>) => {
     e.preventDefault();
@@ -75,7 +39,6 @@ const BookmarkedPlayerCard = ({
 
     try {
       await bookmarkPlayer(id, userId); // Pass `false` for unbookmarking
-      setIsBookmarked(false); // ✅ Update state
       router.refresh();
       toast.success("Removed player from bookmark", { id: toastId });
     } catch (error) {
@@ -88,7 +51,7 @@ const BookmarkedPlayerCard = ({
   return (
     <div
       className={cn(
-        "shadow-md rounded-md bg-card border-t border-r flex flex-col gap-4 p-3 text-secondary select-none w-full",
+        "shadow-md rounded-md bg-card border-t border-r flex flex-col gap-4 p-3 text-secondary select-none w-full flex-shrink-0",
         className
       )}
       {...props}
@@ -111,8 +74,8 @@ const BookmarkedPlayerCard = ({
           {!isAdmin && (
             <BookmarkIcon
               className="text-accent cursor-pointer size-9"
-              onClick={isBookmarked ? handleUnBookmark : handleBookmark}
-              fill={isBookmarked ? "#E76D57" : "none"}
+              onClick={handleUnBookmark}
+              fill={"#E76D57"}
             />
           )}
         </div>

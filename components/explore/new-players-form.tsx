@@ -133,14 +133,27 @@ const NewPlayersForm = () => {
       // Upload Videos
       let playerVideosPublicIds: string[] = [];
       if (videoFiles.length > 0) {
-        const formData = new FormData();
-        videoFiles.forEach((file) => formData.append("file", file));
-        const res = await fetch("/api/videos-upload", {
-          method: "POST",
-          body: formData,
+        const response = await fetch("/api/cloudinary-signature");
+        const data = await response.json();
+
+        const uploadPromises = videoFiles.map(async (file) => {
+          const formData = new FormData();
+          formData.append("file", file);
+          formData.append("api_key", data.api_key);
+          formData.append("timestamp", data.timestamp);
+          formData.append("signature", data.signature);
+          formData.append("folder", data.folder);
+
+          const uploadResponse = await fetch(
+            `https://api.cloudinary.com/v1_1/${data.cloud_name}/video/upload`,
+            { method: "POST", body: formData }
+          );
+
+          return uploadResponse.json();
         });
-        const data = await res.json();
-        playerVideosPublicIds = data.publicIds;
+
+        const uploadedVideos = await Promise.all(uploadPromises);
+        playerVideosPublicIds = uploadedVideos.map((video) => video.public_id);
         form.setValue("videos", playerVideosPublicIds);
       }
 
@@ -170,7 +183,7 @@ const NewPlayersForm = () => {
         });
       });
     } catch {
-      toast.error("Error during submission");
+      toast.error("Error during submission", { id: toastId });
     } finally {
       setThumbnailLoading(false);
       setStatisticLoading(false);

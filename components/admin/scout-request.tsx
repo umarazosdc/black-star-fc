@@ -20,6 +20,7 @@ const ScoutRequest = async () => {
           isAdminDashboard
           playersAge={getAge(rqst.player.dob)}
           userId={rqst.user.id}
+          isAccepted={rqst.isRequested}
         >
           <PlayerImage
             src={rqst.player.image}

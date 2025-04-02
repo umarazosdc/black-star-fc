@@ -1,9 +1,4 @@
-"use client";
 import React from "react";
-import { BellIcon, LayoutDashboardIcon, SearchIcon } from "lucide-react";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import {
   Sheet,
   SheetContent,
@@ -12,50 +7,22 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import NavIcons from "@/components/utils/nav-icons";
 import AuthSheetContent from "./auth-sheet-content";
-import { useSession } from "next-auth/react";
 import CldImg from "../utils/cldimg";
+import { scoutNavItems } from "@/lib/data";
+import BottomNavIcons from "../utils/bottom-nav-icons";
+import { getUserById } from "@/lib/database/queries";
+import { auth } from "@/auth";
 
-const AuthBottomNavigationBar = () => {
-  const [open, setOpen] = React.useState(false);
-  const { data: session, update } = useSession();
+const AuthBottomNavigationBar = async () => {
+  const session = await auth();
+  const userId = session?.user.id as string;
+  const user = await getUserById(userId);
 
-  const user = session?.user;
-
-  const pathname = usePathname();
-  const navItems = [
-    { name: "Home", path: "/scout/dashboard", icon: LayoutDashboardIcon },
-    { name: "Search", path: "/scout/dashboard/search", icon: SearchIcon },
-    {
-      name: "Notification",
-      path: "/scout/dashboard/notification",
-      icon: BellIcon,
-    },
-  ];
   return (
     <nav className="flex justify-between items-center py-1 px-3 bg-primary sticky bottom-0 z-50 border-t w-full">
-      {navItems.map((item) => (
-        <Link key={item.path} href={item.path}>
-          <NavIcons
-            icon={item.icon}
-            name={item.name}
-            className={cn(
-              pathname === item.path
-                ? "text-accent opacity-100"
-                : "text-secondary opacity-70"
-            )}
-          />
-        </Link>
-      ))}
-
-      <Sheet
-        open={open}
-        onOpenChange={(isOpen) => {
-          setOpen(isOpen);
-          if (isOpen) update(); // Refetch session on sheet open
-        }}
-      >
+      <BottomNavIcons navItems={scoutNavItems} />
+      <Sheet>
         <SheetTrigger>
           <CldImg
             src={user?.image as string}
@@ -67,7 +34,9 @@ const AuthBottomNavigationBar = () => {
           <SheetHeader>
             <SheetTitle></SheetTitle>
             <SheetDescription></SheetDescription>
-            <AuthSheetContent />
+            <AuthSheetContent
+              user={user ? { ...user, state: user.state ?? "" } : null}
+            />
           </SheetHeader>
         </SheetContent>
       </Sheet>

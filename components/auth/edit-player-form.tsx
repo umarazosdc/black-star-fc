@@ -181,7 +181,7 @@ const EditPlayerForm = ({
         });
       });
     } catch {
-      toast.error("Error updating player");
+      toast.error("Error updating player", { id: toastId });
     } finally {
       setThumbnailLoading(false);
       setStatisticLoading(false);

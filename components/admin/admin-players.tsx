@@ -1,27 +1,23 @@
-import React from 'react';
-import SearchContainer from '@/components/utils/search-container';
-import { getPlayers } from '@/lib/database/queries';
-import CldImg from '@/components/utils/cldimg';
-import { auth } from '@/auth';
+import React from "react";
+import { getPlayers } from "@/lib/database/queries";
+import { auth } from "@/auth";
+import ImageDisplayCard from "./image-display-card";
 
-const AdminPlayers = async () => {
-   const session = await auth();
-   const players = await getPlayers(session?.user.id as string);
-   const playerSubset = players.slice(0, 4);
-   return (
-      <SearchContainer path="/ad/dashboard/players" name="Players">
-         <div className="columns-2 gap-2 space-y-2">
-            {playerSubset.map((player) => (
-               <CldImg
-                  key={player.id}
-                  src={player.thumbnail}
-                  alt={'Player image'}
-                  className="shadow-md rounded-md"
-               />
-            ))}
-         </div>
-      </SearchContainer>
-   );
+const SearchPlayers = async () => {
+  const session = await auth();
+  const players = await getPlayers(session?.user.id as string);
+  const playerSubset = players.slice(0, 4);
+  return (
+    <div className="columns-2 gap-2 space-y-2">
+      {playerSubset.map((player) => (
+        <ImageDisplayCard
+          key={player.id}
+          src={player.thumbnail}
+          alt={"Player image"}
+        />
+      ))}
+    </div>
+  );
 };
 
-export default AdminPlayers;
+export default SearchPlayers;

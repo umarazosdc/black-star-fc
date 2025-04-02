@@ -24,7 +24,7 @@ const RequestedPlayerCard = ({
     <div>
       <div
         className={cn(
-          "shadow-md rounded-md bg-card border-t border-r flex flex-col gap-2 p-3 text-secondary select-none w-full",
+          "shadow-md rounded-md bg-card border-t border-r flex flex-col gap-2 p-3 text-secondary select-none w-full  flex-shrink-0",
           className
         )}
         {...props}

@@ -1,5 +1,4 @@
-import { adminRoute, authRoutes, privateRoutes, publicRoutes } from "@/routes";
-import { getToken } from "next-auth/jwt";
+import { authRoutes, privateRoutes } from "@/routes";
 import NextAuth from "next-auth";
 import authConfig from "./auth.config";
 import { NextResponse } from "next/server";
@@ -13,37 +12,27 @@ export default auth(async (req) => {
 
   const res = NextResponse.next();
 
-  const token = await getToken({
-    req,
-    secret: process.env.NEXTAUTH_SECRET,
-  });
-
-  const role = token?.role;
-  console.log("User role:", role);
-  const isAdmin = role === "admin";
-
-  const dashboardUrl = isAdmin
-    ? "/ad/dashboard"
-    : role === "scout"
-    ? "/scout/dashboard"
-    : "/";
-
   const isPrivateRoute = privateRoutes.includes(pathname);
-  const isPublicRoute = publicRoutes.includes(pathname);
+
+  // const isPublicRoute = publicRoutes.includes(pathname);
+
   const isAuthRoute = authRoutes.includes(pathname);
   const isApiRoute = pathname.startsWith("/api");
-  const isAdminRoute =
-    pathname.startsWith(adminRoute + "/") || pathname === adminRoute;
+
+  // const isAdminRoute =
+  //   pathname.startsWith(adminRoute + "/") || pathname === adminRoute;
 
   // API route
   if (isApiRoute) {
     return res;
   }
 
+  // No token
+
   // Authentication route
   if (isAuthRoute) {
     if (isLoggedIn) {
-      return NextResponse.redirect(new URL(dashboardUrl, baseURL));
+      return NextResponse.redirect(new URL("/", baseURL));
     }
     return res;
   }
@@ -51,19 +40,6 @@ export default auth(async (req) => {
   // Private route
   if (isPrivateRoute && !isLoggedIn) {
     return NextResponse.redirect(new URL("/login", baseURL));
-  }
-
-  // Public route
-  if (isPublicRoute) {
-    return res;
-  }
-
-  // Admin route
-  if (isAdminRoute) {
-    if (!isAdmin || !isLoggedIn) {
-      return NextResponse.redirect(new URL("/unauthorized", baseURL));
-    }
-    return res;
   }
 
   // Allow other access

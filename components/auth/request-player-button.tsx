@@ -3,7 +3,7 @@ import React from "react";
 import Button from "../homepage/button";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { sendRequest } from "@/lib/actions";
+import { sendRequest } from "@/lib/actions/create";
 
 const RequestPlayerButton = ({
   userId,

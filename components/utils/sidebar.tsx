@@ -1,4 +1,3 @@
-"use client";
 import Link from "next/link";
 import React from "react";
 import Img from "@/components/utils/image";
@@ -12,11 +11,13 @@ import {
   SheetDescription,
 } from "@/components/ui/sheet";
 import SidebarContent from "@/components/homepage/sidebar-content";
-import { useSession } from "next-auth/react";
+import { auth } from "@/auth";
+import { getUserById } from "@/lib/database/queries";
 
-const Sidebar = () => {
-  const [open, setOpen] = React.useState(false);
-  const { update } = useSession();
+const Sidebar = async () => {
+  const session = await auth();
+  const userId = session?.user.id as string;
+  const user = await getUserById(userId);
 
   return (
     <div className="flex justify-between items-center p-4 w-full bg-primary sticky top-0 z-50 border-b px-4">
@@ -25,13 +26,7 @@ const Sidebar = () => {
           <Img src="/imgs/logo/logo.jpg" alt="Logo" />
         </div>
       </Link>
-      <Sheet
-        open={open}
-        onOpenChange={(isOpen) => {
-          setOpen(isOpen);
-          if (isOpen) update(); // Refetch session on sheet open
-        }}
-      >
+      <Sheet>
         <SheetTrigger>
           <RightBar />
         </SheetTrigger>
@@ -40,7 +35,9 @@ const Sidebar = () => {
             <SheetTitle></SheetTitle>
             <SheetDescription></SheetDescription>
           </SheetHeader>
-          <SidebarContent />
+          <SidebarContent
+            user={user ? { ...user, state: user.state ?? "" } : null}
+          />
         </SheetContent>
       </Sheet>
     </div>
