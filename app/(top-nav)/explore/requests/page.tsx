@@ -21,6 +21,7 @@ const RequestsPage = async () => {
               age={request.player.age}
               id={request.player.id}
               name={request.player.firstname + " " + request.player.lastname}
+              isRequested={request.isRequested}
             />
           ))
         ) : (

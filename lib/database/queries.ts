@@ -40,6 +40,7 @@ export const getRequestedPlayersById = cache(async (userId: string) => {
   return await db.request.findMany({
     where: { userId },
     include: { player: true },
+    orderBy: {updatedAt: "desc"}
   });
 });
 

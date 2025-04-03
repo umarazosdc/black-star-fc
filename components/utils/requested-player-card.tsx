@@ -12,6 +12,7 @@ const RequestedPlayerCard = ({
   age,
   className,
   id,
+  isRequested,
   ...props
 }: {
   src: string;
@@ -19,6 +20,7 @@ const RequestedPlayerCard = ({
   name: string;
   age: number;
   id: string;
+  isRequested: boolean;
 } & React.HTMLAttributes<HTMLDivElement>) => {
   return (
     <div>
@@ -38,7 +40,13 @@ const RequestedPlayerCard = ({
           </Link>
           <Age age={age} className="self-end" />
         </div>
-        <Tag tag="Pending" className="bg-orange-500 text-primary" />
+        <Tag
+          tag={isRequested ? "Accepted" : "Pending"}
+          className={cn(
+            "text-primary",
+            isRequested ? "bg-emerald-400" : "bg-orange-500"
+          )}
+        />
       </div>
     </div>
   );

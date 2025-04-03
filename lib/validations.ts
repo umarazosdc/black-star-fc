@@ -111,6 +111,8 @@ export const newPlayer = async (values: z.infer<typeof PlayerSchema>) => {
   if (!validatedValues.success) {
     return { error: "Invalid player data" };
   }
+  
+  // Destructure validated values
   const {
     firstname,
     lastname,

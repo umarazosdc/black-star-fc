@@ -176,13 +176,16 @@ const NewPlayersForm = () => {
           videos: playerVideosPublicIds,
         }).then((data) => {
           if (data?.error) {
+            console.log("Error", data.error);
             toast.error(data.error, { id: toastId });
           } else {
+            console.log("Success", data.success);
             toast.success(data?.success, { id: toastId });
           }
         });
       });
-    } catch {
+    } catch (error) {
+      console.log("Error during submission", error);
       toast.error("Error during submission", { id: toastId });
     } finally {
       setThumbnailLoading(false);

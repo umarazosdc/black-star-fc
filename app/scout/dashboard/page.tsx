@@ -101,6 +101,7 @@ const DashboardPage = async () => {
                 age={requestedPlayer.player.age}
                 id={requestedPlayer.playerId}
                 className="w-[10.5rem]"
+                isRequested={requestedPlayer.isRequested}
               />
             ))
           )}
