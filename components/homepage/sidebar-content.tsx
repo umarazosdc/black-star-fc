@@ -1,6 +1,15 @@
 "use client";
 import React from "react";
-import { BookmarkIcon, BoxIcon, LogInIcon, SendIcon } from "lucide-react";
+import {
+  BellIcon,
+  BookmarkIcon,
+  BoxIcon,
+  LogInIcon,
+  PlusSquareIcon,
+  SendIcon,
+  ShieldIcon,
+  Users2Icon,
+} from "lucide-react";
 import AuthPagination from "@/components/auth/auth-pagination";
 import SheetHeader from "../utils/sheet-header";
 import Link from "next/link";
@@ -13,11 +22,29 @@ const SidebarContent = ({ user }: SheetContentProps) => {
 
   const route = role === "admin" ? "/dashboard" : "/scout/dashboard";
 
-  const paths = [
-    { name: "Dashboard", path: `${route}`, icon: BoxIcon },
-    { name: "Bookmarks", path: "/explore/bookmarks", icon: BookmarkIcon },
-    { name: "Requested", path: "/explore/requests", icon: SendIcon },
-  ];
+  const paths =
+    role === "admin"
+      ? [
+          { name: "Dashboard", path: `${route}`, icon: BoxIcon },
+          { name: "Scouts", path: "/dashboard/users", icon: Users2Icon },
+          { name: "Players", path: "/dashboard/players", icon: ShieldIcon },
+          { name: "Add New Player", path: "/dashboard/new", icon: PlusSquareIcon },
+          {
+            name: "Notifications",
+            path: "/dashboard/notification",
+            icon: BellIcon,
+          },
+        ]
+      : [
+          { name: "Dashboard", path: `${route}`, icon: BoxIcon },
+          { name: "Bookmarks", path: "/explore/bookmarks", icon: BookmarkIcon },
+          { name: "Requested", path: "/explore/requests", icon: SendIcon },
+          {
+            name: "Notifications",
+            path: "/scout/dashboard/notification",
+            icon: BellIcon,
+          },
+        ];
   return (
     <div className="flex flex-col h-full">
       {user ? (
