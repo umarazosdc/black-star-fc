@@ -1,32 +1,24 @@
 import React from "react";
 import CldImg from "@/components/utils/cldimg";
-import { EllipsisIcon } from "lucide-react";
-import {
-  Drawer,
-  DrawerContent,
-  DrawerTrigger,
-  DrawerHeader,
-  DrawerDescription,
-  DrawerTitle,
-} from "@/components/ui/drawer";
+import Link from "next/link";
 
-const ImageDisplayCard = ({ src, alt }: { src: string; alt: string }) => {
+const ImageDisplayCard = ({
+  src,
+  alt,
+  id,
+  isUser,
+}: {
+  src: string;
+  alt: string;
+  id: string;
+  isUser?: boolean;
+}) => {
   return (
-    <div className="w-full flex flex-col gap-1">
+    <Link
+      href={isUser ? `/dashboard/user?id=${id}` : `/explore/player?id=${id}`}
+    >
       <CldImg src={src} alt={alt} className="rounded-md shadow-md" />
-      <Drawer>
-        <DrawerTrigger asChild>
-          <EllipsisIcon className="text-accen self-end" strokeWidth={3} />
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerHeader>
-            <DrawerTitle></DrawerTitle>
-            <DrawerDescription></DrawerDescription>
-            PLayer
-          </DrawerHeader>
-        </DrawerContent>
-      </Drawer>
-    </div>
+    </Link>
   );
 };
 

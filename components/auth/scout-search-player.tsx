@@ -15,6 +15,8 @@ const ScoutPlayerProfile = async ({ search }: { search: string }) => {
                 key={key}
                 src={player.image ? player.image : "uploads/images/defaultjpg"}
                 alt="Player image"
+                id={player.id}
+                isUser={false}
               />
             )
         )}

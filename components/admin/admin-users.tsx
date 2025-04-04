@@ -12,6 +12,8 @@ const AdminUsers = async () => {
           key={user.id}
           src={user.image ? user.image : "uploads/images/defaultjpg"}
           alt={"User image"}
+          id={user.id}
+          isUser={true}
         />
       ))}
     </div>

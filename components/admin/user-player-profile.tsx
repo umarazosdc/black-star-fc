@@ -16,6 +16,7 @@ const AdminUserPlayerProfile = async ({ search }: { search: string }) => {
                 key={key}
                 src={player.image ? player.image : "uploads/images/defaultjpg"}
                 alt="Player image"
+                id={player.id}
               />
             )
         )}
@@ -27,6 +28,8 @@ const AdminUserPlayerProfile = async ({ search }: { search: string }) => {
                 key={key}
                 src={user.image ? user.image : "uploads/images/defaultjpg"}
                 alt="User image"
+                id={user.id}
+                isUser={true}
               />
             )
         )}

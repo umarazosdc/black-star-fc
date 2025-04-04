@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import SearchPlayers from "@/components/admin/admin-players";
+import SearchSuggestedPlayers from "@/components/admin/search-suggested-players";
 import AdminUsers from "@/components/admin/admin-users";
 import AdminUserPlayerProfile from "@/components/admin/user-player-profile";
 import SearchProfileSkeleton from "@/components/admin/user-player-profile-skeleton";
@@ -29,7 +29,7 @@ const AdminSearchPage = async ({
       ) : (
         <div className="flex flex-col gap-4">
           <Suspense fallback={<SearchProfileSkeleton />}>
-            <SearchPlayers />
+            <SearchSuggestedPlayers />
             <AdminUsers />
           </Suspense>
         </div>

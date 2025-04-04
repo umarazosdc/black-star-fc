@@ -1,4 +1,4 @@
-import SearchPlayers from "@/components/admin/admin-players";
+import SearchSuggestedPlayers from "@/components/admin/search-suggested-players";
 import SearchProfileSkeleton from "@/components/admin/user-player-profile-skeleton";
 import ScoutPlayerProfile from "@/components/auth/scout-search-player";
 import SearchComponent from "@/components/utils/search-component";
@@ -19,9 +19,9 @@ const ScoutSearchPage = async ({
           <ScoutPlayerProfile search={search as string} />
         </Suspense>
       ) : (
-        <SearchContainer path="/explore" name="Players">
+        <SearchContainer path="/explore" name="Suggested players">
           <Suspense fallback={<SearchProfileSkeleton />}>
-            <SearchPlayers />
+            <SearchSuggestedPlayers />
           </Suspense>
         </SearchContainer>
       )}

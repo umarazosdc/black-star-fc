@@ -9,7 +9,7 @@ const SearchDisplayer = ({
   className?: string | undefined;
 }) => {
   return (
-    <main className={cn("columns-2 gap-2 space-y-2", className)}>
+    <main className={cn("grid grid-cols-2 gap-4 md:grid-cols-4", className)}>
       {children}
     </main>
   );
