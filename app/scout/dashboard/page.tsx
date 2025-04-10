@@ -15,10 +15,16 @@ import {
 } from "@/lib/database/queries";
 import { getAge } from "@/lib/date";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const DashboardPage = async () => {
   const session = await auth();
   const user = session?.user;
+
+  if (!user) redirect('/login');
+
+  if (user.role === "admin") redirect('/dashboard')
+
   const totalBookmarks = await getScoutTotalBookmarks(user?.id as string);
   const totalRequests = await getScoutTotalRequests(user?.id as string);
   const bookmarkedPlayers = await getBookmarkedPlayersById(

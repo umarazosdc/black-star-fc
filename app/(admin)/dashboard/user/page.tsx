@@ -31,6 +31,12 @@ interface UserProps {
 }
 
 const UserAboutPage = async ({ searchParams }: UserProps) => {
+  const session = await auth();
+
+  if (!session?.user) redirect("/login");
+
+  if (session?.user.role !== "admin") redirect("/unauthorized");
+
   const params = await searchParams;
   const id = params.id || undefined;
   const user = await getUserById(id as string);
@@ -40,10 +46,6 @@ const UserAboutPage = async ({ searchParams }: UserProps) => {
   const requests = await getRequestedPlayersById(user?.id as string);
   const onSuspension = await isSuspended(user?.id as string);
   const isAdmin = user?.role === "admin";
-
-  const session = await auth();
-
-  if (session?.user.role !== "admin") redirect("/unauthorized");
 
   return (
     <div className="flex flex-col gap-4 min-h-full">

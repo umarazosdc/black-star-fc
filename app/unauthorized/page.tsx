@@ -7,14 +7,14 @@ const UnauthorizedPage = () => {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen flex flex-col items-center p-4">
+    <div className="flex flex-col items-center w-full h-screen gap-6 p-4">
       <ChevronLeftIcon
         className="self-start text-accent rounded-md"
         // size={24}
         strokeWidth={3}
         onClick={() => router.back()}
       />
-      <div className="self-center flex flex-col items-center justify-center gap-6">
+      <div className="self-center flex flex-col items-center justify-center gap-6 h-full">
         <div className="flex flex-col gap-3">
           <span className="text-4xl font-bold text-center">403</span>
           <div className="flex flex-col gap-2">

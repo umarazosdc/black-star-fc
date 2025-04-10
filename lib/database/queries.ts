@@ -40,7 +40,7 @@ export const getRequestedPlayersById = cache(async (userId: string) => {
   return await db.request.findMany({
     where: { userId },
     include: { player: true },
-    orderBy: {updatedAt: "desc"}
+    orderBy: { updatedAt: "desc" },
   });
 });
 
@@ -336,4 +336,12 @@ export const removeFromRequestList = async (
   userId: string
 ) => {
   await db.request.delete({ where: { playerId_userId: { playerId, userId } } });
+};
+
+export const getVerificationTokenByEmail = async (email: string) => {
+  return await db.verificationToken.findFirst({ where: { email } });
+};
+
+export const getVerificationTokenByToken = async (token: string) => {
+  return await db.verificationToken.findUnique({ where: { token } });
 };

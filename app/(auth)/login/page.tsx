@@ -1,5 +1,5 @@
 "use client";
-import AuthCard from "@/components/auth/auth-card";
+import AuthWrapper from "@/components/auth/auth-card";
 import Img from "@/components/utils/image";
 import dynamic from "next/dynamic";
 
@@ -13,9 +13,9 @@ const LoginPage = () => {
       <div className="relative size-16 mt-6 flex justify-center mr-auto ml-auto">
         <Img src="/imgs/logo/logo.jpg" alt="Logo" />
       </div>
-      <AuthCard isLogin>
+      <AuthWrapper isLogin>
         <LoginForm />
-      </AuthCard>
+      </AuthWrapper>
     </div>
   );
 };

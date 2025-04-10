@@ -1,7 +1,7 @@
 import React from "react";
 import { BookmarkIcon, BoxIcon, SendIcon } from "lucide-react";
 import SheetHeader from "../utils/sheet-header";
-import AuthPagination from "./auth-pagination";
+import ContentPagination from "./content-pagination";
 import BarSkeleton from "../utils/bar-skeleton";
 import LogOutButton from "../utils/log-out-button";
 import { SheetContentProps } from "../admin/admin-sheet-content";
@@ -18,7 +18,7 @@ const AuthSheetContent = ({ user }: SheetContentProps) => {
         {user ? <SheetHeader user={user} /> : <BarSkeleton />}
         <div className="flex flex-col gap-2">
           {paths.map((path, key) => (
-            <AuthPagination
+            <ContentPagination
               key={key}
               path={path.path}
               icon={path.icon}

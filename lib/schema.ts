@@ -71,3 +71,7 @@ export const EditProfileSchema = z.object({
     .optional(),
   preference: z.string(),
 });
+
+export const TokenVerificationSchema = z.object({
+  otp: z.string().min(6, "Token cannot be empty.").max(6, "Token must be 6 digits."),
+})

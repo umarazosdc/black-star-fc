@@ -3,6 +3,7 @@ import ExplorePlayers from "@/components/explore/explore-players";
 import { searchAndSort } from "@/lib/data";
 import { getPlayersBySearchAndOrder } from "@/lib/database/queries";
 import { Prisma } from "@prisma/client";
+import { redirect } from "next/navigation";
 import React from "react";
 
 const ExplorePlayersPage = async ({
@@ -10,9 +11,13 @@ const ExplorePlayersPage = async ({
 }: {
   searchParams: Promise<Record<string, string>>;
 }) => {
+  const session = await auth();
+
+  // Check if the user is authenticated
+  if (!session?.user) redirect("/login");
+
   const params = await searchParams;
   const { search="", sort } = params;
-  const session = await auth();
   const userId = session?.user.id as string;
 
   const orderBy = searchAndSort(sort as string, "player");

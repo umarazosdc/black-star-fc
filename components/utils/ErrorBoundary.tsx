@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-const ErrorBoundary = ({ reset }: { reset: () => void }) => {
+const ErrorBoundaryJSX = ({ reset }: { reset: () => void }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -16,7 +16,7 @@ const ErrorBoundary = ({ reset }: { reset: () => void }) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-6 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+    <div className="h-screen flex flex-col items-center justify-center gap-6">
       <div className="flex flex-col items-center gap-2">
         <h1 className="font-bold">Error!</h1>
         <p className="text-sm text-primary-foreground">
@@ -40,4 +40,4 @@ const ErrorBoundary = ({ reset }: { reset: () => void }) => {
   );
 };
 
-export default ErrorBoundary;
+export default ErrorBoundaryJSX;

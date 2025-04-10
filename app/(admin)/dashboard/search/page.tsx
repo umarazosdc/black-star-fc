@@ -15,10 +15,14 @@ const AdminSearchPage = async ({
   const session = await auth();
   const user = session?.user;
 
+  // Check if the user is authenticated
+  if (!user) redirect("/login");
+
+  if (user?.role !== "admin") redirect("/unauthorized");
+
   const params = await searchParams;
   const search = params.search || "";
 
-  if (user?.role !== "admin") redirect("/unauthorized");
 
   return (
     <SearchComponent basePath="/dashboard/search">

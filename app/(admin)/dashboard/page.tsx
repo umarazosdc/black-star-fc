@@ -14,10 +14,16 @@ const AdminDashboardPage = async () => {
   const session = await auth();
   const user = session?.user;
 
+  if (!user) redirect("/login");
+
+  // Check if user is an admin
+  // If not, redirect to unauthorized page
+  if (user?.role !== "admin") redirect("/unauthorized");
+
+  // Check if user is authenticated
+
   const userTotal = await getTotalUsers();
   const playerTotal = await getTotalPlayers();
-
-  if (user?.role !== "admin") redirect("/unauthorized");
 
   return (
     <div className="flex flex-col gap-6">

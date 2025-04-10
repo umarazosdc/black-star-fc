@@ -16,9 +16,14 @@ import Link from "next/link";
 import { login } from "@/lib/validations";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 
 const LoginForm = () => {
-  const [isLoading, startTransition] = React.useTransition();
+  const router = useRouter();
+
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -26,22 +31,31 @@ const LoginForm = () => {
       password: "",
     },
   });
-  const handleLogin = (values: z.infer<typeof LoginSchema>) => {
-    startTransition(() => {
-      login(values)
-        .then((data) => {
-          if (data.error) {
-            toast.error(data.error);
-          } else {
-            toast.success(data.success);
-          }
-        })
-        .catch((error) => {
-          console.log("Something went wrong:", error);
-          toast.error("Something went wrong.");
+
+  const handleLogin = async (values: z.infer<typeof LoginSchema>) => {
+    setIsLoading(true);
+    try {
+      const data = await login(values);
+      if (data.error) {
+        toast.error(data.error);
+        setIsLoading(false);
+      } else if (data.verifyEmail) {
+        toast.info("Please verify your email.");
+        router.push(`/verify-email?email=${data.email}`);
+      } else if (data.status === "success") {
+        await signIn("credentials", {
+          email: values.email,
+          password: values.password,
+          callbackUrl: "/",
         });
-    });
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Something went wrong.");
+      setIsLoading(false);
+    }
   };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleLogin)}>

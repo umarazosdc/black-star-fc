@@ -29,13 +29,13 @@ export default auth(async (req) => {
 
   // No token
 
-  // Authentication route
-  if (isAuthRoute) {
-    if (isLoggedIn) {
-      return NextResponse.redirect(new URL("/", baseURL));
-    }
-    return res;
-  }
+  // // Authentication route
+  // if (isAuthRoute) {
+  //   if (isLoggedIn) {
+  //     return NextResponse.redirect(new URL("/", baseURL));
+  //   }
+  //   return res;
+  // }
 
   // Private route
   if (isPrivateRoute && !isLoggedIn) {

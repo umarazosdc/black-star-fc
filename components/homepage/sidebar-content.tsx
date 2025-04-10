@@ -10,7 +10,7 @@ import {
   ShieldIcon,
   Users2Icon,
 } from "lucide-react";
-import AuthPagination from "@/components/auth/auth-pagination";
+import ContentPagination from "@/components/auth/content-pagination";
 import SheetHeader from "../utils/sheet-header";
 import Link from "next/link";
 import Img from "../utils/image";
@@ -28,7 +28,11 @@ const SidebarContent = ({ user }: SheetContentProps) => {
           { name: "Dashboard", path: `${route}`, icon: BoxIcon },
           { name: "Scouts", path: "/dashboard/users", icon: Users2Icon },
           { name: "Players", path: "/dashboard/players", icon: ShieldIcon },
-          { name: "Add New Player", path: "/dashboard/new", icon: PlusSquareIcon },
+          {
+            name: "Add New Player",
+            path: "/dashboard/new",
+            icon: PlusSquareIcon,
+          },
           {
             name: "Notifications",
             path: "/dashboard/notification",
@@ -63,7 +67,7 @@ const SidebarContent = ({ user }: SheetContentProps) => {
       {user && (
         <div className="flex flex-col gap-2 mt-4">
           {paths.map((path, key) => (
-            <AuthPagination
+            <ContentPagination
               key={key}
               path={path.path}
               icon={path.icon}

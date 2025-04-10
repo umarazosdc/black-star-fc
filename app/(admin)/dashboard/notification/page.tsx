@@ -8,6 +8,8 @@ const AdminNotificationPage = async() => {
   const session = await auth()
   const user = session?.user
 
+  if (!user) redirect("/login");
+
   if (user?.role !== "admin") redirect("/unauthorized");
 
   return (

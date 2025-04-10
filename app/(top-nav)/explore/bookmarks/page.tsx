@@ -3,10 +3,16 @@ import BookmarkedPlayerCard from "@/components/utils/bookmarked-player-card";
 import GridWrappers from "@/components/utils/grid-wrappers";
 import Wrapper from "@/components/utils/wrapper";
 import { getBookmarkedPlayersById } from "@/lib/database/queries";
+import { redirect } from "next/navigation";
 import React from "react";
 
 const BookmarksPage = async () => {
   const session = await auth();
+
+  if (!session?.user) redirect("/login");
+
+  if (session?.user.role === "admin") redirect("/dashboard");
+
   const id = session?.user.id;
   const isAdmin = session?.user.role === "admin";
   const bookmarks = await getBookmarkedPlayersById(id as string);

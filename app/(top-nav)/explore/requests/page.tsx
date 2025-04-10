@@ -3,10 +3,16 @@ import GridWrappers from "@/components/utils/grid-wrappers";
 import RequestedPlayerCard from "@/components/utils/requested-player-card";
 import Wrapper from "@/components/utils/wrapper";
 import { getRequestedPlayersById } from "@/lib/database/queries";
+import { redirect } from "next/navigation";
 import React from "react";
 
 const RequestsPage = async () => {
   const session = await auth();
+
+  if (!session?.user) redirect("/login");
+
+  if (session?.user.role === "admin") redirect("/dashboard");
+
   const id = session?.user.id;
   const requests = await getRequestedPlayersById(id as string);
   return (

@@ -12,9 +12,12 @@ const AddNewPlayersPage = async () => {
   const session = await auth();
   const user = session?.user;
 
+  if (!user) redirect("/login");
+  
+  if (user?.role !== "admin") redirect("/unauthorized");
+
   const players = await getPreUploadedPlayers();
 
-  if (user?.role !== "admin") redirect("/unauthorized");
 
   return (
     <div className="flex flex-col gap-3 w-full">

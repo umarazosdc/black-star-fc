@@ -9,17 +9,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
   secret: process.env.AUTH_SECRET,
+  events: {
+    async linkAccount({ user }) {
+      await db.user.update({
+        where: { id: user.id },
+        data: { isVerified: new Date() },
+      });
+    },
+  },
   callbacks: {
-    async signIn({ user }) {
+    async signIn({ user, account }) {
+      // Allow OAuth user to sign in
+      if (account?.provider !== "credentials") return true;
+
       if (!user || !user?.id) return false;
 
       const existingUser = await getUserById(user.id);
       if (!existingUser) return false;
 
+      // Prevent sign in if email is not verified
+      if (!existingUser.isVerified) false;
+
       const suspendedUntil = existingUser?.suspendedUntil;
       const now = new Date();
 
-      // Block login if still suspended
+      // Prevent login if still suspended
       if (existingUser?.isSuspended && suspendedUntil && suspendedUntil > now) {
         return false;
       }
@@ -51,6 +65,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       token.email = existingUser.email;
       token.name = existingUser.name;
       token.image = existingUser.image;
+      token.isVerified = existingUser.isVerified;
 
       return token;
     },
@@ -66,6 +81,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           image: token.image ?? null,
           email: token.email ?? null,
           name: token.name ?? null,
+          isVerified: token.isVerified ?? null,
         },
       } as Session;
     },

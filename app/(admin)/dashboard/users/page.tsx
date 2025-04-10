@@ -16,14 +16,17 @@ const UsersPage = async ({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
-  const params = await searchParams;
-  const search = params.search || "";
-  const sort = params.sort;
-
   const session = await auth();
   const user = session?.user;
 
+  // Check if user is authenticated
+  if (!user) redirect("/login");
+
   if (user?.role !== "admin") redirect("/unauthorized");
+
+  const params = await searchParams;
+  const search = params.search || "";
+  const sort = params.sort;
 
   const orderBy = searchAndSort(sort as string, "user");
   const users = await getUsersBySearchAndOrder(search as string, orderBy);

@@ -15,17 +15,21 @@ import { setDate } from "@/lib/date";
 import RequestPlayerButton from "@/components/auth/request-player-button";
 import PlayerCardRemoveButton from "@/components/admin/player-card-remove-button";
 import BookmarkPlayerButton from "@/components/auth/bookmark-player-button";
+import { redirect } from "next/navigation";
 
 const PlayerOverviewPage = async ({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
+  const session = await auth();
+  const isAdmin = session?.user.role === "admin";
+
+  if (!session?.user) redirect("/login");
+
   const params = await searchParams;
   const id = params.id;
   const player = await getPlayerById(id as string);
-  const session = await auth();
-  const isAdmin = session?.user.role === "admin";
   const hasRequestedPlayer = await hasUserRequestedPlayer(
     session?.user.id as string,
     id as string

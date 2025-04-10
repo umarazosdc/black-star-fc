@@ -1,8 +1,10 @@
+import { auth } from "@/auth";
 import SearchSuggestedPlayers from "@/components/admin/search-suggested-players";
 import SearchProfileSkeleton from "@/components/admin/user-player-profile-skeleton";
 import ScoutPlayerProfile from "@/components/auth/scout-search-player";
 import SearchComponent from "@/components/utils/search-component";
 import SearchContainer from "@/components/utils/search-container";
+import { redirect } from "next/navigation";
 import React, { Suspense } from "react";
 
 const ScoutSearchPage = async ({
@@ -10,6 +12,12 @@ const ScoutSearchPage = async ({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) => {
+  const session = await auth();
+
+  if (!session?.user) redirect("/login");
+
+  if (session.user.role === "admin") redirect("dashboard");
+
   const params = await searchParams;
   const search = params.search || "";
   return (

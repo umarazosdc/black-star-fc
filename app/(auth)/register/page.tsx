@@ -1,5 +1,5 @@
 "use client";
-import AuthCard from "@/components/auth/auth-card";
+import AuthWrapper from "@/components/auth/auth-card";
 import { ChevronLeftIcon } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
@@ -21,9 +21,9 @@ const RegisterPage = () => {
         />
         <span className="font-bold text-secondary text-sm">Sign Up</span>
       </div>
-      <AuthCard>
+      <AuthWrapper>
         <RegisterForm />
-      </AuthCard>
+      </AuthWrapper>
     </div>
   );
 };
