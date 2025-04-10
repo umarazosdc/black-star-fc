@@ -1,10 +1,6 @@
 "use server";
 import { z } from "zod";
-import {
-  LoginSchema,
-  PlayerSchema,
-  RegisterSchema,
-} from "./schema";
+import { LoginSchema, PlayerSchema, RegisterSchema } from "./schema";
 import {
   getPreUploadedPlayers,
   getUserByEmail,
@@ -15,7 +11,6 @@ import { db } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { getAge } from "./date";
 import { generateVerificationToken } from "./tokens";
-import { redirect } from "next/navigation";
 import { sendVerificationEmail } from "./mail";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
@@ -284,7 +279,7 @@ export const verify = async (pin: string, email: string) => {
 
     // Check if token has expired
     if (verificationToken?.expires < new Date()) {
-      return { error: "OTP has expired. Try logging in again!" };
+      return { error: "Token expired" };
     }
 
     // Check if token matches the provided pin
@@ -298,7 +293,12 @@ export const verify = async (pin: string, email: string) => {
       data: { isVerified: new Date() },
     });
 
-    redirect("/login");
+    // Delete the verification token after successful verification
+    await db.verificationToken.delete({
+      where: { id: verificationToken.id },
+    });
+
+    return { status: "success" };
   } catch (error) {
     console.error("Verification error:", error);
     return { error: "An error occurred during verification" };

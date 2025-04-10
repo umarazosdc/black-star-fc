@@ -10,7 +10,7 @@ export const generateVerificationToken = async (email: string) => {
 
   const token = String(Math.floor(100000 + Math.random() * 900000));
 
-  const expires = new Date(Date.now() + 60 * 60 * 300);
+  const expires = new Date(Date.now() + 2 * 60 * 1000);
 
   const verificationToken = await db.verificationToken.create({
     data: {

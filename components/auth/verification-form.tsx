@@ -11,15 +11,17 @@ import { TokenVerificationSchema } from "@/lib/schema";
 import { z } from "zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { verify } from "@/lib/validations";
 import { toast } from "sonner";
 
 const VerificationForm = () => {
+  const router = useRouter();
+
   const searchParam = useSearchParams();
   const email = searchParam.get("email") || "";
 
-  const [isLoading, startTransition] = React.useTransition();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const form = useForm<z.infer<typeof TokenVerificationSchema>>({
     defaultValues: { otp: "" },
@@ -27,13 +29,22 @@ const VerificationForm = () => {
   });
 
   const handleOTP = (data: { otp: string }) => {
-    startTransition(() => {
+    try {
+      setIsLoading(true);
       verify(data.otp, email).then((data) => {
         if (data?.error) {
           toast.error(data.error);
+        } else if (data.status === "success") {
+          toast.success("Email verified successfully");
+          router.push("/login");
         }
       });
-    });
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
