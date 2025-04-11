@@ -25,6 +25,7 @@ import SuspendUserButton from "@/components/admin/suspend-user-button";
 import CancelSuspensionButton from "@/components/admin/cancel-suspension-button";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
+import RequestedPlayerCard from "@/components/utils/requested-player-card";
 
 interface UserProps {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -126,16 +127,15 @@ const UserAboutPage = async ({ searchParams }: UserProps) => {
         <div className="flex items-center gap-4 overflow-auto pb-1">
           {requests.length > 0 ? (
             requests.map((request, key: number) => (
-              <BookmarkedPlayerCard
+              <RequestedPlayerCard
                 key={key}
                 name={request.player.firstname + " " + request.player.lastname}
                 src={request.player.image}
                 age={getAge(request.player.dob)}
                 position={request.player.position}
                 id={request.player.id}
-                isAdmin={isAdmin}
                 className="w-[10.5rem]"
-                userId={user?.id as string}
+                isRequested={request.isRequested}
               />
             ))
           ) : (

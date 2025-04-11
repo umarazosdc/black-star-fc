@@ -1,7 +1,14 @@
 "use server";
 import { z } from "zod";
-import { LoginSchema, PlayerSchema, RegisterSchema } from "./schema";
 import {
+  EmailVerificationSchema,
+  LoginSchema,
+  PasswordVerificationSchema,
+  PlayerSchema,
+  RegisterSchema,
+} from "./schema";
+import {
+  getPasswordResetTokenByToken,
   getPreUploadedPlayers,
   getUserByEmail,
   getVerificationTokenByEmail,
@@ -10,8 +17,11 @@ import bcrypt from "bcryptjs";
 import { db } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { getAge } from "./date";
-import { generateVerificationToken } from "./tokens";
-import { sendVerificationEmail } from "./mail";
+import {
+  generatePasswordResetToken,
+  generateVerificationToken,
+} from "./tokens";
+import { sendResetPasswordEmail, sendVerificationEmail } from "./mail";
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedValues = LoginSchema.safeParse(values);
@@ -303,4 +313,62 @@ export const verify = async (pin: string, email: string) => {
     console.error("Verification error:", error);
     return { error: "An error occurred during verification" };
   }
+};
+
+export const verifyEmail = async (
+  value: z.infer<typeof EmailVerificationSchema>
+) => {
+  const validatedValues = EmailVerificationSchema.safeParse(value);
+
+  if (!validatedValues.success) {
+    return { error: "Invalid email" };
+  }
+
+  const { email } = validatedValues.data;
+
+  const user = await getUserByEmail(email);
+  if (!user) {
+    return { error: "Email does not exist" };
+  }
+
+  const verificationToken = await generatePasswordResetToken(email);
+
+  await sendResetPasswordEmail(user.email, verificationToken.token);
+  return { status: "success" };
+};
+
+export const resetPassword = async (
+  value: z.infer<typeof PasswordVerificationSchema>,
+  token: string
+) => {
+  const validatedValue = PasswordVerificationSchema.safeParse(value);
+  if (!validatedValue.success) {
+    return { error: "Invalid password" };
+  }
+  const { password } = validatedValue.data;
+
+  const verificationToken = await getPasswordResetTokenByToken(token);
+  if (!verificationToken) {
+    return { error: "No verification token found" };
+  }
+
+  // Check if token has expired
+  if (verificationToken?.expires < new Date()) {
+    return { error: "Token expired" };
+  }
+
+  // Hash password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Update user password in the database
+  await db.user.update({
+    where: { email: verificationToken.email },
+    data: { password: hashedPassword },
+  });
+
+  // Delete the verification token after successful password reset
+  await db.passwordResetToken.delete({
+    where: { id: verificationToken.id },
+  });
+  return { status: "success" };
 };

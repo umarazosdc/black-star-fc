@@ -1,7 +1,7 @@
 import * as z from "zod";
 
 export const LoginSchema = z.object({
-  email: z.string().email({ message: "Email is required" }),
+  email: z.string().email({ message: "Email is required" }).trim(),
   password: z.string(),
 });
 
@@ -73,5 +73,16 @@ export const EditProfileSchema = z.object({
 });
 
 export const TokenVerificationSchema = z.object({
-  otp: z.string().min(6, "Token cannot be empty.").max(6, "Token must be 6 digits."),
-})
+  otp: z
+    .string()
+    .min(6, "Token cannot be empty.")
+    .max(6, "Token must be 6 digits."),
+});
+
+export const EmailVerificationSchema = z.object({
+  email: z.string().email({ message: "Email is required" }).trim(),
+});
+
+export const PasswordVerificationSchema = z.object({
+  password: z.string({ message: "Password is required" }),
+});

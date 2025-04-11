@@ -345,3 +345,11 @@ export const getVerificationTokenByEmail = async (email: string) => {
 export const getVerificationTokenByToken = async (token: string) => {
   return await db.verificationToken.findUnique({ where: { token } });
 };
+
+export const getPasswordResetTokenByEmail = async (email: string) => {
+  return await db.passwordResetToken.findFirst({ where: { email } });
+};
+
+export const getPasswordResetTokenByToken = async (token: string) => {
+  return await db.passwordResetToken.findUnique({ where: { token } });
+};

@@ -51,7 +51,7 @@ const VerificationForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleOTP)}
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-4 items-center justify-center"
       >
         <FormField
           control={form.control}

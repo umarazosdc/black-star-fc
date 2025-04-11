@@ -11,7 +11,7 @@ const VerificationForm = dynamic(
   }
 );
 
-const DemoPage = () => {
+const Page = () => {
   return (
     <Wrapper
       title="Verify your email"
@@ -22,4 +22,4 @@ const DemoPage = () => {
   );
 };
 
-export default DemoPage;
+export default Page;

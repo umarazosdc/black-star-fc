@@ -97,7 +97,7 @@ const LoginForm = () => {
             )}
           />
           <Link
-            href="/auth/reset"
+            href="/reset"
             className="self-start text-sm text-secondary"
           >
             Forgot password?
